@@ -1,0 +1,22 @@
+{
+  "name": "BrowserBox - Serverless Tools",
+  "short_name": "BrowserBox",
+  "description": "Powerful serverless browser-side utilities. 100% private.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/7542/7542190.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/7542/7542190.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
