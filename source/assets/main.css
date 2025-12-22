@@ -3,72 +3,73 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+	width: 8px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+	background: #f1f5f9;
 }
 
 .dark ::-webkit-scrollbar-track {
-    background: #1e293b;
+	background: #1e293b;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
+	background: #cbd5e1;
+	border-radius: 4px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-    background: #475569;
+	background: #475569;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+	background: #94a3b8;
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+	background: #64748b;
 }
-
 
 /* Global CSS for Independent Scrolling Experience */
 
 /* Force body not to scroll, let App components handle it */
 html,
 body {
-    height: 100%;
-    overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+	width: 5px;
+	height: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+	background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 10px;
+	background: #cbd5e1;
+	border-radius: 10px;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #334155;
+	background: #334155;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+	background: #94a3b8;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+	background: #475569;
 }
 
 /* Smooth category transitions */
 .category-transition {
-    transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+	transition:
+		max-height 0.3s ease-in-out,
+		opacity 0.2s ease-in-out;
 }

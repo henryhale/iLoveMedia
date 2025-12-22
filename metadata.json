@@ -1,7 +1,0 @@
-{
-  "name": "BrowserBox",
-  "description": "A collection of powerful serverless browser-side utilities. Convert images, manipulate text, and handle data entirely on your device.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
-}
