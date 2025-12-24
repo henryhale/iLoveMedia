@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./base.css";
 
 ::-webkit-scrollbar {
 	width: 8px;
@@ -41,30 +39,10 @@ body {
 	overflow: hidden;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-	width: 5px;
-	height: 5px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #cbd5e1;
-	border-radius: 10px;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #334155;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: #94a3b8;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: #475569;
+#app {
+	min-height: 100vh;
+	height: 100%;
+	overflow-y: auto;
 }
 
 /* Smooth category transitions */

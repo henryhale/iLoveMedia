@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from "vue"
-import { MicIcon, StopIcon, DownloadIcon, RefreshIcon } from "../components/Icon.vue"
+import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
 
-// State (Replacing useState and useRef)
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
 const recordingTime = ref(0)
@@ -121,7 +120,7 @@ onUnmounted(() => {
 						@click="stopRecording"
 						class="bg-gray-900 dark:bg-gray-100 dark:text-gray-900 text-white px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-md"
 					>
-						<StopIcon class="w-5 h-5" />
+						<CircleStopIcon class="w-5 h-5" />
 						Stop Recording
 					</button>
 				</div>
@@ -152,7 +151,7 @@ onUnmounted(() => {
 								@click="resetRecorder"
 								class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
 							>
-								<RefreshIcon class="w-4 h-4 text-gray-500" />
+								<RefreshCwIcon class="w-4 h-4 text-gray-500" />
 							</button>
 						</div>
 					</div>

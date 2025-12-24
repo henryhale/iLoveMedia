@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, useCallback } from "vue"
+import { ref, onMounted, watch } from "vue"
 import QRCode from "qrcode"
-import { QrCodeIcon, DownloadIcon, RefreshIcon, CheckIcon } from "../components/Icon.vue"
+import { QrCodeIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 
 const PRESET_COLORS = ["#000000", "#4F46E5", "#EF4444", "#10B981", "#F59E0B", "#3B82F6", "#8B5CF6"]
 
@@ -240,7 +240,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 					class="order-1 lg:order-2 lg:col-span-7 flex flex-col items-center justify-center"
 				>
 					<div
-						class="w-full aspect-square bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-gray-200 dark:border-gray-700 flex items-center justify-center p-4 sm:p-8 pattern-checkered relative overflow-hidden min-h-[280px]"
+						class="w-full aspect-square bg-gray-50 dark:bg-gray-900/50 rounded-3xl border border-gray-200 dark:border-gray-700 flex items-center justify-center p-4 sm:p-8 pattern-checkered relative overflow-hidden min-h-70"
 					>
 						<div
 							class="bg-white p-2 sm:p-4 rounded-xl shadow-2xl animate-in zoom-in duration-500 flex items-center justify-center max-w-[85%] sm:max-w-full"
@@ -286,6 +286,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 		10px 10px;
 	background-size: 20px 20px;
 }
+
 .pattern-checkered-sm {
 	background-image:
 		linear-gradient(45deg, #ccc 25%, transparent 25%),
@@ -299,6 +300,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 		4px -4px,
 		-4px 0px;
 }
+
 :deep(.dark) .pattern-checkered {
 	background-image:
 		radial-gradient(#1e293b 1px, transparent 1px), radial-gradient(#1e293b 1px, transparent 1px);

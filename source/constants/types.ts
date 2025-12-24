@@ -1,3 +1,5 @@
+import type { Component } from "vue"
+
 export enum ToolCategory {
 	IMAGE = "Image",
 	TEXT = "Text",
@@ -7,12 +9,12 @@ export enum ToolCategory {
 }
 
 export interface ToolDef {
+	link: string
 	id: string
 	name: string
 	description: string
-	icon: ReactNode
+	icon: Component
 	category: ToolCategory
-	component: ReactNode
 }
 
 export type FileState = {

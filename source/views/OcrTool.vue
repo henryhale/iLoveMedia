@@ -3,11 +3,11 @@ import { ref } from "vue"
 import {
 	ScanIcon,
 	DownloadIcon,
-	RefreshIcon,
+	RefreshCwIcon,
 	CheckIcon,
 	ImageIcon,
 	CopyIcon,
-} from "../components/Icon.vue"
+} from "lucide-vue-next"
 import Tesseract from "tesseract.js"
 
 const OCR_LANGUAGES = [
@@ -188,7 +188,7 @@ const reset = () => {
 								v-if="isProcessing"
 								class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 text-center"
 							>
-								<RefreshIcon class="w-10 h-10 animate-spin mb-4" />
+								<RefreshCwIcon class="w-10 h-10 animate-spin mb-4" />
 								<p class="font-bold text-lg">{{ status }}</p>
 								<p v-if="progress > 0" class="text-sm opacity-75">
 									{{ progress }}% Complete
@@ -223,7 +223,7 @@ const reset = () => {
 							</div>
 						</div>
 						<div
-							class="flex-grow min-h-[300px] lg:min-h-0 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl relative overflow-hidden group shadow-inner"
+							class="grow min-h-75 lg:min-h-0 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl relative overflow-hidden group shadow-inner"
 						>
 							<textarea
 								v-model="extractedText"
@@ -255,7 +255,7 @@ const reset = () => {
 						:disabled="isProcessing"
 						class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-500/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
 					>
-						<RefreshIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
+						<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
 						<ScanIcon v-else class="w-5 h-5" />
 						{{ isProcessing ? `Processing...` : "Extract Text from Image" }}
 					</button>

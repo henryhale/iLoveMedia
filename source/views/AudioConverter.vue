@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue"
 import { FFmpeg } from "@ffmpeg/ffmpeg"
 import { fetchFile, toBlobURL } from "@ffmpeg/util"
-import { MusicIcon, DownloadIcon, RefreshIcon, CheckIcon } from "../components/Icon.vue"
+import { MusicIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 
 // State (Replacing useState)
 const file = ref<File | null>(null)
@@ -74,7 +74,7 @@ const convert = async () => {
 		await ffmpeg.exec(["-i", inputName, outputName])
 
 		const data = await ffmpeg.readFile(outputName)
-		const url = URL.createObjectURL(new Blob([data], { type: `audio/${targetFormat.value}` }))
+		const url = URL.createObjectURL(new Blob([data as any], { type: `audio/${targetFormat.value}` }))
 		convertedURL.value = url
 	} catch (err) {
 		console.error("Conversion failed:", err)
@@ -102,7 +102,7 @@ const convert = async () => {
 				v-if="!isLoaded"
 				class="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg text-sm text-green-700 dark:text-green-300 mb-6 flex items-center gap-3 border border-green-100 dark:border-green-900/30"
 			>
-				<RefreshIcon class="w-4 h-4 animate-spin" />
+				<RefreshCwIcon class="w-4 h-4 animate-spin" />
 				Initializing FFmpeg secure environment...
 			</div>
 
@@ -152,7 +152,7 @@ const convert = async () => {
 						@click="resetFile"
 						class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
 					>
-						<RefreshIcon class="w-5 h-5" />
+						<RefreshCwIcon class="w-5 h-5" />
 					</button>
 				</div>
 
@@ -179,7 +179,7 @@ const convert = async () => {
 							:disabled="isConverting || !isLoaded"
 							class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-bold py-2 rounded-lg transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-600/20"
 						>
-							<RefreshIcon v-if="isConverting" class="w-4 h-4 animate-spin" />
+							<RefreshCwIcon v-if="isConverting" class="w-4 h-4 animate-spin" />
 							<CheckIcon v-else class="w-4 h-4" />
 							{{ isConverting ? `Converting (${progress}%)` : "Start Conversion" }}
 						</button>

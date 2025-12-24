@@ -3,13 +3,13 @@ import { ref, onMounted, onUnmounted, watch, nextTick } from "vue"
 import {
 	WavesIcon,
 	MicIcon,
-	StopIcon,
+	CircleStopIcon,
 	CopyIcon,
 	CheckIcon,
-	RefreshIcon,
+	RefreshCwIcon,
 	PlayIcon,
 	DownloadIcon,
-} from "../components/Icon.vue"
+} from "lucide-vue-next"
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -326,7 +326,7 @@ const clear = () => {
 									: 'bg-green-600 hover:bg-green-700 shadow-green-600/30',
 							]"
 						>
-							<StopIcon
+							<CircleStopIcon
 								v-if="isListening"
 								class="w-12 h-12 text-white animate-pulse"
 							/>
@@ -385,7 +385,7 @@ const clear = () => {
 							:disabled="isTranscribing"
 							class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all"
 						>
-							<RefreshIcon v-if="isTranscribing" class="w-5 h-5 animate-spin" />
+							<RefreshCwIcon v-if="isTranscribing" class="w-5 h-5 animate-spin" />
 							<WavesIcon v-else class="w-5 h-5" />
 							{{ isTranscribing ? "Transcribing..." : "Transcribe Recording" }}
 						</button>
@@ -434,14 +434,14 @@ const clear = () => {
 								@click="clear"
 								class="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-red-500"
 							>
-								<RefreshIcon class="w-3 h-3" /> Reset
+								<RefreshCwIcon class="w-3 h-3" /> Reset
 							</button>
 						</div>
 					</div>
 
 					<div
 						:class="[
-							'w-full min-h-[350px] p-8 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-3xl transition-all shadow-inner relative overflow-hidden',
+							'w-full min-h-87.5 p-8 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-3xl transition-all shadow-inner relative overflow-hidden',
 							isListening || isTranscribing ? 'ring-2 ring-green-500/20' : '',
 						]"
 					>

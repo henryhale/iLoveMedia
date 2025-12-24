@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import {
-	ScissorIcon,
-	DownloadIcon,
-	RefreshIcon,
-	CheckIcon,
-	ImageIcon,
-} from "../components/Icon.vue"
+import { ScissorsIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import { removeBackground } from "@imgly/background-removal"
 
 // State (Replacing useState)
@@ -90,7 +84,7 @@ const reset = () => {
 				<div
 					class="p-2 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-600 dark:text-green-400"
 				>
-					<ScissorIcon class="w-6 h-6" />
+					<ScissorsIcon class="w-6 h-6" />
 				</div>
 				<div>
 					<h2 class="text-2xl font-bold text-gray-900 dark:text-white">
@@ -165,7 +159,7 @@ const reset = () => {
 								v-if="isProcessing"
 								class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm flex flex-col items-center justify-center text-white"
 							>
-								<RefreshIcon class="w-10 h-10 animate-spin mb-4" />
+								<RefreshCwIcon class="w-10 h-10 animate-spin mb-4" />
 								<p class="font-bold">Analyzing pixels...</p>
 								<p class="text-xs opacity-75">{{ progress }}% Complete</p>
 								<div
@@ -195,7 +189,7 @@ const reset = () => {
 								class="max-w-full max-h-full object-contain animate-in zoom-in duration-500"
 							/>
 							<div v-else class="text-center p-8">
-								<ScissorIcon
+								<ScissorsIcon
 									class="w-12 h-12 text-gray-300 dark:text-gray-700 mx-auto mb-4 opacity-20"
 								/>
 								<p class="text-sm text-gray-400 font-medium">Ready to process</p>
@@ -212,8 +206,8 @@ const reset = () => {
 						:disabled="isProcessing"
 						class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-500/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
 					>
-						<RefreshIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
-						<ScissorIcon v-else class="w-5 h-5" />
+						<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
+						<ScissorsIcon v-else class="w-5 h-5" />
 						{{
 							isProcessing
 								? `Removing Background (${progress}%)`

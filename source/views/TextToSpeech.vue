@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue"
-import { Volume2Icon, PlayIcon, DownloadIcon, RefreshIcon, StopIcon } from "../components/Icon.vue"
+import { Volume2Icon, PlayIcon, DownloadIcon, RefreshCwIcon, CircleStopIcon } from "lucide-vue-next"
 
 // Dynamic import for Kokoro
 let KokoroModule: any = null
@@ -33,7 +33,7 @@ const loadVoices = () => {
 
 	if (voices.length > 0 && !selectedVoiceURI.value) {
 		const defaultVoice = voices.find((v) => v.lang.startsWith("en")) || voices[0]
-		selectedVoiceURI.value = defaultVoice.voiceURI
+		selectedVoiceURI.value = defaultVoice!.voiceURI
 	}
 }
 
@@ -249,8 +249,8 @@ const toggleEngine = (type: "native" | "kokoro") => {
 									: 'bg-green-600 hover:bg-green-700 text-white shadow-green-500/20',
 							]"
 						>
-							<RefreshIcon v-if="isModelLoading" class="w-5 h-5 animate-spin" />
-							<StopIcon v-else-if="isSpeaking" class="w-5 h-5" />
+							<RefreshCwIcon v-if="isModelLoading" class="w-5 h-5 animate-spin" />
+							<CircleStopIcon v-else-if="isSpeaking" class="w-5 h-5" />
 							<PlayIcon v-else class="w-5 h-5" />
 
 							{{
@@ -293,7 +293,7 @@ const toggleEngine = (type: "native" | "kokoro") => {
 						<h3
 							class="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-2"
 						>
-							<RefreshIcon class="w-3 h-3" /> Parameters
+							<RefreshCwIcon class="w-3 h-3" /> Parameters
 						</h3>
 
 						<div class="space-y-5">
@@ -377,7 +377,7 @@ const toggleEngine = (type: "native" | "kokoro") => {
 							{{ engine === "native" ? "System Voices" : "AI Voice Profiles" }}
 						</label>
 
-						<div class="max-h-[300px] overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+						<div class="max-h-75 overflow-y-auto space-y-2 pr-2">
 							<template v-if="engine === 'native'">
 								<button
 									v-for="v in nativeVoices"
@@ -392,7 +392,7 @@ const toggleEngine = (type: "native" | "kokoro") => {
 								>
 									<div class="flex flex-col">
 										<span
-											class="font-bold text-gray-900 dark:text-white truncate max-w-[180px]"
+											class="font-bold text-gray-900 dark:text-white truncate max-w-45"
 											>{{ v.name }}</span
 										>
 										<span class="text-[10px] text-gray-500 uppercase">{{
@@ -443,32 +443,3 @@ const toggleEngine = (type: "native" | "kokoro") => {
 		</div>
 	</div>
 </template>
-
-<style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-	width: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-	background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #cbd5e1;
-	border-radius: 10px;
-}
-:deep(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #334155;
-}
-
-/* Re-implementing animate-in from React (if not using a library like Tailwind Animate) */
-@keyframes fadeIn {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-.animate-in {
-	animation: fadeIn 0.3s ease-in;
-}
-</style>

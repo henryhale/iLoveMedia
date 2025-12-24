@@ -1,261 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, watch, computed } from "vue"
-import { UserIcon, DownloadIcon, RefreshIcon, CheckIcon } from "../components/Icon.vue"
-
-// Constants
-const EMOJI_CATEGORIES = [
-	{
-		name: "Smileys",
-		emojis: [
-			"😀",
-			"😃",
-			"😄",
-			"😁",
-			"😆",
-			"😅",
-			"😂",
-			"🤣",
-			"😊",
-			"😇",
-			"🙂",
-			"🙃",
-			"😉",
-			"😌",
-			"😍",
-			"🥰",
-			"😘",
-			"😗",
-			"😙",
-			"😚",
-			"😋",
-			"😛",
-			"😝",
-			"😜",
-			"🤪",
-			"🤨",
-			"🧐",
-			"🤓",
-			"😎",
-			"🤩",
-			"🥳",
-			"😏",
-			"😒",
-			"😞",
-			"😔",
-			"😟",
-			"😕",
-			"🙁",
-			"☹️",
-			"😮",
-			"😯",
-			"😲",
-			"😳",
-			"🥺",
-			"😦",
-			"😧",
-			"😨",
-			"😰",
-			"😥",
-			"😢",
-			"😭",
-			"😱",
-			"😖",
-			"😣",
-			"😞",
-			"😓",
-			"😩",
-			"😫",
-			"🥱",
-			"😤",
-			"😡",
-			"😠",
-			"🤬",
-			"😈",
-			"👿",
-			"💀",
-			"☠️",
-			"💩",
-			"🤡",
-			"👹",
-			"👺",
-			"👻",
-			"👽",
-			"👾",
-			"🤖",
-		],
-	},
-	{
-		name: "Animals",
-		emojis: [
-			"🐶",
-			"🐱",
-			"🐭",
-			"🐹",
-			"🐰",
-			"🦊",
-			"🐻",
-			"🐼",
-			"🐻‍❄️",
-			"🐨",
-			"🐯",
-			"🦁",
-			"🐮",
-			"🐷",
-			"🐽",
-			"🐸",
-			"🐵",
-			"🙈",
-			"🙉",
-			"🙊",
-			"🐒",
-			"🐔",
-			"🐧",
-			"🐦",
-			"🐤",
-			"🐣",
-			"🐥",
-			"🦆",
-			"🦅",
-			"🦉",
-			"🦇",
-			"🐺",
-			"🐗",
-			"🐴",
-			"🦄",
-			"🐝",
-			"🪱",
-			"🐛",
-			"🦋",
-			"🐌",
-			"🐞",
-			"🐜",
-			"🦟",
-			"🦗",
-			"🕷️",
-			"🕸️",
-			"🦂",
-			"🐢",
-			"🐍",
-			"🦎",
-			"🦖",
-			"🦕",
-			"🐙",
-			"🦑",
-			"🦐",
-			"🦞",
-			"🦀",
-			"🐡",
-			"🐠",
-			"🐟",
-			"🐬",
-			"🐳",
-			"🐋",
-			"🦈",
-			"🐊",
-			"🐅",
-			"🐆",
-			"🦓",
-			"🦍",
-			"🦧",
-			"🦣",
-			"🐘",
-			"🦛",
-			"🦏",
-			"🐪",
-			"🐫",
-			"🦒",
-			"🦘",
-			"🦬",
-			"🐃",
-			"🐂",
-			"🐄",
-			"🐎",
-			"🐖",
-			"🐏",
-			"🐑",
-			"🦙",
-			"🐐",
-			"🦌",
-			"🐕",
-			"🐩",
-			"🦮",
-			"🐕‍🦺",
-			"🐈",
-			"🐈‍⬛",
-			"🐓",
-			"🦃",
-			"🦚",
-			"🦜",
-			"🦢",
-			"🦩",
-			"🕊️",
-			"🐇",
-			"🦝",
-			"🦨",
-			"🦡",
-			"🦦",
-			"🦥",
-			"🐁",
-			"🐀",
-			"🐿️",
-			"🦔",
-		],
-	},
-	{
-		name: "Food",
-		emojis: [
-			"🍏",
-			"🍎",
-			"🍐",
-			"🍊",
-			"🍋",
-			"🍌",
-			"🍉",
-			"🍇",
-			"🍓",
-			"🫐",
-			"🍈",
-			"🍒",
-			"🍑",
-			"🥭",
-			"🍍",
-			"🥥",
-			"🍕",
-			"🌮",
-			"🍔",
-			"🍟",
-			"🍦",
-			"🍩",
-			"🍪",
-			"🍫",
-			"☕",
-			"🍺",
-			"🍷",
-		], // Shortened for brevity
-	},
-	{
-		name: "Objects",
-		emojis: ["⌚", "📱", "💻", "📷", "💡", "💰", "💎", "🎁", "🎈", "✉️", "📚", "🔍", "🔒"], // Shortened for brevity
-	},
-]
-
-const PRESET_COLORS = [
-	"#4F46E5",
-	"#EF4444",
-	"#10B981",
-	"#F59E0B",
-	"#6366F1",
-	"#EC4899",
-	"#8B5CF6",
-	"#06B6D4",
-	"#D946EF",
-	"#F97316",
-	"#14B8A6",
-	"#3B82F6",
-	"#6B7280",
-	"#000000",
-	"#ffffff",
-]
+import { UserIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
+import { EMOJI_CATEGORIES, PRESET_COLORS } from "@/constants/emoji"
 
 // Reactive State
 const emoji = ref("🦊")
@@ -268,7 +14,7 @@ const isDownloading = ref(false)
 const showSuccess = ref(false)
 
 // Ref for Canvas (useRef equivalent)
-const canvasRef = ref(null)
+const canvasRef = ref<HTMLCanvasElement|null>(null)
 
 // Logic: Computed property for filtering emojis
 const currentCategory = computed(() =>
@@ -457,7 +203,7 @@ const handleDownload = () => {
 									{{ cat.name }}
 								</button>
 							</div>
-							<div class="p-3 grid grid-cols-6 gap-2 max-h-[220px] overflow-y-auto">
+							<div class="p-3 grid grid-cols-6 gap-2 max-h-55 overflow-y-auto">
 								<button
 									v-for="e in currentCategory?.emojis"
 									:key="e"
@@ -498,7 +244,7 @@ const handleDownload = () => {
 								: 'bg-green-600 hover:bg-green-700 text-white shadow-green-500/20',
 						]"
 					>
-						<RefreshIcon v-if="isDownloading" class="w-5 h-5 animate-spin" />
+						<RefreshCwIcon v-if="isDownloading" class="w-5 h-5 animate-spin" />
 						<CheckIcon v-else-if="showSuccess" class="w-5 h-5" />
 						<DownloadIcon v-else class="w-5 h-5" />
 						{{ showSuccess ? "Saved to Downloads" : "Download Profile Picture" }}
@@ -545,10 +291,12 @@ const handleDownload = () => {
 .no-scrollbar::-webkit-scrollbar {
 	display: none;
 }
+
 .no-scrollbar {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 }
+
 .pattern-checkered {
 	background-image:
 		radial-gradient(#cbd5e1 1px, transparent 1px), radial-gradient(#cbd5e1 1px, transparent 1px);
@@ -557,6 +305,7 @@ const handleDownload = () => {
 		10px 10px;
 	background-size: 20px 20px;
 }
+
 :global(.dark) .pattern-checkered {
 	background-image:
 		radial-gradient(#1e293b 1px, transparent 1px), radial-gradient(#1e293b 1px, transparent 1px);
