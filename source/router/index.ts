@@ -30,7 +30,7 @@ const router = createRouter({
 			component: () => import("../views/ImageConverter.vue"),
 		},
 		{
-			path: "/ocr-tool",
+			path: "/image-to-text-ocr",
 			meta: { title: "Image to Text (OCR)" },
 			component: () => import("../views/OcrTool.vue"),
 		},
@@ -54,12 +54,17 @@ const router = createRouter({
 			meta: { title: "Text to Speech" },
 			component: () => import("../views/TextToSpeech.vue"),
 		},
+		{
+			path: '/:pathMatch(.*)*',
+			meta: { title: "Not Found" },
+			component: () => import('../views/AppNotFound.vue'),
+		},
 	],
 })
 
 router.afterEach((to, from, failure) => {
 	if (!isNavigationFailure(failure)) {
-		document.title = to.meta.title ? `${to.meta.title} | BrowserBox` : "BrowserBox"
+		document.title = to.meta.title ? `${to.meta.title} | iLoveMedia` : "iLoveMedia"
 	}
 	document.querySelector("#app")?.scrollTo(0, 0)
 })

@@ -14,8 +14,8 @@ import {
 
 export const TOOLS: ToolDef[] = [
 	{
-		link: "/ocr-tool",
-		id: "ocr-tool",
+		link: "/image-to-text-ocr",
+		id: "image-to-text-ocr",
 		name: "Image to Text (OCR)",
 		description: "Convert scanned documents and images into editable text using AI.",
 		icon: markRaw(ScanIcon),
