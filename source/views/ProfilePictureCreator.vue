@@ -85,151 +85,142 @@ const handleDownload = () => {
 </script>
 
 <template>
-	<div class="max-w-5xl mx-auto space-y-6">
-		<div
-			class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
-			<h2 class="text-xl font-semibold mb-6 flex items-center gap-2 text-slate-900 dark:text-white">
-				<UserIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-				Profile Picture Creator
-			</h2>
+	<h2 class="text-xl font-semibold mb-6 flex items-center gap-2 text-foreground">
+		<UserIcon class="w-5 h-5 text-primary" />
+		Profile Picture Creator
+	</h2>
 
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-				<!-- Controls -->
-				<div class="lg:col-span-5 space-y-8">
-					<!-- Shape & Rotation -->
-					<div class="grid grid-cols-2 gap-4">
-						<div>
-							<label
-								class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-								Background Shape
-							</label>
-							<div class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-lg">
-								<button @click="shape = 'circle'" :class="[
-									'flex-1 py-2 text-sm font-medium rounded-md transition-all',
-									shape === 'circle'
-										? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-										: 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200',
-								]">
-									Circle
-								</button>
-								<button @click="shape = 'square'" :class="[
-									'flex-1 py-2 text-sm font-medium rounded-md transition-all',
-									shape === 'square'
-										? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-										: 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200',
-								]">
-									Square
-								</button>
-							</div>
-						</div>
-						<div>
-							<label
-								class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-								Rotation ({{ rotation }}°)
-							</label>
-							<input type="range" min="-180" max="180" v-model.number="rotation"
-								class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-3" />
-						</div>
-					</div>
+	<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+		<!-- Controls -->
+		<div class="lg:col-span-5 space-y-8">
 
-					<!-- Background Color -->
-					<div>
-						<label
-							class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">Background
-							Color</label>
-						<div class="flex flex-wrap gap-3 mb-3">
-							<button v-for="color in PRESET_COLORS" :key="color" @click="bgColor = color"
-								:style="{ backgroundColor: color }" :class="[
-									'w-8 h-8 rounded-full border-2 transition-transform hover:scale-110 active:scale-95',
-									bgColor === color
-										? 'border-blue-500 ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-800'
-										: 'border-white dark:border-slate-600',
-								]" />
-							<div class="relative">
-								<input type="color" v-model="bgColor"
-									class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-600 cursor-pointer overflow-hidden p-0" />
-							</div>
-						</div>
-					</div>
-
-					<!-- Emoji Picker -->
-					<div>
-						<label
-							class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">Choose
-							Avatar Emoji</label>
-						<div
-							class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
-							<div
-								class="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto no-scrollbar">
-								<button v-for="cat in EMOJI_CATEGORIES" :key="cat.name"
-									@click="activeCategory = cat.name" :class="[
-										'px-4 py-2.5 text-xs font-bold whitespace-nowrap transition-colors',
-										activeCategory === cat.name
-											? 'text-blue-600 border-b-2 border-blue-600'
-											: 'text-slate-500 hover:text-slate-700',
-									]">
-									{{ cat.name }}
-								</button>
-							</div>
-							<div class="p-3 grid grid-cols-6 gap-2 max-h-55 overflow-y-auto">
-								<button v-for="e in currentCategory?.emojis" :key="e" @click="emoji = e" :class="[
-									'w-10 h-10 text-xl flex items-center justify-center rounded-lg hover:bg-white dark:hover:bg-slate-800 transition-all',
-									emoji === e
-										? 'bg-white dark:bg-slate-800 ring-2 ring-blue-500 shadow-sm'
-										: 'bg-transparent',
-								]">
-									{{ e }}
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<div>
-						<label
-							class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Emoji
-							Size ({{ emojiSize }}px)</label>
-						<input type="range" min="40" max="240" v-model.number="emojiSize"
-							class="w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600" />
-					</div>
-
-					<button @click="handleDownload" :class="[
-						'w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold transition-all shadow-lg active:scale-[0.98]',
-						showSuccess
-							? 'bg-emerald-600 text-white'
-							: 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/20',
-					]">
-						<RefreshCwIcon v-if="isDownloading" class="w-5 h-5 animate-spin" />
-						<CheckIcon v-else-if="showSuccess" class="w-5 h-5" />
-						<DownloadIcon v-else class="w-5 h-5" />
-						{{ showSuccess ? "Saved to Downloads" : "Download Profile Picture" }}
-					</button>
-				</div>
-
-				<!-- Preview Area -->
-				<div class="lg:col-span-7 flex flex-col items-center">
-					<div
-						class="w-full aspect-square bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-200 dark:border-slate-700 flex items-center justify-center p-8 pattern-checkered relative">
-						<canvas ref="canvasRef"
-							class="max-w-full h-auto rounded-lg shadow-2xl bg-white dark:bg-slate-800 transition-all duration-300"
-							style="width: 380px; height: 380px" />
-
-						<div
-							class="absolute top-4 right-4 flex items-center gap-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm">
-							<span class="w-2 h-2 rounded-full bg-blue-500"></span>
-							<span
-								class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">512
-								x 512 Canvas</span>
-						</div>
-					</div>
-
-					<div
-						class="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-900/30 max-w-md text-center">
-						<p class="text-sm text-blue-700 dark:text-blue-300 font-medium">
-							Perfect for Slack, Discord, or GitHub! Customize your background and
-							character without any complex software.
-						</p>
+			<!-- Shape & Rotation -->
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+						Background Shape
+					</label>
+					<div class="flex bg-muted p-1 rounded-lg">
+						<button @click="shape = 'circle'" :class="[
+							'flex-1 py-2 text-sm font-medium rounded-md transition-all',
+							shape === 'circle'
+								? 'bg-background text-foreground shadow-sm'
+								: 'text-muted-foreground hover:text-foreground',
+						]">
+							Circle
+						</button>
+						<button @click="shape = 'square'" :class="[
+							'flex-1 py-2 text-sm font-medium rounded-md transition-all',
+							shape === 'square'
+								? 'bg-background text-foreground shadow-sm'
+								: 'text-muted-foreground hover:text-foreground',
+						]">
+							Square
+						</button>
 					</div>
 				</div>
+				<div>
+					<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+						Rotation ({{ rotation }}°)
+					</label>
+					<input type="range" min="-180" max="180" v-model.number="rotation"
+						class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary mt-3" />
+				</div>
+			</div>
+
+			<!-- Background Color -->
+			<div>
+				<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+					Background Color
+				</label>
+				<div class="flex flex-wrap gap-3 mb-3">
+					<button v-for="color in PRESET_COLORS" :key="color" @click="bgColor = color"
+						:style="{ backgroundColor: color }" :class="[
+							'w-8 h-8 rounded-full border-2 transition-transform hover:scale-110 active:scale-95',
+							bgColor === color
+								? 'border-primary ring-2 ring-ring ring-offset-2 ring-offset-background'
+								: 'border-border',
+						]" />
+					<div class="relative">
+						<input type="color" v-model="bgColor"
+							class="w-8 h-8 rounded-full border-2 border-border cursor-pointer overflow-hidden p-0 bg-transparent" />
+					</div>
+				</div>
+			</div>
+
+			<!-- Emoji Picker -->
+			<div>
+				<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+					Choose Avatar Emoji
+				</label>
+				<div class="bg-card border border-border rounded-xl overflow-hidden">
+					<div class="flex border-b border-border overflow-x-auto no-scrollbar">
+						<button v-for="cat in EMOJI_CATEGORIES" :key="cat.name" @click="activeCategory = cat.name"
+							:class="[
+								'px-4 py-2.5 text-xs font-bold whitespace-nowrap transition-colors',
+								activeCategory === cat.name
+									? 'text-primary border-b-2 border-primary'
+									: 'text-muted-foreground hover:text-foreground',
+							]">
+							{{ cat.name }}
+						</button>
+					</div>
+					<div class="p-3 grid grid-cols-6 gap-2 max-h-55 overflow-y-auto">
+						<button v-for="e in currentCategory?.emojis" :key="e" @click="emoji = e" :class="[
+							'w-10 h-10 text-xl flex items-center justify-center rounded-lg transition-all',
+							emoji === e
+								? 'bg-accent text-accent-foreground ring-2 ring-primary shadow-sm'
+								: 'bg-transparent hover:bg-muted text-foreground',
+						]">
+							{{ e }}
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div>
+				<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+					Emoji Size ({{ emojiSize }}px)
+				</label>
+				<input type="range" min="40" max="240" v-model.number="emojiSize"
+					class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary" />
+			</div>
+
+			<button @click="handleDownload" :class="[
+				'w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold transition-all shadow-lg active:scale-[0.98]',
+				showSuccess
+					? 'bg-emerald-600 text-white'
+					: 'bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20',
+			]">
+				<RefreshCwIcon v-if="isDownloading" class="w-5 h-5 animate-spin" />
+				<CheckIcon v-else-if="showSuccess" class="w-5 h-5" />
+				<DownloadIcon v-else class="w-5 h-5" />
+				{{ showSuccess ? "Saved to Downloads" : "Download Profile Picture" }}
+			</button>
+		</div>
+
+		<!-- Preview Area -->
+		<div class="lg:col-span-7 flex flex-col items-center">
+			<div
+				class="w-full aspect-square bg-muted/50 rounded-3xl border border-border flex items-center justify-center p-8 pattern-checkered relative">
+				<canvas ref="canvasRef"
+					class="max-w-full h-auto rounded-lg shadow-2xl bg-card border border-border transition-all duration-300"
+					style="width: 380px; height: 380px" />
+
+				<div
+					class="absolute top-4 right-4 flex items-center gap-2 bg-background/90 backdrop-blur px-3 py-1.5 rounded-full border border-border shadow-sm">
+					<span class="w-2 h-2 rounded-full bg-primary"></span>
+					<span class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+						512 x 512 Canvas
+					</span>
+				</div>
+			</div>
+
+			<div class="mt-8 p-4 bg-secondary rounded-xl border border-border max-w-md text-center">
+				<p class="text-sm text-secondary-foreground font-medium">
+					Perfect for Slack, Discord, or GitHub! Customize your background and
+					character without any complex software.
+				</p>
 			</div>
 		</div>
 	</div>
