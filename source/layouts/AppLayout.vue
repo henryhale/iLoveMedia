@@ -88,7 +88,7 @@ const groupedTools = computed(() => {
 							<SidebarMenuItem>
 								<SidebarMenuButton as-child>
 									<RouterLink to="/"
-										:class="{ 'text-primary dark:text-current': route.fullPath == '/' }">
+										:class="{ 'text-primary dark:text-current dark:bg-background': route.fullPath == '/' }">
 										<HouseIcon />
 										<span>Dashboard</span>
 									</RouterLink>
@@ -138,7 +138,7 @@ const groupedTools = computed(() => {
 								<DropdownMenuSeparator />
 								<DropdownMenuItem>
 									<a class="flex-1" target="_blank"
-										href="https://github.com/henryhale/browserbox">License</a>
+										href="https://github.com/henryhale/">License</a>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
 									</DropdownMenuShortcut>
@@ -158,7 +158,7 @@ const groupedTools = computed(() => {
 		</Sidebar>
 		<SidebarInset>
 			<header
-				class="sticky z-10 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12">
+				class="sticky z-20 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12">
 				<div class="flex items-center gap-2 px-4 w-full">
 					<SidebarTrigger class="-ml-1" />
 					<Separator orientation="vertical" class="w-10 bg-red-500" />

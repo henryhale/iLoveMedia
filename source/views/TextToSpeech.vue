@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue"
 import { Volume2Icon, PlayIcon, RefreshCwIcon, CircleStopIcon } from "lucide-vue-next"
 import { Textarea } from "@/components/ui/textarea"
+import {toast} from "vue-sonner"
 
 // Dynamic import for Kokoro
 let KokoroModule: any = null
@@ -79,6 +80,7 @@ const loadKokoro = async () => {
 
 		if (!KokoroClass || typeof KokoroClass.fromPretrained !== "function") {
 			console.error("Module structure:", KokoroModule)
+			toast.error("Kokoro engine initialization failed. Falling back to system voices.")
 			throw new Error("Kokoro engine initialization failed: class not found.")
 		}
 
@@ -92,8 +94,7 @@ const loadKokoro = async () => {
 		return k
 	} catch (err) {
 		console.error("Failed to load Kokoro:", err)
-		const msg = err instanceof Error ? err.message : String(err)
-		alert(`AI Engine Load Error: ${msg}. Switching back to system voices.`)
+		toast.error(`AI Engine Load Error. Switching back to system voices.`)
 		engine.value = "native"
 		return null
 	} finally {
@@ -143,10 +144,11 @@ const handleSpeak = async () => {
 			} else {
 				isSpeaking.value = false
 				console.error("Generated audio invalid:", audio)
-				alert("Audio generation error. Check the console for details.")
+				toast.error("Audio generation error. Check the console for details.")
 			}
 		} catch (err) {
 			console.error("Kokoro generation error:", err)
+			toast.error("Failed to generate speech with Kokoro AI.")
 			isSpeaking.value = false
 		}
 	}

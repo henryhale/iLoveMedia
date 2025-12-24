@@ -32,7 +32,7 @@ const router = createRouter({
 		{
 			path: "/image-to-text-ocr",
 			meta: { title: "Image to Text (OCR)" },
-			component: () => import("../views/OcrTool.vue"),
+			component: () => import("../views/ImageToText.vue"),
 		},
 		{
 			path: "/profile-picture-creator",
@@ -40,9 +40,9 @@ const router = createRouter({
 			component: () => import("../views/ProfilePictureCreator.vue"),
 		},
 		{
-			path: "/qr-code-generator",
+			path: "/qr-code-studio",
 			meta: { title: "QR Code Studio" },
-			component: () => import("../views/QrCodeGenerator.vue"),
+			component: () => import("../views/QrCodeStudio.vue"),
 		},
 		{
 			path: "/speech-to-text",

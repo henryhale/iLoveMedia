@@ -38,8 +38,8 @@ export const TOOLS: ToolDef[] = [
 		category: ToolCategory.IMAGE,
 	},
 	{
-		link: "/qr-code-generator",
-		id: "qr-code-generator",
+		link: "/qr-code-studio",
+		id: "qr-code-studio",
 		name: "QR Code Studio",
 		description: "Create high-resolution QR codes with custom colors and formats.",
 		icon: markRaw(QrCodeIcon),

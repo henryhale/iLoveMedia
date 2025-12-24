@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from "vue"
 import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
+import {toast} from 'vue-sonner'
 
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
@@ -48,7 +49,7 @@ const startRecording = async () => {
 		}, 1000)
 	} catch (err) {
 		console.error("Error accessing microphone:", err)
-		alert("Could not access microphone. Please check permissions.")
+		toast.error("Could not access microphone. Please check permissions.")
 	}
 }
 

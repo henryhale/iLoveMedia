@@ -190,7 +190,7 @@ const handleDownload = () => {
 				'w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold transition-all shadow-lg active:scale-[0.98]',
 				showSuccess
 					? 'bg-emerald-600 text-white'
-					: 'bg-primary text-primary-foreground hover:opacity-90 shadow-primary/20',
+					: 'bg-primary text-primary-foreground hover:opacity-90',
 			]">
 				<RefreshCwIcon v-if="isDownloading" class="w-5 h-5 animate-spin" />
 				<CheckIcon v-else-if="showSuccess" class="w-5 h-5" />

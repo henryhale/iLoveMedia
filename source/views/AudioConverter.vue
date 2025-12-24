@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue"
 import { FFmpeg } from "@ffmpeg/ffmpeg"
 import { fetchFile, toBlobURL } from "@ffmpeg/util"
 import { MusicIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
+import {toast} from 'vue-sonner'
 
 // State (Replacing useState)
 const file = ref<File | null>(null)
@@ -40,7 +41,7 @@ const loadFFmpeg = async () => {
 		isLoaded.value = true
 	} catch (err) {
 		console.error("Failed to load FFmpeg:", err)
-		alert("Failed to load FFmpeg components. This may be due to browser security settings.")
+		toast.error("Failed to load FFmpeg components. This may be due to browser security settings.")
 	}
 }
 
@@ -78,7 +79,7 @@ const convert = async () => {
 		convertedURL.value = url
 	} catch (err) {
 		console.error("Conversion failed:", err)
-		alert("Conversion failed. Format incompatibility or browser resource limits.")
+		toast.error("Conversion failed. Format incompatibility or browser resource limits.")
 	} finally {
 		isConverting.value = false
 	}

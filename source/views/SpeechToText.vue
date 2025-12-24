@@ -8,6 +8,8 @@ import {
 	CheckIcon,
 	RefreshCwIcon,
 } from "lucide-vue-next"
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import {toast} from 'vue-sonner'
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -130,7 +132,7 @@ const loadWhisper = async () => {
 		return transcriber
 	} catch (err) {
 		console.error("Whisper Load Error:", err)
-		alert("Failed to load Whisper AI.")
+		toast.error("Failed to load Whisper AI.")
 		engine.value = "native"
 		return null
 	} finally {
@@ -171,7 +173,7 @@ const startWhisperRecording = async () => {
 		audioBlob.value = null
 	} catch (err) {
 		console.error("Mic Access Error:", err)
-		alert("Microphone access denied.")
+		toast.error("Microphone access denied.")
 	}
 }
 
@@ -286,12 +288,12 @@ const clear = () => {
 			</div>
 
 			<!-- Select using input and background tokens -->
-			<select v-model="selectedLang"
+			<NativeSelect v-model="selectedLang"
 				class="bg-background border border-input px-3 py-1.5 rounded-lg text-sm focus:ring-2 focus:ring-ring outline-none text-foreground">
-				<option v-for="l in LANGUAGES" :key="l.code" :value="l.code">
+				<NativeSelectOption v-for="l in LANGUAGES" :key="l.code" :value="l.code">
 					{{ l.name }}
-				</option>
-			</select>
+				</NativeSelectOption>
+			</NativeSelect>
 		</div>
 	</div>
 
