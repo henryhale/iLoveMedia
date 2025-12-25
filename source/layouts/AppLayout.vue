@@ -44,7 +44,7 @@ import { ToolCategory, type ToolDef } from "@/constants/types"
 import ToolLayout from "./ToolLayout.vue"
 import SearchBar from "@/components/SearchBar.vue"
 import NavLink from "@/components/NavLink.vue"
-import NavLink from "@/components/AppLoader.vue"
+import AppLoader from "@/components/AppLoader.vue"
 
 const mode = useColorMode()
 const route = useRoute()
