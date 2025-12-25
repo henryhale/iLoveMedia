@@ -155,7 +155,7 @@ const groupedTools = computed(() => {
 									<a
 										class="flex-1"
 										target="_blank"
-										href="https://github.com/henryhale/"
+										href="https://github.com/henryhale/iLoveMedia"
 										>License</a
 									>
 									<DropdownMenuShortcut>
@@ -166,7 +166,7 @@ const groupedTools = computed(() => {
 									<a
 										class="flex-1"
 										target="_blank"
-										href="https://github.com/henryhale/"
+										href="https://henryhale.github.io/"
 										>Author</a
 									>
 									<DropdownMenuShortcut>

@@ -1,48 +1,84 @@
-# app
+<div align=center>
 
-This template should help get you started developing with Vue 3 in Vite.
+# i💙Media
 
-## Recommended IDE Setup
+![](./public/screenshot.png)
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+</div>
 
-## Recommended Browser Setup
+## Overview
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+iLoveMedia is a high-performance, privacy-first web application providing a suite of serverless tools. All processing occurs exclusively within the user's browser using advanced technologies like WebAssembly (WASM), ensuring that sensitive data never leaves the local device.
 
-## Type Support for `.vue` Imports in TS
+It is designed for professionals and casual users who need powerful utilities like image conversion, audio processing, or OCR without the privacy risks associated with uploading files to remote servers.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Features
 
-## Customize configuration
+- **Image Tools**:
+    - [ ] OCR: Extract text from images.
+    - [ ] Background Remover: Remove backgrounds using AI.
+    - [ ] QR Studio: Generate custom QR codes.
+    - [ ] Emoji Art: Convert text into patterns of emojis.
+- **Audio Tools**:
+    - [ ] Audio Converter: Change formats (e.g., WAV to MP3) using FFmpeg.
+    - [ ] Text-to-Speech: High-quality synthesis using system voices or the Kokoro AI model.
+    - [ ] Speech-to-Text: Live transcription via browser API or Whisper AI.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Architecture
+
+The application follows a modular Vue-based architecture. It is strictly "Serverless" in the sense that it requires no backend logic to function; all heavy lifting is delegated to browser-side libraries and WASM modules.
+
+Below is a list of amazing opensource projects on top of which iLoveMedia is built;
+
+- **Frontend**: [Vue.js 3](https://vuejs.org), [Vite.js](https://vite.dev), [Shadcn-Vue](https://github.com/unovue/shadcn-vue)
+- **Styling**: [TailwindCSS](https://tailwindcss.com)
+- **AI/ML Engines**:
+    - `@imgly/background-removal`: For local image segmentation.
+    - `tesseract.js`: For Optical Character Recognition.
+    - `@xenova/transformers`: For running Whisper (Speech-to-Text) and Kokoro (TTS) models.
+- **Binary Utilities**:
+    - `@ffmpeg/ffmpeg`: Multi-format audio processing via WASM.
+
+### Performance Considerations
+
+- **Lazy Loading**: Heavy AI models (like Whisper or Kokoro) are only initialized when the user selects the corresponding tool.
+- **Memory Management**: `URL.createObjectURL` is used for handling file previews. These are revoked as needed to prevent memory leaks during long sessions.
+- **Worker Threads**: FFmpeg and Transformers.js utilize Web Workers to ensure the main UI thread remains responsive during intensive calculations.
 
 ## Project Setup
+
+To setup iLoveMedia locally, follow the steps below;
+
+- Clone this repository
+
+```sh
+git clone https://github.com/henryhale/iLoveMedia.git
+```
+
+- Install all dependencies
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+- Run dev server
 
 ```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+- Build for production
 
 ```sh
 pnpm build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Contributions
 
-```sh
-pnpm lint
-```
+I'm glad you checked out iLoveMedia. Thank you very much.
+All contributions are welcome.
+For any bug or issue, kindly open one [here](https://github.com/henryhale/iLoveMedia/issues).
+
+## License
+
+Released under [MIT License](./LICENSE.txt)
