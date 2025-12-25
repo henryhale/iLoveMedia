@@ -8,7 +8,6 @@ import {
 	CheckIcon,
 	RefreshCwIcon,
 } from "lucide-vue-next"
-import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { toast } from "vue-sonner"
 
 // Dynamically imported for high-accuracy local transcription
@@ -248,7 +247,6 @@ const clear = () => {
 </script>
 
 <template>
-	<!-- Header Section -->
 	<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
 		<div class="flex items-center gap-3">
 			<div class="p-2 bg-primary/10 rounded-lg text-primary">
@@ -263,7 +261,6 @@ const clear = () => {
 		</div>
 
 		<div class="flex items-center gap-4">
-			<!-- Toggle container uses muted background -->
 			<div class="flex bg-muted p-1 rounded-xl border border-border">
 				<button
 					@click="
@@ -304,15 +301,14 @@ const clear = () => {
 				</button>
 			</div>
 
-			<!-- Select using input and background tokens -->
-			<NativeSelect
+			<select
 				v-model="selectedLang"
 				class="bg-background border border-input px-3 py-1.5 rounded-lg text-sm focus:ring-2 focus:ring-ring outline-none text-foreground"
 			>
-				<NativeSelectOption v-for="l in LANGUAGES" :key="l.code" :value="l.code">
+				<option v-for="l in LANGUAGES" :key="l.code" :value="l.code">
 					{{ l.name }}
-				</NativeSelectOption>
-			</NativeSelect>
+				</option>
+			</select>
 		</div>
 	</div>
 
@@ -322,7 +318,6 @@ const clear = () => {
 			class="lg:col-span-4 flex flex-col items-center gap-8 border-r border-border pr-0 lg:pr-8"
 		>
 			<div class="relative flex flex-col items-center">
-				<!-- Destructive for recording/stop, Primary for idle -->
 				<button
 					@click="handleToggleListening"
 					:disabled="isTranscribing || isModelLoading"
@@ -340,7 +335,6 @@ const clear = () => {
 					<MicIcon v-else class="w-12 h-12 text-primary-foreground" />
 				</button>
 
-				<!-- Animated Bars -->
 				<div
 					v-if="isListening"
 					class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 flex items-center justify-center gap-1 pointer-events-none"
@@ -439,7 +433,6 @@ const clear = () => {
 				</div>
 			</div>
 
-			<!-- Main display uses muted/50 and border tokens -->
 			<div
 				:class="[
 					'w-full min-h-87.5 p-8 bg-muted/30 border border-border rounded-3xl transition-all shadow-inner relative overflow-hidden',
@@ -474,7 +467,6 @@ const clear = () => {
 				</div>
 			</div>
 
-			<!-- Footer Engine Info -->
 			<div class="flex items-start gap-4 p-4 bg-muted/50 rounded-2xl border border-border">
 				<div class="p-2 bg-background rounded-lg shadow-sm border border-border">
 					<CheckIcon class="w-4 h-4 text-primary" />

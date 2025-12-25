@@ -171,7 +171,6 @@ const toggleEngine = (type: "native" | "kokoro") => {
 </script>
 
 <template>
-	<!-- Header Section -->
 	<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
 		<div class="flex items-center gap-3">
 			<div class="p-2 bg-primary/10 rounded-lg text-primary">
@@ -279,7 +278,6 @@ const toggleEngine = (type: "native" | "kokoro") => {
 
 		<!-- Right Column: Settings -->
 		<div class="lg:col-span-5 space-y-8">
-			<!-- Settings Card: Using Card semantic classes -->
 			<div class="p-2 space-y-6">
 				<h3
 					class="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2"
@@ -288,7 +286,6 @@ const toggleEngine = (type: "native" | "kokoro") => {
 				</h3>
 
 				<div class="space-y-5">
-					<!-- Range Sliders: Using accent-primary and bg-secondary -->
 					<div>
 						<div class="flex justify-between mb-2">
 							<label class="text-sm font-semibold text-foreground"

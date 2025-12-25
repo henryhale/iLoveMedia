@@ -175,7 +175,6 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 						Background Color
 					</label>
 					<div class="flex flex-wrap gap-2">
-						<!-- White button: Logic remains hex for QR compatibility, but border follows theme -->
 						<button
 							@click="bgColor = '#ffffff'"
 							:class="[
