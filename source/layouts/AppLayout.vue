@@ -43,6 +43,7 @@ import { computed } from "vue"
 import { ToolCategory, type ToolDef } from "@/constants/types"
 import ToolLayout from "./ToolLayout.vue"
 import SearchBar from "@/components/SearchBar.vue"
+import NavLink from "@/components/NavLink.vue"
 
 const mode = useColorMode()
 const route = useRoute()
@@ -105,20 +106,7 @@ const groupedTools = computed(() => {
 					<SidebarGroupLabel>{{ group }}</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							<SidebarMenuItem v-for="tool in tools" :key="tool.id">
-								<SidebarMenuButton as-child>
-									<RouterLink
-										:to="tool.link"
-										:class="{
-											'text-primary dark:text-current dark:bg-background':
-												tool.link == route.fullPath,
-										}"
-									>
-										<component :is="tool.icon"></component>
-										<span>{{ tool.name }}</span>
-									</RouterLink>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
+							<NavLink v-for="tool in tools" :key="tool.id" :tool="tool"> </NavLink>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
@@ -189,21 +177,23 @@ const groupedTools = computed(() => {
 					<div v-if="currentTool" class="hidden sm:flex h-5">
 						<Separator orientation="vertical" />
 					</div>
-					<Breadcrumb v-if="currentTool" class="hidden sm:block">
-						<BreadcrumbList>
-							<BreadcrumbItem>
-								<RouterLink to="/"> Home </RouterLink>
-							</BreadcrumbItem>
-							<BreadcrumbSeparator />
-							<BreadcrumbItem>
-								<BreadcrumbLink as="span">
-									{{ currentTool.name }}
-								</BreadcrumbLink>
-							</BreadcrumbItem>
-						</BreadcrumbList>
-					</Breadcrumb>
-					<div class="grow"></div>
-					<div class="flex-1 flex justify-end">
+					<div class="md:grow flex items-center">
+						<Breadcrumb v-if="currentTool" class="hidden sm:block">
+							<BreadcrumbList>
+								<BreadcrumbItem>
+									<RouterLink to="/"> Home </RouterLink>
+								</BreadcrumbItem>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbLink as="span">
+										{{ currentTool.name }}
+									</BreadcrumbLink>
+								</BreadcrumbItem>
+							</BreadcrumbList>
+						</Breadcrumb>
+						<span v-else class="font-bold text-xl md:hidden">i💙Media</span>
+					</div>
+					<div class="flex-1 grow flex justify-end">
 						<SearchBar />
 					</div>
 				</div>
@@ -246,9 +236,13 @@ const groupedTools = computed(() => {
 				>
 					<span>Developed by i💙Media Authors</span>
 					<div class="flex gap-2 items-center justify-center">
-						<span>FREE FOREVER</span>
+						<span>Free Forever</span>
 						<span>|</span>
-						<span>MIT Licence</span>
+						<a
+							href="https://github.com/henryhale/iLoveMedia/"
+							class="underline underline-offset-2"
+							>MIT Licence</a
+						>
 					</div>
 				</div>
 			</div>

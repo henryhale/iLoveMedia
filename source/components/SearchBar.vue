@@ -6,11 +6,9 @@ import { computed, ref } from "vue"
 import { TOOLS } from "@/constants/tools"
 import {
 	Item,
-	ItemActions,
 	ItemContent,
 	ItemDescription,
 	ItemGroup,
-	ItemMedia,
 	ItemSeparator,
 	ItemTitle,
 } from "@/components/ui/item"
