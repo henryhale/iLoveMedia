@@ -1,0 +1,88 @@
+import { ToolCategory, type ToolDef } from "./types"
+import { markRaw } from "vue"
+import {
+	ImageIcon,
+	MicIcon,
+	MusicIcon,
+	UserIcon,
+	Volume2Icon,
+	WavesIcon,
+	QrCodeIcon,
+	ScissorsIcon,
+	ScanIcon,
+} from "lucide-vue-next"
+
+export const TOOLS: ToolDef[] = [
+	{
+		link: "/image-to-text-ocr",
+		id: "image-to-text-ocr",
+		name: "Image to Text (OCR)",
+		description: "Convert scanned documents and images into editable text using AI.",
+		icon: markRaw(ScanIcon),
+		category: ToolCategory.IMAGE,
+	},
+	{
+		link: "/background-remover",
+		id: "background-remover",
+		name: "Background Remover",
+		description: "AI-powered background removal directly in your browser.",
+		icon: markRaw(ScissorsIcon),
+		category: ToolCategory.IMAGE,
+	},
+	{
+		link: "/image-converter",
+		id: "image-converter",
+		name: "Image Converter",
+		description: "Convert images to PNG, JPEG, or WEBP instantly in your browser.",
+		icon: markRaw(ImageIcon),
+		category: ToolCategory.IMAGE,
+	},
+	{
+		link: "/qr-code-studio",
+		id: "qr-code-studio",
+		name: "QR Code Studio",
+		description: "Create high-resolution QR codes with custom colors and formats.",
+		icon: markRaw(QrCodeIcon),
+		category: ToolCategory.IMAGE,
+	},
+	{
+		link: "/profile-picture-creator",
+		id: "/profile-picture-creator",
+		name: "Profile Pic Creator",
+		description: "Create unique emoji avatars with custom backgrounds and shapes.",
+		icon: markRaw(UserIcon),
+		category: ToolCategory.IMAGE,
+	},
+	{
+		link: "/text-to-speech",
+		id: "text-to-speech",
+		name: "Text to Speech",
+		description: "Convert written text into natural human speech using local AI.",
+		icon: markRaw(Volume2Icon),
+		category: ToolCategory.AUDIO,
+	},
+	{
+		link: "/speech-to-text",
+		id: "/speech-to-text",
+		name: "Speech to Text",
+		description: "Transcribe your voice recordings into text accurately in real-time.",
+		icon: markRaw(WavesIcon),
+		category: ToolCategory.AUDIO,
+	},
+	{
+		link: "/audio-recorder",
+		id: "audio-recorder",
+		name: "Audio Recorder",
+		description: "Record audio from your microphone and download locally.",
+		icon: markRaw(MicIcon),
+		category: ToolCategory.AUDIO,
+	},
+	{
+		link: "/audio-converter",
+		id: "audio-converter",
+		name: "Audio Converter",
+		description: "Convert audio formats (MP3, WAV, etc.) using FFmpeg WASM.",
+		icon: markRaw(MusicIcon),
+		category: ToolCategory.AUDIO,
+	},
+]

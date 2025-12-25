@@ -1,16 +1,21 @@
-import path from 'path';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { fileURLToPath, URL } from 'node:url'
 
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import tailwindcss from '@tailwindcss/vite'
+
+// https://vite.dev/config/
 export default defineConfig({
-  server: {
-    port: 3000,
-    host: '0.0.0.0',
-  },
-  plugins: [react()],
+  base: '/iLoveMedia/',
+  plugins: [
+    vue(),
+    vueDevTools(),
+    tailwindcss()
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '.'),
-    }
-  }
-});
+      '@': fileURLToPath(new URL('./source', import.meta.url))
+    },
+  },
+})
