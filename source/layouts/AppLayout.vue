@@ -244,9 +244,9 @@ const groupedTools = computed(() => {
 				<div
 					class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2"
 				>
-					<span>Developed by i💙Media Team</span>
+					<span>Developed by i💙Media Authors</span>
 					<div class="flex gap-2 items-center justify-center">
-						<span>Version 1.0.0</span>
+						<span>FREE FOREVER</span>
 						<span>|</span>
 						<span>MIT Licence</span>
 					</div>
