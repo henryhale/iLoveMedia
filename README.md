@@ -15,14 +15,14 @@ It is designed for professionals and casual users who need powerful utilities li
 ## Features
 
 - **Image Tools**:
-    - [ ] OCR: Extract text from images.
-    - [ ] Background Remover: Remove backgrounds using AI.
-    - [ ] QR Studio: Generate custom QR codes.
-    - [ ] Emoji Art: Convert text into patterns of emojis.
+    - [x] OCR: Extract text from images.
+    - [x] Background Remover: Remove backgrounds using AI.
+    - [x] QR Studio: Generate custom QR codes.
+    - [x] Emoji Art: Convert text into patterns of emojis.
 - **Audio Tools**:
-    - [ ] Audio Converter: Change formats (e.g., WAV to MP3) using FFmpeg.
-    - [ ] Text-to-Speech: High-quality synthesis using system voices or the Kokoro AI model.
-    - [ ] Speech-to-Text: Live transcription via browser API or Whisper AI.
+    - [x] Audio Converter: Change formats (e.g., WAV to MP3) using FFmpeg.
+    - [x] Text-to-Speech: High-quality synthesis using system voices or the Kokoro AI model.
+    - [x] Speech-to-Text: Live transcription via browser API or Whisper AI.
 
 ### Architecture
 
