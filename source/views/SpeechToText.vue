@@ -9,7 +9,7 @@ import {
 	RefreshCwIcon,
 } from "lucide-vue-next"
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
-import {toast} from 'vue-sonner'
+import { toast } from "vue-sonner"
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -255,9 +255,7 @@ const clear = () => {
 				<WavesIcon class="w-6 h-6" />
 			</div>
 			<div>
-				<h2 class="text-2xl font-bold text-foreground">
-					Speech-to-Text
-				</h2>
+				<h2 class="text-2xl font-bold text-foreground">Speech-to-Text</h2>
 				<p class="text-sm text-muted-foreground">
 					Live streaming or high-accuracy Whisper AI
 				</p>
@@ -267,29 +265,50 @@ const clear = () => {
 		<div class="flex items-center gap-4">
 			<!-- Toggle container uses muted background -->
 			<div class="flex bg-muted p-1 rounded-xl border border-border">
-				<button @click="engine = 'native'; clear()" :class="[
-					'px-4 py-2 text-xs font-bold rounded-lg transition-all',
-					engine === 'native'
-						? 'bg-background text-primary shadow-sm'
-						: 'text-muted-foreground hover:text-foreground',
-				]">
+				<button
+					@click="
+						() => {
+							engine = 'native'
+							clear()
+						}
+					"
+					:class="[
+						'px-4 py-2 text-xs font-bold rounded-lg transition-all',
+						engine === 'native'
+							? 'bg-background text-primary shadow-sm'
+							: 'text-muted-foreground hover:text-foreground',
+					]"
+				>
 					Native Live
 				</button>
-				<button @click="engine = 'whisper'; clear(); loadWhisper()" :class="[
-					'px-4 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-2',
-					engine === 'whisper'
-						? 'bg-background text-primary shadow-sm'
-						: 'text-muted-foreground hover:text-foreground',
-				]">
+				<button
+					@click="
+						() => {
+							engine = 'whisper'
+							clear()
+							loadWhisper()
+						}
+					"
+					:class="[
+						'px-4 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-2',
+						engine === 'whisper'
+							? 'bg-background text-primary shadow-sm'
+							: 'text-muted-foreground hover:text-foreground',
+					]"
+				>
 					Whisper AI
 					<span
-						class="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold">WASM</span>
+						class="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold"
+						>WASM</span
+					>
 				</button>
 			</div>
 
 			<!-- Select using input and background tokens -->
-			<NativeSelect v-model="selectedLang"
-				class="bg-background border border-input px-3 py-1.5 rounded-lg text-sm focus:ring-2 focus:ring-ring outline-none text-foreground">
+			<NativeSelect
+				v-model="selectedLang"
+				class="bg-background border border-input px-3 py-1.5 rounded-lg text-sm focus:ring-2 focus:ring-ring outline-none text-foreground"
+			>
 				<NativeSelectOption v-for="l in LANGUAGES" :key="l.code" :value="l.code">
 					{{ l.name }}
 				</NativeSelectOption>
@@ -299,33 +318,48 @@ const clear = () => {
 
 	<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 		<!-- Main Interaction Column -->
-		<div class="lg:col-span-4 flex flex-col items-center gap-8 border-r border-border pr-0 lg:pr-8">
+		<div
+			class="lg:col-span-4 flex flex-col items-center gap-8 border-r border-border pr-0 lg:pr-8"
+		>
 			<div class="relative flex flex-col items-center">
 				<!-- Destructive for recording/stop, Primary for idle -->
-				<button @click="handleToggleListening" :disabled="isTranscribing || isModelLoading" :class="[
-					'relative z-10 w-32 h-32 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl disabled:opacity-50',
-					isListening
-						? 'bg-destructive scale-110 shadow-destructive/40 ring-4 ring-destructive/20'
-						: 'bg-primary hover:opacity-90 shadow-primary/30',
-				]">
-					<CircleStopIcon v-if="isListening" class="w-12 h-12 text-destructive-foreground animate-pulse" />
+				<button
+					@click="handleToggleListening"
+					:disabled="isTranscribing || isModelLoading"
+					:class="[
+						'relative z-10 w-32 h-32 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl disabled:opacity-50',
+						isListening
+							? 'bg-destructive scale-110 shadow-destructive/40 ring-4 ring-destructive/20'
+							: 'bg-primary hover:opacity-90 shadow-primary/30',
+					]"
+				>
+					<CircleStopIcon
+						v-if="isListening"
+						class="w-12 h-12 text-destructive-foreground animate-pulse"
+					/>
 					<MicIcon v-else class="w-12 h-12 text-primary-foreground" />
 				</button>
 
 				<!-- Animated Bars -->
-				<div v-if="isListening"
-					class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 flex items-center justify-center gap-1 pointer-events-none">
-					<div v-for="i in 5" :key="i" class="w-1.5 h-8 bg-primary/30 rounded-full animate-bounce"
-						:style="{ animationDelay: `${(i - 1) * 0.1}s` }" />
+				<div
+					v-if="isListening"
+					class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 flex items-center justify-center gap-1 pointer-events-none"
+				>
+					<div
+						v-for="i in 5"
+						:key="i"
+						class="w-1.5 h-8 bg-primary/30 rounded-full animate-bounce"
+						:style="{ animationDelay: `${(i - 1) * 0.1}s` }"
+					/>
 				</div>
 
 				<div class="mt-6 text-center">
-					<p :class="[
-						'text-lg font-bold',
-						isListening
-							? 'text-destructive'
-							: 'text-foreground',
-					]">
+					<p
+						:class="[
+							'text-lg font-bold',
+							isListening ? 'text-destructive' : 'text-foreground',
+						]"
+					>
 						{{
 							isListening
 								? engine === "native"
@@ -334,7 +368,9 @@ const clear = () => {
 								: "Start Mic"
 						}}
 					</p>
-					<p class="text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold">
+					<p
+						class="text-[10px] text-muted-foreground mt-1 uppercase tracking-widest font-bold"
+					>
 						{{
 							engine === "native"
 								? "Streaming Transcription"
@@ -345,10 +381,15 @@ const clear = () => {
 			</div>
 
 			<!-- Action for Whisper Recording -->
-			<div v-if="engine === 'whisper' && audioBlob && !isListening"
-				class="w-full animate-in zoom-in duration-300">
-				<button @click="runWhisperTranscription" :disabled="isTranscribing"
-					class="w-full bg-primary text-primary-foreground hover:opacity-90 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-all">
+			<div
+				v-if="engine === 'whisper' && audioBlob && !isListening"
+				class="w-full animate-in zoom-in duration-300"
+			>
+				<button
+					@click="runWhisperTranscription"
+					:disabled="isTranscribing"
+					class="w-full bg-primary text-primary-foreground hover:opacity-90 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
+				>
 					<RefreshCwIcon v-if="isTranscribing" class="w-5 h-5 animate-spin" />
 					<WavesIcon v-else class="w-5 h-5" />
 					{{ isTranscribing ? "Transcribing..." : "Transcribe Recording" }}
@@ -365,7 +406,10 @@ const clear = () => {
 					<span>{{ loadProgress }}%</span>
 				</div>
 				<div class="w-full bg-secondary h-1.5 rounded-full overflow-hidden">
-					<div class="h-full bg-primary transition-all duration-300" :style="{ width: `${loadProgress}%` }" />
+					<div
+						class="h-full bg-primary transition-all duration-300"
+						:style="{ width: `${loadProgress}%` }"
+					/>
 				</div>
 			</div>
 		</div>
@@ -377,33 +421,48 @@ const clear = () => {
 					Result Console
 				</label>
 				<div class="flex gap-4">
-					<button v-if="transcription" @click="handleCopy"
-						class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline">
+					<button
+						v-if="transcription"
+						@click="handleCopy"
+						class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
+					>
 						<CheckIcon v-if="copied" class="w-3 h-3" />
 						<CopyIcon v-else class="w-3 h-3" />
 						{{ copied ? "Copied" : "Copy" }}
 					</button>
-					<button @click="clear"
-						class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-destructive">
+					<button
+						@click="clear"
+						class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-destructive"
+					>
 						<RefreshCwIcon class="w-3 h-3" /> Reset
 					</button>
 				</div>
 			</div>
 
 			<!-- Main display uses muted/50 and border tokens -->
-			<div :class="[
-				'w-full min-h-87.5 p-8 bg-muted/30 border border-border rounded-3xl transition-all shadow-inner relative overflow-hidden',
-				isListening || isTranscribing ? 'ring-2 ring-ring/20' : '',
-			]">
-				<div v-if="transcription || interimResult" class="text-xl leading-relaxed text-foreground">
+			<div
+				:class="[
+					'w-full min-h-87.5 p-8 bg-muted/30 border border-border rounded-3xl transition-all shadow-inner relative overflow-hidden',
+					isListening || isTranscribing ? 'ring-2 ring-ring/20' : '',
+				]"
+			>
+				<div
+					v-if="transcription || interimResult"
+					class="text-xl leading-relaxed text-foreground"
+				>
 					<p>{{ transcription }}</p>
-					<p v-if="interimResult" class="text-primary font-medium transition-all animate-pulse mt-2">
+					<p
+						v-if="interimResult"
+						class="text-primary font-medium transition-all animate-pulse mt-2"
+					>
 						{{ interimResult }}
 					</p>
 				</div>
 
-				<div v-else
-					class="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4">
+				<div
+					v-else
+					class="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-4"
+				>
 					<WavesIcon class="w-12 h-12" />
 					<p class="font-medium italic text-center px-8">
 						{{
@@ -420,11 +479,14 @@ const clear = () => {
 				<div class="p-2 bg-background rounded-lg shadow-sm border border-border">
 					<CheckIcon class="w-4 h-4 text-primary" />
 				</div>
-				<div class="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide">
+				<div
+					class="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide"
+				>
 					<span class="font-bold text-foreground">Engine Details:</span><br />
 					<b class="text-foreground">{{
 						engine === "native" ? "Web Speech API" : "Whisper-Tiny (WASM)"
-					}}</b>.
+					}}</b
+					>.
 					{{
 						engine === "native"
 							? " Fastest response, requires browser support, cloud-dependent for some OS."

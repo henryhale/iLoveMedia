@@ -35,18 +35,17 @@ import {
 	BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import { Input } from "@/components/ui/input"
-import { ArrowUpRightIcon, ChevronsUpDownIcon, HouseIcon, SettingsIcon, SearchIcon, XIcon } from "lucide-vue-next"
+import { ArrowUpRightIcon, ChevronsUpDownIcon, HouseIcon, SettingsIcon } from "lucide-vue-next"
 import { TOOLS } from "../constants/tools"
 import { RouterLink, useRoute } from "vue-router"
 import { useColorMode } from "@vueuse/core"
-import { computed, ref } from "vue"
+import { computed } from "vue"
 import { ToolCategory, type ToolDef } from "@/constants/types"
 import ToolLayout from "./ToolLayout.vue"
+import SearchBar from "@/components/SearchBar.vue"
 
 const mode = useColorMode()
 const route = useRoute()
-const searchQuery = ref('')
 
 const currentTool = computed(() => {
 	return TOOLS.find((tool) => tool.link === route.path)
@@ -87,8 +86,13 @@ const groupedTools = computed(() => {
 						<SidebarMenu>
 							<SidebarMenuItem>
 								<SidebarMenuButton as-child>
-									<RouterLink to="/"
-										:class="{ 'text-primary dark:text-current dark:bg-background': route.fullPath == '/' }">
+									<RouterLink
+										to="/"
+										:class="{
+											'text-primary dark:text-current dark:bg-background':
+												route.fullPath == '/',
+										}"
+									>
 										<HouseIcon />
 										<span>Dashboard</span>
 									</RouterLink>
@@ -103,8 +107,13 @@ const groupedTools = computed(() => {
 						<SidebarMenu>
 							<SidebarMenuItem v-for="tool in tools" :key="tool.id">
 								<SidebarMenuButton as-child>
-									<RouterLink :to="tool.link"
-										:class="{ 'text-primary dark:text-current dark:bg-background': tool.link == route.fullPath }">
+									<RouterLink
+										:to="tool.link"
+										:class="{
+											'text-primary dark:text-current dark:bg-background':
+												tool.link == route.fullPath,
+										}"
+									>
 										<component :is="tool.icon"></component>
 										<span>{{ tool.name }}</span>
 									</RouterLink>
@@ -129,22 +138,37 @@ const groupedTools = computed(() => {
 									<DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
-											<DropdownMenuItem @click="mode = 'light'">Light</DropdownMenuItem>
-											<DropdownMenuItem @click="mode = 'dark'">Dark</DropdownMenuItem>
-											<DropdownMenuItem @click="mode = 'auto'">System</DropdownMenuItem>
+											<DropdownMenuItem @click="mode = 'light'"
+												>Light</DropdownMenuItem
+											>
+											<DropdownMenuItem @click="mode = 'dark'"
+												>Dark</DropdownMenuItem
+											>
+											<DropdownMenuItem @click="mode = 'auto'"
+												>System</DropdownMenuItem
+											>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>
 								</DropdownMenuSub>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem>
-									<a class="flex-1" target="_blank"
-										href="https://github.com/henryhale/">License</a>
+									<a
+										class="flex-1"
+										target="_blank"
+										href="https://github.com/henryhale/"
+										>License</a
+									>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
 									</DropdownMenuShortcut>
 								</DropdownMenuItem>
 								<DropdownMenuItem>
-									<a class="flex-1" target="_blank" href="https://github.com/henryhale/">Author</a>
+									<a
+										class="flex-1"
+										target="_blank"
+										href="https://github.com/henryhale/"
+										>Author</a
+									>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
 									</DropdownMenuShortcut>
@@ -158,10 +182,13 @@ const groupedTools = computed(() => {
 		</Sidebar>
 		<SidebarInset>
 			<header
-				class="sticky z-20 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12">
-				<div class="flex items-center gap-2 px-4 w-full">
+				class="sticky z-20 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12"
+			>
+				<div class="flex items-center gap-x-4 px-4 w-full">
 					<SidebarTrigger class="-ml-1" />
-					<Separator orientation="vertical" class="w-10 bg-red-500" />
+					<div v-if="currentTool" class="hidden sm:flex h-5">
+						<Separator orientation="vertical" />
+					</div>
 					<Breadcrumb v-if="currentTool" class="hidden sm:block">
 						<BreadcrumbList>
 							<BreadcrumbItem>
@@ -176,21 +203,14 @@ const groupedTools = computed(() => {
 						</BreadcrumbList>
 					</Breadcrumb>
 					<div class="grow"></div>
-					<div class="relative flex-1">
-						<div class="relative group max-w-xl">
-							<SearchIcon
-								class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-							<Input class="px-10 text-sm" type="text" placeholder="Search tools..."
-								v-model="searchQuery" />
-							<span v-if="searchQuery" @click="searchQuery = ''"
-								class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground">
-								<XIcon class="w-4 h-4" />
-							</span>
-						</div>
+					<div class="flex-1 flex justify-end">
+						<SearchBar />
 					</div>
 				</div>
 			</header>
-			<div class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+			<div
+				class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500"
+			>
 				<div v-if="currentTool" class="flex items-center gap-4 mb-8">
 					<div class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border">
 						<component :is="currentTool.icon" class="w-6 h-6" />
@@ -199,12 +219,15 @@ const groupedTools = computed(() => {
 						<h1 class="text-3xl font-bold text-foreground">
 							{{ currentTool.name }}
 						</h1>
-						<div class="flex items-center gap-2 mt-1">
+						<div
+							class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row"
+						>
 							<span
-								class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary">
+								class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
+							>
 								{{ currentTool.category }}
 							</span>
-							<span class="text-muted-foreground/40">•</span>
+							<span class="text-muted-foreground/40 hidden md:block">•</span>
 							<p class="text-sm italic text-muted-foreground">
 								{{ currentTool.description }}
 							</p>
@@ -218,7 +241,9 @@ const groupedTools = computed(() => {
 
 				<slot v-else></slot>
 
-				<div class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2">
+				<div
+					class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2"
+				>
 					<span>Developed by i💙Media Team</span>
 					<div class="flex gap-2 items-center justify-center">
 						<span>Version 1.0.0</span>

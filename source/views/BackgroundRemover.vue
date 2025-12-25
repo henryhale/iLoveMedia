@@ -75,9 +75,15 @@ const reset = () => {
 }
 
 const features = [
-	{ t: '100% Client-Side', d: 'Processing happens in your browser\'s RAM. No image data is ever uploaded.' },
-	{ t: 'Edge AI Model', d: 'Uses a dedicated WASM-powered background removal model for precision masking.' },
-	{ t: 'High Resolution', d: 'Exports your processed image as a full-resolution 32-bit PNG.' }
+	{
+		t: "100% Client-Side",
+		d: "Processing happens in your browser's RAM. No image data is ever uploaded.",
+	},
+	{
+		t: "Edge AI Model",
+		d: "Uses a dedicated WASM-powered background removal model for precision masking.",
+	},
+	{ t: "High Resolution", d: "Exports your processed image as a full-resolution 32-bit PNG." },
 ]
 </script>
 
@@ -87,9 +93,7 @@ const features = [
 			<ScissorsIcon class="w-6 h-6" />
 		</div>
 		<div>
-			<h2 class="text-2xl font-bold text-foreground">
-				AI Background Remover
-			</h2>
+			<h2 class="text-2xl font-bold text-foreground">AI Background Remover</h2>
 			<p class="text-sm text-muted-foreground">
 				Remove image backgrounds instantly in your browser
 			</p>
@@ -97,26 +101,30 @@ const features = [
 	</div>
 
 	<!-- Upload State -->
-	<div v-if="!originalUrl"
-		class="border-2 border-dashed border-border rounded-3xl p-16 text-center hover:bg-accent/50 transition-colors relative group">
-		<input type="file" accept="image/*" @change="handleFileChange"
-			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+	<div
+		v-if="!originalUrl"
+		class="border-2 border-dashed border-border rounded-3xl p-16 text-center hover:bg-accent/50 transition-colors relative group"
+	>
+		<input
+			type="file"
+			accept="image/*"
+			@change="handleFileChange"
+			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+		/>
 		<div class="space-y-4">
 			<div
-				class="mx-auto w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+				class="mx-auto w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
+			>
 				<ImageIcon class="w-8 h-8" />
 			</div>
 			<div>
-				<p class="text-xl font-bold text-foreground">
-					Drop your image here
-				</p>
-				<p class="text-muted-foreground">
-					or click to browse local files
-				</p>
+				<p class="text-xl font-bold text-foreground">Drop your image here</p>
+				<p class="text-muted-foreground">or click to browse local files</p>
 			</div>
 			<div class="pt-2">
 				<span
-					class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-secondary text-secondary-foreground rounded-full">
+					class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-secondary text-secondary-foreground rounded-full"
+				>
 					Supports PNG, JPG, WEBP
 				</span>
 			</div>
@@ -125,8 +133,10 @@ const features = [
 
 	<!-- Processing/Result State -->
 	<div v-else class="space-y-8">
-		<div v-if="error"
-			class="p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive text-sm flex items-center gap-3">
+		<div
+			v-if="error"
+			class="p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive text-sm flex items-center gap-3"
+		>
 			<div class="w-2 h-2 rounded-full bg-destructive animate-pulse"></div>
 			{{ error }}
 		</div>
@@ -138,17 +148,26 @@ const features = [
 					Original Image
 				</label>
 				<div
-					class="aspect-square bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative">
-					<img :src="originalUrl" alt="Original" class="max-w-full max-h-full object-contain" />
+					class="aspect-square bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative"
+				>
+					<img
+						:src="originalUrl"
+						alt="Original"
+						class="max-w-full max-h-full object-contain"
+					/>
 
-					<div v-if="isProcessing"
-						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground">
+					<div
+						v-if="isProcessing"
+						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground"
+					>
 						<RefreshCwIcon class="w-10 h-10 animate-spin mb-4 text-primary" />
 						<p class="font-bold">Analyzing pixels...</p>
 						<p class="text-xs text-muted-foreground">{{ progress }}% Complete</p>
 						<div class="w-48 h-1.5 bg-secondary rounded-full mt-4 overflow-hidden">
-							<div class="h-full bg-primary transition-all duration-300"
-								:style="{ width: `${progress}%` }" />
+							<div
+								class="h-full bg-primary transition-all duration-300"
+								:style="{ width: `${progress}%` }"
+							/>
 						</div>
 					</div>
 				</div>
@@ -160,9 +179,14 @@ const features = [
 					Result (Transparent)
 				</label>
 				<div
-					class="aspect-square pattern-checkered bg-muted/50 rounded-2xl border border-border overflow-hidden flex items-center justify-center">
-					<img v-if="resultUrl" :src="resultUrl" alt="Result"
-						class="max-w-full max-h-full object-contain animate-in zoom-in duration-500" />
+					class="aspect-square pattern-checkered bg-muted/50 rounded-2xl border border-border overflow-hidden flex items-center justify-center"
+				>
+					<img
+						v-if="resultUrl"
+						:src="resultUrl"
+						alt="Result"
+						class="max-w-full max-h-full object-contain animate-in zoom-in duration-500"
+					/>
 					<div v-else class="text-center p-8">
 						<ScissorsIcon class="w-12 h-12 text-muted/50 mx-auto mb-4" />
 						<p class="text-sm text-muted-foreground font-medium">Ready to process</p>
@@ -173,21 +197,31 @@ const features = [
 
 		<!-- Action Buttons -->
 		<div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
-			<button v-if="!resultUrl" @click="handleRemoveBackground" :disabled="isProcessing"
-				class="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-4 rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+			<button
+				v-if="!resultUrl"
+				@click="handleRemoveBackground"
+				:disabled="isProcessing"
+				class="flex-1 bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-4 rounded-xl shadow-lg shadow-primary/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+			>
 				<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
 				<ScissorsIcon v-else class="w-5 h-5" />
 				{{ isProcessing ? `Removing Background (${progress}%)` : "Remove Background" }}
 			</button>
 
-			<button v-else @click="handleDownload"
-				class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+			<button
+				v-else
+				@click="handleDownload"
+				class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+			>
 				<DownloadIcon class="w-5 h-5" />
 				Download Transparent PNG
 			</button>
 
-			<button @click="reset" :disabled="isProcessing"
-				class="px-8 py-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 font-bold rounded-xl transition-colors disabled:opacity-50">
+			<button
+				@click="reset"
+				:disabled="isProcessing"
+				class="px-8 py-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 font-bold rounded-xl transition-colors disabled:opacity-50"
+			>
 				{{ resultUrl ? "New Image" : "Reset" }}
 			</button>
 		</div>
@@ -195,8 +229,11 @@ const features = [
 
 	<!-- Feature Cards -->
 	<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-		<div v-for="feature in features" :key="feature.t"
-			class="bg-card text-card-foreground p-4 rounded-xl border border-border shadow-sm">
+		<div
+			v-for="feature in features"
+			:key="feature.t"
+			class="bg-card text-card-foreground p-4 rounded-xl border border-border shadow-sm"
+		>
 			<p class="text-xs font-bold mb-1 uppercase tracking-wider">
 				{{ feature.t }}
 			</p>

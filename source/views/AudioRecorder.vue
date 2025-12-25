@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onUnmounted } from "vue"
 import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
-import {toast} from 'vue-sonner'
+import { toast } from "vue-sonner"
 
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
@@ -77,55 +77,74 @@ onUnmounted(() => {
 
 <template>
 	<h2 class="text-xl font-semibold mb-6 flex items-center justify-center gap-2 text-foreground">
-		<MicIcon class="w-5 h-5 text-destructive" />
+		<MicIcon class="w-5 h-5 text-primary" />
 		Audio Recorder
 	</h2>
 
 	<div class="flex flex-col items-center space-y-8">
 		<!-- Visualizer / Timer Circle -->
-		<div class="relative w-48 h-48 rounded-full flex items-center justify-center border-4 transition-all duration-300"
-			:class="isRecording
-				? 'border-destructive scale-110 shadow-lg shadow-destructive/20'
-				: 'border-border'
-				">
+		<div
+			class="relative w-48 h-48 rounded-full flex items-center justify-center border-4 transition-all duration-300"
+			:class="
+				isRecording
+					? 'border-primary scale-110 shadow-lg shadow-primary/20'
+					: 'border-border'
+			"
+		>
 			<div class="text-3xl font-mono font-bold text-foreground">
 				{{ formatTime(recordingTime) }}
 			</div>
-			<div v-if="isRecording"
-				class="absolute inset-0 rounded-full border-4 border-destructive animate-ping opacity-25"></div>
+			<div
+				v-if="isRecording"
+				class="absolute inset-0 rounded-full border-4 border-primary animate-ping opacity-25"
+			></div>
 		</div>
 
 		<div class="flex gap-4">
-			<button v-if="!isRecording" @click="startRecording"
-				class="bg-destructive text-destructive-foreground hover:bg-destructive/90 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-md">
+			<button
+				v-if="!isRecording"
+				@click="startRecording"
+				class="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-md"
+			>
 				<MicIcon class="w-5 h-5" />
 				Start Recording
 			</button>
 
-			<button v-else @click="stopRecording"
-				class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-md">
+			<button
+				v-else
+				@click="stopRecording"
+				class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 active:scale-95 shadow-md"
+			>
 				<CircleStopIcon class="w-5 h-5" />
 				Stop Recording
 			</button>
 		</div>
 
 		<!-- Recording Result -->
-		<div v-if="audioURL && !isRecording" class="w-full pt-8 animate-in fade-in slide-in-from-top-4">
-			<div class="bg-card text-card-foreground p-6 rounded-xl border border-border space-y-4 shadow-sm">
-				<p class="text-sm font-medium text-muted-foreground">
-					Recording Finished
-				</p>
+		<div
+			v-if="audioURL && !isRecording"
+			class="w-full pt-8 animate-in fade-in slide-in-from-top-4"
+		>
+			<div
+				class="bg-card text-card-foreground p-6 rounded-xl border border-border space-y-4 shadow-sm"
+			>
+				<p class="text-sm font-medium text-muted-foreground">Recording Finished</p>
 
-				<audio controls :src="audioURL" class="w-full" />
+				<audio controls :src="audioURL" class="w-full"></audio>
 
 				<div class="flex gap-2">
-					<a :href="audioURL" download="recording.webm"
-						class="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+					<a
+						:href="audioURL"
+						download="recording.webm"
+						class="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+					>
 						<DownloadIcon class="w-4 h-4" />
 						Download
 					</a>
-					<button @click="resetRecorder"
-						class="px-4 py-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors">
+					<button
+						@click="resetRecorder"
+						class="px-4 py-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
+					>
 						<RefreshCwIcon class="w-4 h-4 text-muted-foreground" />
 					</button>
 				</div>

@@ -55,9 +55,9 @@ const router = createRouter({
 			component: () => import("../views/TextToSpeech.vue"),
 		},
 		{
-			path: '/:pathMatch(.*)*',
+			path: "/:pathMatch(.*)*",
 			meta: { title: "Not Found" },
-			component: () => import('../views/AppNotFound.vue'),
+			component: () => import("../views/AppNotFound.vue"),
 		},
 	],
 })

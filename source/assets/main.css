@@ -1,5 +1,6 @@
 @import "./base.css";
 
+/*
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 8px;
@@ -29,6 +30,7 @@
 .dark ::-webkit-scrollbar-thumb:hover {
 	background: #64748b;
 }
+*/
 
 html,
 body {

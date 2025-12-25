@@ -100,29 +100,38 @@ const formatSize = (bytes: number) => {
 	</p>
 
 	<!-- Upload State -->
-	<div v-if="!fileState"
-		class="border-2 border-dashed border-border rounded-xl p-10 text-center hover:bg-accent/50 transition-colors relative">
-		<input type="file" accept="image/*" @change="handleFileChange"
-			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+	<div
+		v-if="!fileState"
+		class="border-2 border-dashed border-border rounded-xl p-10 text-center hover:bg-accent/50 transition-colors relative"
+	>
+		<input
+			type="file"
+			accept="image/*"
+			@change="handleFileChange"
+			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+		/>
 		<div class="space-y-2">
-			<div class="mx-auto w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+			<div
+				class="mx-auto w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center"
+			>
 				<ImageIcon class="w-6 h-6" />
 			</div>
-			<p class="text-lg font-medium text-foreground">
-				Drop an image here
-			</p>
-			<p class="text-sm text-muted-foreground">
-				or click to upload (PNG, JPG, WEBP)
-			</p>
+			<p class="text-lg font-medium text-foreground">Drop an image here</p>
+			<p class="text-sm text-muted-foreground">or click to upload (PNG, JPG, WEBP)</p>
 		</div>
 	</div>
 
 	<!-- Preview & Controls State -->
 	<div v-else class="space-y-6">
 		<div class="flex flex-col md:flex-row gap-6">
-			<div class="w-full md:w-1/2 bg-muted rounded-lg p-4 flex items-center justify-center min-h-50">
-				<img :src="fileState.previewUrl" alt="Preview"
-					class="max-w-full max-h-64 object-contain shadow-sm rounded-md border border-border" />
+			<div
+				class="w-full md:w-1/2 bg-muted rounded-lg p-4 flex items-center justify-center min-h-50"
+			>
+				<img
+					:src="fileState.previewUrl"
+					alt="Preview"
+					class="max-w-full max-h-64 object-contain shadow-sm rounded-md border border-border"
+				/>
 			</div>
 
 			<div class="w-full md:w-1/2 space-y-4">
@@ -137,9 +146,13 @@ const formatSize = (bytes: number) => {
 
 				<div class="space-y-3">
 					<div>
-						<label class="block text-sm font-medium text-foreground mb-1.5">Target Format</label>
-						<select v-model="targetFormat"
-							class="w-full rounded-md border-input bg-background text-foreground shadow-sm focus:ring-2 focus:ring-ring focus:ring-offset-2 border py-2 px-3 text-sm outline-none">
+						<label class="block text-sm font-medium text-foreground mb-1.5"
+							>Target Format</label
+						>
+						<select
+							v-model="targetFormat"
+							class="w-full rounded-md border-input bg-background text-foreground shadow-sm focus:ring-2 focus:ring-ring focus:ring-offset-2 border py-2 px-3 text-sm outline-none"
+						>
 							<option value="image/jpeg">JPEG</option>
 							<option value="image/png">PNG</option>
 							<option value="image/webp">WEBP</option>
@@ -150,20 +163,33 @@ const formatSize = (bytes: number) => {
 						<label class="block text-sm font-medium text-foreground mb-1.5">
 							Quality ({{ Math.round(quality * 100) }}%)
 						</label>
-						<input type="range" min="0.1" max="1" step="0.1" v-model.number="quality"
-							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary" />
+						<input
+							type="range"
+							min="0.1"
+							max="1"
+							step="0.1"
+							v-model.number="quality"
+							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+						/>
 					</div>
 				</div>
 
 				<div class="flex gap-2 pt-2">
-					<button @click="handleConvert" :disabled="isProcessing"
+					<button
+						@click="handleConvert"
+						:disabled="isProcessing"
 						class="flex-1 px-4 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all active:scale-95 flex items-center justify-center gap-2"
-						:class="showSuccess
-							? 'bg-emerald-600 text-white'
-							: 'bg-primary text-primary-foreground hover:bg-primary/90'
-							">
+						:class="
+							showSuccess
+								? 'bg-emerald-600 text-white'
+								: 'bg-primary text-primary-foreground hover:bg-primary/90'
+						"
+					>
 						<RefreshCwIcon v-if="isProcessing" class="animate-spin w-4 h-4" />
-						<CheckIcon v-else-if="showSuccess" class="w-4 h-4 animate-in zoom-in duration-300" />
+						<CheckIcon
+							v-else-if="showSuccess"
+							class="w-4 h-4 animate-in zoom-in duration-300"
+						/>
 						<DownloadIcon v-else class="w-4 h-4" />
 
 						<span>
@@ -177,8 +203,10 @@ const formatSize = (bytes: number) => {
 						</span>
 					</button>
 
-					<button @click="reset"
-						class="px-4 py-2 border border-input bg-background text-foreground rounded-md hover:bg-accent hover:text-accent-foreground font-medium transition-colors">
+					<button
+						@click="reset"
+						class="px-4 py-2 border border-input bg-background text-foreground rounded-md hover:bg-accent hover:text-accent-foreground font-medium transition-colors"
+					>
 						Reset
 					</button>
 				</div>
