@@ -56,12 +56,10 @@ const drawAvatar = () => {
 	ctx.restore()
 }
 
-// Lifecycle: useEffect equivalent
 onMounted(() => {
 	drawAvatar()
 })
 
-// Watch for changes to redraw (Dependency array equivalent)
 watch([emoji, bgColor, shape, emojiSize, rotation], () => {
 	drawAvatar()
 })

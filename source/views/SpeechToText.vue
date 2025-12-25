@@ -76,6 +76,7 @@ const initNativeSpeech = () => {
 
 		recognition.onerror = (event: { error: unknown }) => {
 			console.error("Speech Recognition Error:", event.error)
+			toast.error("An error occurred during speech recognition.")
 			isListening.value = false
 		}
 
@@ -211,6 +212,7 @@ const runWhisperTranscription = async () => {
 		audioBlob.value = null
 	} catch (err) {
 		console.error("Transcription Error:", err)
+		toast.error("Failed to generate transcription.")
 		interimResult.value = "Error transcribing audio."
 	} finally {
 		isTranscribing.value = false

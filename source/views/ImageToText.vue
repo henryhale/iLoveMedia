@@ -9,6 +9,7 @@ import {
 	CopyIcon,
 } from "lucide-vue-next"
 import Tesseract from "tesseract.js"
+import { toast } from "vue-sonner"
 
 const OCR_LANGUAGES = [
 	{ code: "eng", name: "English" },
@@ -65,6 +66,7 @@ const handleOcr = async () => {
 		status.value = "Complete"
 	} catch (err) {
 		console.error("OCR failed:", err)
+		toast.error("Failed to generate text from image.")
 		status.value = "Error: Failed to process image"
 	} finally {
 		isProcessing.value = false

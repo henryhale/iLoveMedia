@@ -5,7 +5,6 @@ import { fetchFile, toBlobURL } from "@ffmpeg/util"
 import { MusicIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
 
-// State (Replacing useState)
 const file = ref<File | null>(null)
 const targetFormat = ref("mp3")
 const isLoaded = ref(false)
@@ -13,7 +12,6 @@ const isConverting = ref(false)
 const progress = ref(0)
 const convertedURL = ref<string | null>(null)
 
-// FFmpeg Instance (Replacing useRef)
 const ffmpeg = new FFmpeg()
 
 onMounted(() => {

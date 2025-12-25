@@ -2,14 +2,13 @@
 import { ref } from "vue"
 import { ScissorsIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import { removeBackground } from "@imgly/background-removal"
+import { toast } from "vue-sonner"
 
-// State (Replacing useState)
 const originalFile = ref<File | null>(null)
 const originalUrl = ref<string | null>(null)
 const resultUrl = ref<string | null>(null)
 const isProcessing = ref(false)
 const progress = ref(0)
-const error = ref<string | null>(null)
 
 // Methods
 const handleFileChange = (e: Event) => {
@@ -19,7 +18,6 @@ const handleFileChange = (e: Event) => {
 		originalFile.value = file
 		originalUrl.value = URL.createObjectURL(file)
 		resultUrl.value = null
-		error.value = null
 		progress.value = 0
 	}
 }
@@ -27,13 +25,13 @@ const handleFileChange = (e: Event) => {
 const handleRemoveBackground = async () => {
 	if (!originalUrl.value) {
 		isProcessing.value = false
-		error.value = "Failed to generate image path"
 		progress.value = 0
+		console.error("Failed to generate image path")
+		toast.error("Failed to generate image path")
 		return
 	}
 
 	isProcessing.value = true
-	error.value = null
 	progress.value = 0
 
 	try {
@@ -50,8 +48,9 @@ const handleRemoveBackground = async () => {
 		resultUrl.value = url
 	} catch (err) {
 		console.error("Background removal failed:", err)
-		error.value =
-			"Failed to process image. This tool requires a modern browser and may take a moment to initialize the AI model (~40MB)."
+		toast.error(
+			"Failed to process image. This tool requires a modern browser and may take a moment to initialize the AI model (~40MB).",
+		)
 	} finally {
 		isProcessing.value = false
 	}
@@ -71,7 +70,6 @@ const reset = () => {
 	resultUrl.value = null
 	isProcessing.value = false
 	progress.value = 0
-	error.value = null
 }
 
 const features = [
@@ -133,14 +131,6 @@ const features = [
 
 	<!-- Processing/Result State -->
 	<div v-else class="space-y-8">
-		<div
-			v-if="error"
-			class="p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive text-sm flex items-center gap-3"
-		>
-			<div class="w-2 h-2 rounded-full bg-destructive animate-pulse"></div>
-			{{ error }}
-		</div>
-
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<!-- Left Side: Original -->
 			<div class="space-y-3">

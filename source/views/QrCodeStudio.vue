@@ -2,22 +2,20 @@
 import { ref, onMounted, watch } from "vue"
 import QRCode from "qrcode"
 import { QrCodeIcon, DownloadIcon } from "lucide-vue-next"
+import { toast } from "vue-sonner"
 
 const PRESET_COLORS = ["#000000", "#4F46E5", "#EF4444", "#10B981", "#F59E0B", "#3B82F6", "#8B5CF6"]
 
-// State (Replacing useState)
 const text = ref(window.location.origin)
 const fgColor = ref("#000000")
 const bgColor = ref("#ffffff")
 const errorLevel = ref<"L" | "M" | "Q" | "H">("M")
 const margin = ref(4)
-const size = ref(512)
+const size = ref(256)
 const isDownloading = ref(false)
 
-// Ref for the canvas element (Replacing useRef)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-// QR Generation Logic (Equivalent to the useCallback/useEffect combo)
 const generateQr = async () => {
 	if (!canvasRef.value || !text.value) return
 	try {
@@ -32,10 +30,10 @@ const generateQr = async () => {
 		})
 	} catch (err) {
 		console.error("QR Generation failed:", err)
+		toast.error("Failed to generate QR Code.")
 	}
 }
 
-// Watch all dependencies for changes (Equivalent to useEffect deps)
 watch([text, fgColor, bgColor, errorLevel, margin, size], () => {
 	generateQr()
 })
@@ -105,7 +103,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 					v-model="text"
 					placeholder="https://example.com"
 					class="w-full h-24 p-4 bg-background border border-input rounded-xl text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-all resize-none text-base"
-				/>
+				></textarea>
 			</div>
 
 			<div class="grid grid-cols-2 gap-4">
@@ -159,7 +157,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 								'w-8 h-8 rounded-md border transition-all ring-offset-background',
 								fgColor === c ? 'ring-2 ring-ring ring-offset-2' : 'border-input',
 							]"
-						/>
+						></button>
 						<input
 							type="color"
 							v-model="fgColor"
@@ -229,6 +227,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 					>
 						<DownloadIcon class="w-4 h-4" /> JPG
 					</button>
+					{{ size || "---" }}
 				</div>
 			</div>
 		</div>
@@ -245,7 +244,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 						ref="canvasRef"
 						class="max-w-full h-auto rounded-sm"
 						style="width: 100%; max-width: 340px; height: auto"
-					/>
+					></canvas>
 				</div>
 
 				<div

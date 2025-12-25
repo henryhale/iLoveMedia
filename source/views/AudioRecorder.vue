@@ -69,7 +69,6 @@ const resetRecorder = () => {
 	recordingTime.value = 0
 }
 
-// Lifecycle (Replacing useEffect cleanup)
 onUnmounted(() => {
 	if (timerInterval) clearInterval(timerInterval)
 })
