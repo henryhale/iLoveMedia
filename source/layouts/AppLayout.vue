@@ -44,6 +44,7 @@ import { ToolCategory, type ToolDef } from "@/constants/types"
 import ToolLayout from "./ToolLayout.vue"
 import SearchBar from "@/components/SearchBar.vue"
 import NavLink from "@/components/NavLink.vue"
+import NavLink from "@/components/AppLoader.vue"
 
 const mode = useColorMode()
 const route = useRoute()
@@ -87,13 +88,10 @@ const groupedTools = computed(() => {
 						<SidebarMenu>
 							<SidebarMenuItem>
 								<SidebarMenuButton as-child>
-									<RouterLink
-										to="/"
-										:class="{
-											'text-primary dark:text-current dark:bg-background':
-												route.fullPath == '/',
-										}"
-									>
+									<RouterLink to="/" :class="{
+										'text-primary dark:text-current dark:bg-background':
+											route.fullPath == '/',
+									}">
 										<HouseIcon />
 										<span>Dashboard</span>
 									</RouterLink>
@@ -126,37 +124,22 @@ const groupedTools = computed(() => {
 									<DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
 									<DropdownMenuPortal>
 										<DropdownMenuSubContent>
-											<DropdownMenuItem @click="mode = 'light'"
-												>Light</DropdownMenuItem
-											>
-											<DropdownMenuItem @click="mode = 'dark'"
-												>Dark</DropdownMenuItem
-											>
-											<DropdownMenuItem @click="mode = 'auto'"
-												>System</DropdownMenuItem
-											>
+											<DropdownMenuItem @click="mode = 'light'">Light</DropdownMenuItem>
+											<DropdownMenuItem @click="mode = 'dark'">Dark</DropdownMenuItem>
+											<DropdownMenuItem @click="mode = 'auto'">System</DropdownMenuItem>
 										</DropdownMenuSubContent>
 									</DropdownMenuPortal>
 								</DropdownMenuSub>
 								<DropdownMenuSeparator />
 								<DropdownMenuItem>
-									<a
-										class="flex-1"
-										target="_blank"
-										href="https://github.com/henryhale/iLoveMedia"
-										>License</a
-									>
+									<a class="flex-1" target="_blank"
+										href="https://github.com/henryhale/iLoveMedia">License</a>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
 									</DropdownMenuShortcut>
 								</DropdownMenuItem>
 								<DropdownMenuItem>
-									<a
-										class="flex-1"
-										target="_blank"
-										href="https://henryhale.github.io/"
-										>Author</a
-									>
+									<a class="flex-1" target="_blank" href="https://henryhale.github.io/">Author</a>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
 									</DropdownMenuShortcut>
@@ -170,8 +153,7 @@ const groupedTools = computed(() => {
 		</Sidebar>
 		<SidebarInset>
 			<header
-				class="sticky z-20 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12"
-			>
+				class="sticky z-20 top-0 left-0 right-0 bg-background flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[[collapsible=icon]]/sidebar-wrapper:h-12">
 				<div class="flex items-center gap-x-4 px-4 w-full">
 					<SidebarTrigger class="-ml-1" />
 					<div v-if="currentTool" class="hidden sm:flex h-5">
@@ -198,9 +180,7 @@ const groupedTools = computed(() => {
 					</div>
 				</div>
 			</header>
-			<div
-				class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500"
-			>
+			<div class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
 				<div v-if="currentTool" class="flex items-center gap-4 mb-8">
 					<div class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border">
 						<component :is="currentTool.icon" class="w-6 h-6" />
@@ -209,12 +189,9 @@ const groupedTools = computed(() => {
 						<h1 class="text-3xl font-bold text-foreground">
 							{{ currentTool.name }}
 						</h1>
-						<div
-							class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row"
-						>
+						<div class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row">
 							<span
-								class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
-							>
+								class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary">
 								{{ currentTool.category }}
 							</span>
 							<span class="text-muted-foreground/40 hidden md:block">•</span>
@@ -226,23 +203,22 @@ const groupedTools = computed(() => {
 				</div>
 
 				<ToolLayout v-if="currentTool?.link == route.fullPath">
-					<slot></slot>
+					<slot>
+						<AppLoader />
+					</slot>
 				</ToolLayout>
 
-				<slot v-else></slot>
+				<slot v-else>
+					<AppLoader />
+				</slot>
 
-				<div
-					class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2"
-				>
+				<div class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2">
 					<span>Developed by i💙Media Authors</span>
 					<div class="flex gap-2 items-center justify-center">
 						<span>Free Forever</span>
 						<span>|</span>
-						<a
-							href="https://github.com/henryhale/iLoveMedia/"
-							class="underline underline-offset-2"
-							>MIT Licence</a
-						>
+						<a href="https://github.com/henryhale/iLoveMedia/" class="underline underline-offset-2">MIT
+							Licence</a>
 					</div>
 				</div>
 			</div>
