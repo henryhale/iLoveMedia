@@ -12,8 +12,7 @@
 		"preview": "vite preview",
 		"type-check": "vue-tsc --build",
 		"lint": "eslint . --fix --cache",
-		"format": "prettier --write --experimental-cli source/",
-		"postinstall": "node scripts/download-whisper.mjs"
+		"format": "prettier --write --experimental-cli source/"
 	},
 	"dependencies": {
 		"@ffmpeg/core": "^0.12.10",
