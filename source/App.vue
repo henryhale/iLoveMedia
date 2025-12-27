@@ -11,7 +11,7 @@ import "vue-sonner/style.css"
 			position="bottom-right"
 			:duration="3000"
 			close-button
-			close-button-position="bottom-right"
+			close-button-position="top-right"
 		/>
 	</AppLayout>
 </template>
