@@ -227,7 +227,6 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 					>
 						<DownloadIcon class="w-4 h-4" /> JPG
 					</button>
-					{{ size || "---" }}
 				</div>
 			</div>
 		</div>
