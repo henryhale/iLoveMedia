@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { FFmpeg } from "@ffmpeg/ffmpeg"
-import { fetchFile, toBlobURL } from "@ffmpeg/util"
+import { fetchFile } from "@ffmpeg/util"
 import { MusicIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
+import coreURL from "@ffmpeg/core?url"
+import wasmURL from "@ffmpeg/core/wasm?url"
+import classWorkerURL from "@ffmpeg/ffmpeg/worker?url"
 
 const file = ref<File | null>(null)
 const targetFormat = ref("mp3")
+const loading = ref(true)
 const isLoaded = ref(false)
 const isConverting = ref(false)
 const progress = ref(0)
@@ -19,8 +23,7 @@ onMounted(() => {
 })
 
 const loadFFmpeg = async () => {
-	const coreBaseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm"
-	const ffmpegBaseURL = "https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/esm"
+	loading.value = true
 
 	ffmpeg.on("log", ({ message }) => {
 		console.log("FFmpeg Log:", message)
@@ -32,9 +35,9 @@ const loadFFmpeg = async () => {
 
 	try {
 		await ffmpeg.load({
-			coreURL: await toBlobURL(`${coreBaseURL}/ffmpeg-core.js`, "text/javascript"),
-			wasmURL: await toBlobURL(`${coreBaseURL}/ffmpeg-core.wasm`, "application/wasm"),
-			workerURL: await toBlobURL(`${ffmpegBaseURL}/worker.js`, "text/javascript"),
+			coreURL,
+			wasmURL,
+			classWorkerURL,
 		})
 		isLoaded.value = true
 	} catch (err) {
@@ -42,6 +45,9 @@ const loadFFmpeg = async () => {
 		toast.error(
 			"Failed to load FFmpeg components. This may be due to browser security settings.",
 		)
+		isLoaded.value = false
+	} finally {
+		loading.value = false
 	}
 }
 
@@ -74,9 +80,9 @@ const convert = async () => {
 		await ffmpeg.writeFile(inputName, await fetchFile(file.value))
 		await ffmpeg.exec(["-i", inputName, outputName])
 
-		const data = await ffmpeg.readFile(outputName)
+		const data = await ffmpeg.readFile(outputName) as BlobPart
 		const url = URL.createObjectURL(
-			new Blob([data as any], { type: `audio/${targetFormat.value}` }),
+			new Blob([data], { type: `audio/${targetFormat.value}` }),
 		)
 		convertedURL.value = url
 	} catch (err) {
@@ -100,7 +106,7 @@ const convert = async () => {
 		class="bg-muted/50 p-4 rounded-lg text-sm text-muted-foreground mb-6 flex items-center gap-3 border border-border"
 	>
 		<RefreshCwIcon class="w-4 h-4 animate-spin" />
-		Initializing FFmpeg secure environment...
+		Initializing FFmpeg secure environment (~33MB)...
 	</div>
 
 	<!-- File Upload Dropzone -->
