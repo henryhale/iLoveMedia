@@ -112,20 +112,16 @@ const loadWhisper = async () => {
 		const { pipeline: getPipeline, env: transformersEnv } = await import("@xenova/transformers")
 		env = transformersEnv
 
-		env.allowLocalModels = false
+		env.allowLocalModels = true
 		env.useBrowserCache = true
 
-		const transcriber = await getPipeline(
-			"automatic-speech-recognition",
-			"Xenova/whisper-tiny.en",
-			{
-				progress_callback: (data: { status: string; progress: number }) => {
-					if (data.status === "progress") {
-						loadProgress.value = Math.round(data.progress)
-					}
-				},
+		const transcriber = await getPipeline("automatic-speech-recognition", "whisper-tiny.en", {
+			progress_callback: (data: { status: string; progress: number }) => {
+				if (data.status === "progress") {
+					loadProgress.value = Math.round(data.progress)
+				}
 			},
-		)
+		})
 
 		transcriberRef.value = transcriber
 		loadProgress.value = 100
