@@ -112,12 +112,12 @@ const loadKokoro = async () => {
 			.filter((v) => !!v)
 			.map((voice) => {
 				const [accent = "", name = ""] = voice.split("_")
-				const [origin, gender] = accent.split("")
-				const ORIGINS = {
+				const [origin = "", gender = ""] = accent.split("")
+				const ORIGINS: Record<string, string> = {
 					a: "American",
 					b: "British",
 				}
-				const GENDER = {
+				const GENDER: Record<string, string> = {
 					f: "Female",
 					m: "Male",
 				}
