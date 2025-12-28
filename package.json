@@ -13,7 +13,7 @@
 		"type-check": "vue-tsc --build",
 		"lint": "eslint . --fix --cache",
 		"format": "prettier --write --experimental-cli source/",
-		"postinstall": "node scripts/download-bg-removal-data.mjs"
+		"postinstall": "node scripts/download-bg-remover-data.mjs"
 	},
 	"dependencies": {
 		"@ffmpeg/core": "^0.12.10",
