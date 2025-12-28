@@ -202,7 +202,7 @@ const groupedTools = computed(() => {
 			<div
 				class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500"
 			>
-				<div v-if="currentTool" class="flex items-center gap-4 mb-8">
+				<div v-if="currentTool" class="flex items-start lg:items-center gap-4 mb-8">
 					<div class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border">
 						<component :is="currentTool.icon" class="w-6 h-6" />
 					</div>
@@ -214,11 +214,11 @@ const groupedTools = computed(() => {
 							class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row"
 						>
 							<span
-								class="text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
+								class="hidden lg:block text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
 							>
 								{{ currentTool.category }}
 							</span>
-							<span class="text-muted-foreground/40 hidden md:block">•</span>
+							<span class="text-muted-foreground/40 hidden lg:block">•</span>
 							<p class="text-sm italic text-muted-foreground">
 								{{ currentTool.description }}
 							</p>
