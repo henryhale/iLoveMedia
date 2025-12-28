@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { onBeforeUnmount, ref } from "vue"
 import {
 	ScanIcon,
 	DownloadIcon,
@@ -19,6 +19,9 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import CopyButton from "@/components/CopyButton.vue"
+import FeatureCards from "@/components/FeatureCards.vue"
+import FilePicker from "@/components/FilePicker.vue"
+import { downloadFile } from "@/lib/helpers"
 
 const OCR_LANGUAGES = [
 	{ code: "eng", name: "English" },
@@ -37,10 +40,12 @@ const progress = ref(0)
 const status = ref("")
 const lang = ref("eng")
 
-const handleFileChange = (e: Event) => {
-	const target = e.target as HTMLInputElement
-	if (target.files && target.files[0]) {
-		const file = target.files[0]
+onBeforeUnmount(() => {
+	if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
+})
+
+const handleFileChange = (file: File | undefined) => {
+	if (file) {
 		imageFile.value = file
 		if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
 		imageUrl.value = URL.createObjectURL(file)
@@ -82,12 +87,7 @@ const handleOcr = async () => {
 
 const handleDownload = () => {
 	const blob = new Blob([extractedText.value], { type: "text/plain" })
-	const url = URL.createObjectURL(blob)
-	const a = document.createElement("a")
-	a.href = url
-	a.download = `extracted-text-${Date.now().toString(16)}.txt`
-	a.click()
-	URL.revokeObjectURL(url)
+	downloadFile(blob, `extracted-text-${Date.now().toString(16)}.txt`)
 }
 
 const reset = () => {
@@ -129,29 +129,9 @@ const features = [
 	</div>
 
 	<!-- Dropzone -->
-	<div v-if="!imageUrl"
-		class="border-2 border-dashed border-border rounded-3xl p-16 text-center hover:bg-accent/50 transition-colors relative group">
-		<input type="file" accept="image/*" @change="handleFileChange"
-			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-		<div class="space-y-4">
-			<div
-				class="mx-auto w-16 h-16 bg-secondary text-secondary-foreground rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-				<ImageIcon class="w-8 h-8" />
-			</div>
-			<div>
-				<p class="text-xl font-bold text-foreground">Drop image with text here</p>
-				<p class="text-muted-foreground">
-					or click to browse documents, photos, or screenshots
-				</p>
-			</div>
-			<div class="pt-2">
-				<span
-					class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 bg-muted text-muted-foreground rounded-full">
-					Fast Local OCR
-				</span>
-			</div>
-		</div>
-	</div>
+	<FilePicker v-if="!imageUrl" @change="handleFileChange" accept="image/*" :icon="ImageIcon"
+		title="Drop image with text here" subtitle="or click to browse documents, photos, or screenshots"
+		footer="Fast Local OCR" />
 
 	<!-- Preview & Result -->
 	<div v-else class="space-y-8">
@@ -204,8 +184,8 @@ const features = [
 		</div>
 
 		<!-- Action Buttons -->
-		<div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-border">
-			<Button v-if="!extractedText" @click="handleOcr" :disabled="isProcessing" class="flex-1" size="lg">
+		<div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-4 border-t border-border">
+			<Button v-if="!extractedText" @click="handleOcr" :disabled="isProcessing" class="md:flex-1" size="lg">
 				<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
 				<ScanIcon v-else class="w-5 h-5" />
 				{{ isProcessing ? `Processing...` : "Extract Text from Image" }}
@@ -224,15 +204,5 @@ const features = [
 	</div>
 
 	<!-- Feature Badges -->
-	<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-		<div v-for="(feat, i) in features" :key="i"
-			class="bg-card text-card-foreground p-4 rounded-xl border border-border shadow-sm">
-			<p class="text-xs font-bold text-foreground mb-1 uppercase tracking-wider">
-				{{ feat.title }}
-			</p>
-			<p class="text-[11px] text-muted-foreground leading-relaxed">
-				{{ feat.subtitle }}
-			</p>
-		</div>
-	</div>
+	<FeatureCards :features="features" />
 </template>
