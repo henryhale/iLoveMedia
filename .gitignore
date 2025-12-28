@@ -15,7 +15,6 @@ coverage
 *.local
 .tmp
 build
-models
 
 # Editor directories and files
 .vscode/*
@@ -31,3 +30,5 @@ models
 
 .eslintcache
 
+public/models/package*
+public/models/imgly
