@@ -75,7 +75,7 @@ const groupedTools = computed(() => {
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<SidebarMenuButton size="lg" class="hover:bg-transparent">
-							<RouterLink to="/" class="text-4xl font-semibold">
+							<RouterLink to="/" class="text-xl md:text-3xl font-semibold">
 								i💙Media
 							</RouterLink>
 						</SidebarMenuButton>
