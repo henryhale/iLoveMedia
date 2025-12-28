@@ -2,12 +2,18 @@
 import { ref, onMounted, onUnmounted, watchEffect } from "vue"
 import { Volume2Icon, PlayIcon, RefreshCwIcon, CircleStopIcon } from "lucide-vue-next"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
 import { toast } from "vue-sonner"
 import type { KokoroTTS, GenerateOptions } from "kokoro-js"
 
 type AIVoices = {
-	voice: Exclude<GenerateOptions['voice'], undefined>
+	voice: Exclude<GenerateOptions["voice"], undefined>
 	name: string
 	accent: string
 }
@@ -102,22 +108,25 @@ const loadKokoro = async () => {
 
 		loadProgress.value = 100
 		kokoroRef.value = tts
-		kokoroVoices.value = (Object.keys(tts.voices) as GenerateOptions["voice"][]).filter(v => !!v).map((voice) => {
-			const [accent = '', name = ''] = voice.split('_')
-			const [origin, gender] = accent.split('')
-			const ORIGINS = {
-				a: 'American',
-				b: 'British'
-			}
-			const GENDER = {
-				f: 'Female',
-				m: 'Male'
-			}
-			return {
-				voice, name: name[0]?.toUpperCase() + name?.slice(1),
-				accent: ORIGINS[origin] + ' ' + GENDER[gender]
-			}
-		})
+		kokoroVoices.value = (Object.keys(tts.voices) as GenerateOptions["voice"][])
+			.filter((v) => !!v)
+			.map((voice) => {
+				const [accent = "", name = ""] = voice.split("_")
+				const [origin, gender] = accent.split("")
+				const ORIGINS = {
+					a: "American",
+					b: "British",
+				}
+				const GENDER = {
+					f: "Female",
+					m: "Male",
+				}
+				return {
+					voice,
+					name: name[0]?.toUpperCase() + name?.slice(1),
+					accent: ORIGINS[origin] + " " + GENDER[gender],
+				}
+			})
 
 		isModelLoading.value = false
 
@@ -209,23 +218,31 @@ const toggleEngine = (type: "native" | "kokoro") => {
 		</div>
 
 		<div class="flex bg-muted p-1 rounded-xl">
-			<button @click="toggleEngine('native')" :class="[
-				'px-4 py-2 text-xs lg:text-sm font-medium rounded-lg transition-all',
-				engine === 'native'
-					? 'bg-background text-foreground shadow-sm'
-					: 'text-muted-foreground hover:text-foreground',
-			]">
+			<button
+				@click="toggleEngine('native')"
+				:class="[
+					'px-4 py-2 text-xs lg:text-sm font-medium rounded-lg transition-all',
+					engine === 'native'
+						? 'bg-background text-foreground shadow-sm'
+						: 'text-muted-foreground hover:text-foreground',
+				]"
+			>
 				System Native
 			</button>
-			<button @click="toggleEngine('kokoro')" :class="[
-				'px-4 py-2 text-xs lg:text-sm font-medium rounded-lg transition-all flex items-center gap-2',
-				engine === 'kokoro'
-					? 'bg-background text-foreground shadow-sm'
-					: 'text-muted-foreground hover:text-foreground',
-			]">
+			<button
+				@click="toggleEngine('kokoro')"
+				:class="[
+					'px-4 py-2 text-xs lg:text-sm font-medium rounded-lg transition-all flex items-center gap-2',
+					engine === 'kokoro'
+						? 'bg-background text-foreground shadow-sm'
+						: 'text-muted-foreground hover:text-foreground',
+				]"
+			>
 				Kokoro AI
 				<span
-					class="text-xs lg:text-sm bg-primary text-primary-foreground px-1.5 py-0.5 rounded uppercase font-bold">HQ</span>
+					class="text-xs lg:text-sm bg-primary text-primary-foreground px-1.5 py-0.5 rounded uppercase font-bold"
+					>HQ</span
+				>
 			</button>
 		</div>
 	</div>
@@ -234,32 +251,42 @@ const toggleEngine = (type: "native" | "kokoro") => {
 		<!-- Left Column: Input and Controls -->
 		<div class="lg:col-span-7 space-y-6">
 			<div class="relative">
-				<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
+				<label
+					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
+				>
 					Input Text
 				</label>
-				<Textarea v-model="text" placeholder="Type something to hear it..." class="h-64 p-4"></Textarea>
+				<Textarea
+					v-model="text"
+					placeholder="Type something to hear it..."
+					class="h-64 p-4"
+				></Textarea>
 				<div class="absolute bottom-4 right-4 text-xs text-muted-foreground/60">
 					{{ text.length }} characters
 				</div>
 			</div>
 
 			<div class="flex gap-4">
-				<button @click="isSpeaking ? handleStop() : handleSpeak()" :disabled="isModelLoading" :class="[
-					'flex-1 flex items-center justify-center gap-2 font-bold py-4 rounded-2xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed',
-					isSpeaking
-						? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
-						: 'bg-primary text-primary-foreground hover:bg-primary/90',
-				]">
+				<button
+					@click="isSpeaking ? handleStop() : handleSpeak()"
+					:disabled="isModelLoading"
+					:class="[
+						'flex-1 flex items-center justify-center gap-2 font-bold py-4 rounded-2xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed',
+						isSpeaking
+							? 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+							: 'bg-primary text-primary-foreground hover:bg-primary/90',
+					]"
+				>
 					<RefreshCwIcon v-if="isModelLoading" class="w-5 h-5 animate-spin" />
 					<CircleStopIcon v-else-if="isSpeaking" class="w-5 h-5" />
 					<PlayIcon v-else class="w-5 h-5" />
 
 					{{
-					isModelLoading
-					? "Loading AI Model..."
-					: isSpeaking
-					? "Stop Playing"
-					: "Start Reading"
+						isModelLoading
+							? "Loading AI Model..."
+							: isSpeaking
+								? "Stop Playing"
+								: "Start Reading"
 					}}
 				</button>
 			</div>
@@ -271,7 +298,10 @@ const toggleEngine = (type: "native" | "kokoro") => {
 					<span>{{ loadProgress }}%</span>
 				</div>
 				<div class="w-full bg-secondary h-2 rounded-full overflow-hidden">
-					<div class="h-full bg-primary transition-all duration-500" :style="{ width: `${loadProgress}%` }" />
+					<div
+						class="h-full bg-primary transition-all duration-500"
+						:style="{ width: `${loadProgress}%` }"
+					/>
 				</div>
 				<p class="text-xs lg:text-sm text-muted-foreground text-center italic">
 					Initial download is ~80MB. This will be cached for next time.
@@ -282,77 +312,136 @@ const toggleEngine = (type: "native" | "kokoro") => {
 		<!-- Right Column: Settings -->
 		<div class="lg:col-span-5 space-y-8">
 			<div class="p-2 space-y-6">
-				<h3 class="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+				<h3
+					class="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2"
+				>
 					Parameters
 				</h3>
 
 				<div class="space-y-5">
 					<div>
 						<div class="flex justify-between mb-2">
-							<label class="text-xs lg:text-sm font-semibold text-foreground">Rate (Speed)</label>
+							<label class="text-xs lg:text-sm font-semibold text-foreground"
+								>Rate (Speed)</label
+							>
 							<span class="text-xs font-mono text-primary">{{ rate }}x</span>
 						</div>
-						<input type="range" min="0.5" max="2" step="0.1" v-model.number="rate"
-							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary" />
+						<input
+							type="range"
+							min="0.5"
+							max="2"
+							step="0.1"
+							v-model.number="rate"
+							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+						/>
 					</div>
 
 					<div>
 						<div class="flex justify-between mb-2">
-							<label class="text-xs lg:text-sm font-semibold text-foreground">Pitch</label>
+							<label class="text-xs lg:text-sm font-semibold text-foreground"
+								>Pitch</label
+							>
 							<span class="text-xs font-mono text-primary">{{ pitch }}</span>
 						</div>
-						<input type="range" min="0.5" max="2" step="0.1" v-model.number="pitch"
+						<input
+							type="range"
+							min="0.5"
+							max="2"
+							step="0.1"
+							v-model.number="pitch"
 							:disabled="engine === 'kokoro'"
-							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary disabled:opacity-20" />
-						<p v-if="engine === 'kokoro'" class="text-xs lg:text-sm text-muted-foreground mt-1">
+							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary disabled:opacity-20"
+						/>
+						<p
+							v-if="engine === 'kokoro'"
+							class="text-xs lg:text-sm text-muted-foreground mt-1"
+						>
 							Pitch is voice-specific in Kokoro.
 						</p>
 					</div>
 
 					<div>
 						<div class="flex justify-between mb-2">
-							<label class="text-xs lg:text-sm font-semibold text-foreground">Volume</label>
-							<span class="text-xs font-mono text-primary">{{ Math.round(volume * 100) }}%</span>
+							<label class="text-xs lg:text-sm font-semibold text-foreground"
+								>Volume</label
+							>
+							<span class="text-xs font-mono text-primary"
+								>{{ Math.round(volume * 100) }}%</span
+							>
 						</div>
-						<input type="range" min="0" max="1" step="0.1" v-model.number="volume"
-							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary" />
+						<input
+							type="range"
+							min="0"
+							max="1"
+							step="0.1"
+							v-model.number="volume"
+							class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+						/>
 					</div>
 				</div>
 			</div>
 
 			<!-- Voice Selection -->
 			<div>
-				<label class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+				<label
+					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
+				>
 					{{ engine === "native" ? "System Voices" : "AI Voice Profiles" }}
 				</label>
 
 				<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 					<template v-if="engine === 'native'">
-						<Select v-if="nativeVoices.length > 0" v-model="selectedNativeVoice"
-							:disabled="isModelLoading || isSpeaking">
+						<Select
+							v-if="nativeVoices.length > 0"
+							v-model="selectedNativeVoice"
+							:disabled="isModelLoading || isSpeaking"
+						>
 							<SelectTrigger>
-								<SelectValue :placeholder="isModelLoading ? 'Loading voices...' : 'Select a voice'" />
+								<SelectValue
+									:placeholder="
+										isModelLoading ? 'Loading voices...' : 'Select a voice'
+									"
+								/>
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem disabled value="-">Select a voice</SelectItem>
-								<SelectItem v-for="(v, i) in nativeVoices" :key="i" :value="v.voiceURI">
-									{{ v.name }} ({{ v.lang }}) {{ v.localService ? `- offline` : '' }}
+								<SelectItem
+									v-for="(v, i) in nativeVoices"
+									:key="i"
+									:value="v.voiceURI"
+								>
+									{{ v.name }} ({{ v.lang }})
+									{{ v.localService ? `- offline` : "" }}
 								</SelectItem>
 							</SelectContent>
 						</Select>
-						<p v-else class="text-xs lg:text-sm text-muted-foreground italic p-4 text-center">
+						<p
+							v-else
+							class="text-xs lg:text-sm text-muted-foreground italic p-4 text-center"
+						>
 							No system voices detected.
 						</p>
 					</template>
 
 					<template v-else>
-						<Select v-model="selectedKokoroVoice" :disabled="isModelLoading || isSpeaking">
+						<Select
+							v-model="selectedKokoroVoice"
+							:disabled="isModelLoading || isSpeaking"
+						>
 							<SelectTrigger>
-								<SelectValue :placeholder="isModelLoading ? 'Loading voices...' : 'Select a voice'" />
+								<SelectValue
+									:placeholder="
+										isModelLoading ? 'Loading voices...' : 'Select a voice'
+									"
+								/>
 							</SelectTrigger>
 							<SelectContent>
 								<SelectItem disabled value="-">Select a voice</SelectItem>
-								<SelectItem v-for="(v, i) in kokoroVoices" :key="i" :value="v.voice">
+								<SelectItem
+									v-for="(v, i) in kokoroVoices"
+									:key="i"
+									:value="v.voice"
+								>
 									{{ v.name }} ({{ v.accent }})
 								</SelectItem>
 							</SelectContent>

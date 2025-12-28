@@ -80,10 +80,8 @@ const convert = async () => {
 		await ffmpeg.writeFile(inputName, await fetchFile(file.value))
 		await ffmpeg.exec(["-i", inputName, outputName])
 
-		const data = await ffmpeg.readFile(outputName) as BlobPart
-		const url = URL.createObjectURL(
-			new Blob([data], { type: `audio/${targetFormat.value}` }),
-		)
+		const data = (await ffmpeg.readFile(outputName)) as BlobPart
+		const url = URL.createObjectURL(new Blob([data], { type: `audio/${targetFormat.value}` }))
 		convertedURL.value = url
 	} catch (err) {
 		console.error("Conversion failed:", err)
