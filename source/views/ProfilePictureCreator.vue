@@ -20,7 +20,6 @@ const canvasSize = computed(() => (width.value > 900 ? 512 : 256))
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-// Logic: Drawing the Avatar
 const drawAvatar = () => {
 	const canvas = canvasRef.value
 	if (!canvas) return
@@ -47,23 +46,11 @@ const drawAvatar = () => {
 	// Draw Emoji
 	ctx.save()
 	ctx.rotate((rotation.value * Math.PI) / 180)
-	if (emoji.value && emoji.value.startsWith("http")) {
-		const image = new Image()
-		image.src = emoji.value
-		ctx.drawImage(
-			image,
-			(size - emojiSize.value) / 2,
-			(size - emojiSize.value) / 2,
-			emojiSize.value,
-			emojiSize.value,
-		)
-	} else {
-		ctx.translate(size / 2, size / 2)
-		ctx.textAlign = "center"
-		ctx.textBaseline = "middle"
-		ctx.font = `${emojiSize.value * 2}px serif`
-		ctx.fillText(emoji.value, 0, 0)
-	}
+	ctx.translate(size / 2, size / 2)
+	ctx.textAlign = "center"
+	ctx.textBaseline = "middle"
+	ctx.font = `${emojiSize.value * 2}px serif`
+	ctx.fillText(emoji.value, 0, 10)
 	ctx.restore()
 }
 
@@ -179,7 +166,13 @@ const handleDownload = () => {
 			</div>
 
 			<!-- Emoji Picker -->
-			<EmojiPicker @change="(e) => (emoji = e)" />
+			<EmojiPicker
+				@change="
+					(e) => {
+						emoji = e
+					}
+				"
+			/>
 
 			<div>
 				<label
@@ -190,7 +183,7 @@ const handleDownload = () => {
 				<input
 					type="range"
 					min="40"
-					:max="Math.floor(canvasSize / 2)"
+					:max="Math.floor(canvasSize / 3)"
 					v-model.number="emojiSize"
 					class="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
 				/>
