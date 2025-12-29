@@ -14,6 +14,7 @@ It is designed for anyone who needs powerful utilities like image conversion, au
 
 ## Features
 
+> [!IMPORTANT]
 > Special thanks to every developer has worked (and still working) on all these amazing opensource projects.
 
 - **Image Tools**:
@@ -22,9 +23,9 @@ It is designed for anyone who needs powerful utilities like image conversion, au
     - [x] QR Studio: Generate custom QR codes using [qrcode](http://github.com/soldair/node-qrcode) by [@soldair](http://github.com/soldair/)
     - [x] Emoji Art: Convert text into patterns of emojis using [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 - **Audio Tools**:
-    - [x] Audio Converter: Change formats (e.g., WAV to MP3) using FFmpeg.
+    - [x] Audio Converter: Change formats (e.g., WAV to MP3) using [@ffmpeg/ffmpeg - wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) by [@ffmpegwasm](https://github.com/ffmpegwasm/)
     - [x] Text-to-Speech: High-quality synthesis using [WebSpeech API - Speech synthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis) and [@diffusionstudio/vits-web](https://github.com/diffusionstudio/vits-web) by [@diffusionstudio](https://github.com/diffusionstudio/) and [@rhasspy](https://github.com/rhasspy/piper)
-    - [x] Speech-to-Text: Live transcription via browser API or Whisper AI.
+    - [x] Speech-to-Text: Live transcription using [WebSpeech API - Speech Recognition](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) and [whisper-web](https://github.com/xenova/whisper-web) by [@xenova](https://github.com/xenova/).
 
 To run these tools in the browser, the following projects have tremendously made it so easy - a big shoutout to them;
 
