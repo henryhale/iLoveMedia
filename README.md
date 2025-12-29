@@ -81,4 +81,6 @@ For any bug or issue, kindly open one [here](https://github.com/henryhale/iLoveM
 
 ## License
 
-Released under [MIT License](./LICENSE.txt)
+Copyright (c) 2025-present [Henry Hale](https://github.com/henryhale/).
+
+Released under the [MIT License](https://github.com/henryhale/iLoveMedia/blob/master/LICENSE.txt).
