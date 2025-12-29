@@ -199,42 +199,50 @@ const groupedTools = computed(() => {
 					</div>
 				</div>
 			</header>
-			<div
-				class="container mx-auto p-4 md:p-8 lg:px-12 animate-in fade-in slide-in-from-bottom-4 duration-500"
-			>
-				<div v-if="currentTool" class="flex items-start lg:items-center gap-4 mb-8">
-					<div class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border">
-						<component :is="currentTool.icon" class="w-6 h-6" />
-					</div>
-					<div>
-						<h1 class="text-3xl font-bold text-foreground">
-							{{ currentTool.name }}
-						</h1>
+			<div class="container mx-auto p-4 md:p-8 lg:px-12">
+				<div class="min-h-[70vh]">
+					<div
+						v-if="currentTool"
+						class="flex items-start lg:items-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
+					>
 						<div
-							class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row"
+							class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border"
 						>
-							<span
-								class="hidden lg:block text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
+							<component :is="currentTool.icon" class="w-6 h-6" />
+						</div>
+						<div>
+							<h1 class="text-3xl font-bold text-foreground">
+								{{ currentTool.name }}
+							</h1>
+							<div
+								class="flex items-start md:items-center gap-2 mt-1 flex-col md:flex-row"
 							>
-								{{ currentTool.category }}
-							</span>
-							<span class="text-muted-foreground/40 hidden lg:block">•</span>
-							<p class="text-sm italic text-muted-foreground">
-								{{ currentTool.description }}
-							</p>
+								<span
+									class="hidden lg:block text-xs font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-primary/20 text-primary"
+								>
+									{{ currentTool.category }}
+								</span>
+								<span class="text-muted-foreground/40 hidden lg:block">•</span>
+								<p class="text-sm italic text-muted-foreground">
+									{{ currentTool.description }}
+								</p>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<ToolLayout v-if="currentTool?.link == route.fullPath">
-					<slot>
+					<ToolLayout
+						v-if="currentTool?.link == route.fullPath"
+						class="animate-in fade-in slide-in-from-bottom-4 duration-500"
+					>
+						<slot>
+							<AppLoader />
+						</slot>
+					</ToolLayout>
+
+					<slot v-else class="animate-in fade-in slide-in-from-bottom-4 duration-500">
 						<AppLoader />
 					</slot>
-				</ToolLayout>
-
-				<slot v-else>
-					<AppLoader />
-				</slot>
+				</div>
 
 				<div
 					class="pt-16 pb-4 lg:pb-0 text-center text-sm font-normal opacity-40 grid gap-2"
