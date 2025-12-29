@@ -44,8 +44,12 @@ body {
 	overflow-y: auto;
 }
 
-.category-transition {
-	transition:
-		max-height 0.3s ease-in-out,
-		opacity 0.2s ease-in-out;
+.pattern-checkered {
+	background-image:
+		radial-gradient(var(--color-border) 1px, transparent 1px),
+		radial-gradient(var(--color-border) 1px, transparent 1px);
+	background-position:
+		0 0,
+		10px 10px;
+	background-size: 20px 20px;
 }

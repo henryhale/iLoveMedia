@@ -89,14 +89,24 @@ const features = [
 		title: "Edge AI Model",
 		subtitle: "Uses a dedicated WASM-powered background removal model for precision masking.",
 	},
-	{ title: "High Resolution", subtitle: "Exports your processed image as a full-resolution 32-bit PNG." },
+	{
+		title: "High Resolution",
+		subtitle: "Exports your processed image as a full-resolution 32-bit PNG.",
+	},
 ]
 </script>
 
 <template>
 	<!-- Upload State -->
-	<FilePicker v-if="!originalUrl" @change="handleFileChange" :icon="ImageIcon" accept="image/*"
-		title="Drop your image here" subtitle="or click to browse local files" footer="Supports PNG, JPG, WEBP" />
+	<FilePicker
+		v-if="!originalUrl"
+		@change="handleFileChange"
+		:icon="ImageIcon"
+		accept="image/*"
+		title="Drop your image here"
+		subtitle="or click to browse local files"
+		footer="Supports PNG, JPG, WEBP"
+	/>
 
 	<!-- Processing/Result State -->
 	<div v-else class="space-y-8">
@@ -107,17 +117,26 @@ const features = [
 					Original Image
 				</Label>
 				<div
-					class="aspect-square bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative">
-					<img :src="originalUrl" alt="Original" class="max-w-full max-h-full object-contain" />
+					class="aspect-square bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative"
+				>
+					<img
+						:src="originalUrl"
+						alt="Original"
+						class="max-w-full max-h-full object-contain"
+					/>
 
-					<div v-if="isProcessing"
-						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground">
+					<div
+						v-if="isProcessing"
+						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground"
+					>
 						<RefreshCwIcon class="w-10 h-10 animate-spin mb-4 text-primary" />
 						<p class="font-bold">Analyzing pixels...</p>
 						<p class="text-xs text-muted-foreground">{{ progress }}% Complete</p>
 						<div class="w-48 h-1.5 bg-secondary rounded-full mt-4 overflow-hidden">
-							<div class="h-full bg-primary transition-all duration-300"
-								:style="{ width: `${progress}%` }"></div>
+							<div
+								class="h-full bg-primary transition-all duration-300"
+								:style="{ width: `${progress}%` }"
+							></div>
 						</div>
 					</div>
 				</div>
@@ -129,9 +148,14 @@ const features = [
 					Result (Transparent)
 				</label>
 				<div
-					class="aspect-square pattern-checkered bg-muted/50 rounded-2xl border border-border overflow-hidden flex items-center justify-center">
-					<img v-if="resultUrl" :src="resultUrl" alt="Result"
-						class="max-w-full max-h-full object-contain animate-in zoom-in duration-500" />
+					class="aspect-square pattern-checkered bg-muted/50 rounded-2xl border border-border overflow-hidden flex items-center justify-center"
+				>
+					<img
+						v-if="resultUrl"
+						:src="resultUrl"
+						alt="Result"
+						class="max-w-full max-h-full object-contain animate-in zoom-in duration-500"
+					/>
 					<div v-else class="text-center p-8">
 						<ScissorsIcon class="w-12 h-12 text-muted/50 mx-auto mb-4" />
 						<p class="text-sm text-muted-foreground font-medium">Ready to process</p>
@@ -142,15 +166,24 @@ const features = [
 
 		<!-- Action Buttons -->
 		<div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-4 border-t border-border">
-			<Button v-if="!resultUrl" @click="handleRemoveBackground" :disabled="isProcessing" size="lg"
-				class="md:flex-1">
+			<Button
+				v-if="!resultUrl"
+				@click="handleRemoveBackground"
+				:disabled="isProcessing"
+				size="lg"
+				class="md:flex-1"
+			>
 				<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
 				<ScissorsIcon v-else class="w-5 h-5" />
 				{{ isProcessing ? `Removing Background (${progress}%)` : "Remove Background" }}
 			</Button>
 
-			<Button v-else @click="handleDownload" size="lg"
-				class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white">
+			<Button
+				v-else
+				@click="handleDownload"
+				size="lg"
+				class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+			>
 				<DownloadIcon class="w-5 h-5" />
 				Download Transparent PNG
 			</Button>
@@ -164,20 +197,3 @@ const features = [
 	<!-- Feature Cards -->
 	<FeatureCards :features="features" />
 </template>
-
-<style scoped>
-.pattern-checkered {
-	background-image:
-		radial-gradient(#cbd5e1 1px, transparent 1px), radial-gradient(#cbd5e1 1px, transparent 1px);
-	background-position:
-		0 0,
-		10px 10px;
-	background-size: 20px 20px;
-}
-
-:deep(.dark) .pattern-checkered,
-.dark .pattern-checkered {
-	background-image:
-		radial-gradient(#1e293b 1px, transparent 1px), radial-gradient(#1e293b 1px, transparent 1px);
-}
-</style>
