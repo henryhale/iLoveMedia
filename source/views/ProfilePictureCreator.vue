@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from "vue"
-import { UserIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
+import { DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 import { EMOJI_CATEGORIES, PRESET_COLORS } from "@/constants/emoji"
 
-// Reactive State
 const emoji = ref("🦊")
 const bgColor = ref("#4F46E5")
 const shape = ref("circle")
@@ -13,10 +12,8 @@ const activeCategory = ref("Smileys")
 const isDownloading = ref(false)
 const showSuccess = ref(false)
 
-// Ref for Canvas (useRef equivalent)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-// Logic: Computed property for filtering emojis
 const currentCategory = computed(() =>
 	EMOJI_CATEGORIES.find((cat) => cat.name === activeCategory.value),
 )
@@ -83,16 +80,11 @@ const handleDownload = () => {
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold mb-6 flex items-center gap-2 text-foreground">
-		<UserIcon class="w-5 h-5 text-primary" />
-		Profile Picture Creator
-	</h2>
-
-	<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+	<div class="grid grid-cols-1 xl:grid-cols-12 gap-10">
 		<!-- Controls -->
 		<div class="lg:col-span-5 space-y-8">
 			<!-- Shape & Rotation -->
-			<div class="grid grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<div>
 					<label
 						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
@@ -283,19 +275,5 @@ const handleDownload = () => {
 .no-scrollbar {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
-}
-
-.pattern-checkered {
-	background-image:
-		radial-gradient(#cbd5e1 1px, transparent 1px), radial-gradient(#cbd5e1 1px, transparent 1px);
-	background-position:
-		0 0,
-		10px 10px;
-	background-size: 20px 20px;
-}
-
-:global(.dark) .pattern-checkered {
-	background-image:
-		radial-gradient(#1e293b 1px, transparent 1px), radial-gradient(#1e293b 1px, transparent 1px);
 }
 </style>

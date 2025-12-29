@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from "vue"
-import {
-	ScanIcon,
-	DownloadIcon,
-	RefreshCwIcon,
-	ImageIcon,
-} from "lucide-vue-next"
+import { ScanIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import Tesseract from "tesseract.js"
 import { toast } from "vue-sonner"
 import {
@@ -13,8 +8,8 @@ import {
 	SelectItem,
 	SelectContent,
 	SelectTrigger,
-	SelectValue
-} from '@/components/ui/select'
+	SelectValue,
+} from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -101,15 +96,20 @@ const reset = () => {
 
 const features = [
 	{
-		title: 'Zero Uploads', subtitle: 'OCR engine runs entirely via WebAssembly. Your documents stay safe and private on your device.'
+		title: "Zero Uploads",
+		subtitle:
+			"OCR engine runs entirely via WebAssembly. Your documents stay safe and private on your device.",
 	},
 	{
-		title: 'Multi-Language',
-		subtitle: 'Supports various languages including English, Spanish, French, and Japanese for diverse document types.'
+		title: "Multi-Language",
+		subtitle:
+			"Supports various languages including English, Spanish, French, and Japanese for diverse document types.",
 	},
 	{
-		title: 'Smart Extraction', subtitle: 'Uses Tesseract AI to recognize text layout and characters with high accuracy for clear image sources.'
-	}
+		title: "Smart Extraction",
+		subtitle:
+			"Uses Tesseract AI to recognize text layout and characters with high accuracy for clear image sources.",
+	},
 ]
 </script>
 
@@ -129,30 +129,49 @@ const features = [
 	</div>
 
 	<!-- Dropzone -->
-	<FilePicker v-if="!imageUrl" @change="handleFileChange" accept="image/*" :icon="ImageIcon"
-		title="Drop image with text here" subtitle="or click to browse documents, photos, or screenshots"
-		footer="Fast Local OCR" />
+	<FilePicker
+		v-if="!imageUrl"
+		@change="handleFileChange"
+		accept="image/*"
+		:icon="ImageIcon"
+		title="Drop image with text here"
+		subtitle="or click to browse documents, photos, or screenshots"
+		footer="Fast Local OCR"
+	/>
 
 	<!-- Preview & Result -->
 	<div v-else class="space-y-8">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 			<!-- Left Side: Image Preview -->
 			<div class="space-y-3">
-				<label class="text-xs font-bold uppercase tracking-widest text-muted-foreground">Source Image</label>
+				<label class="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+					>Source Image</label
+				>
 				<div
-					class="aspect-video bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative shadow-inner">
-					<img :src="imageUrl" alt="Source" class="max-w-full max-h-full object-contain" />
+					class="aspect-video bg-muted rounded-2xl border border-border overflow-hidden flex items-center justify-center relative shadow-inner"
+				>
+					<img
+						:src="imageUrl"
+						alt="Source"
+						class="max-w-full max-h-full object-contain"
+					/>
 
-					<div v-if="isProcessing"
-						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground p-6 text-center">
+					<div
+						v-if="isProcessing"
+						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground p-6 text-center"
+					>
 						<RefreshCwIcon class="w-10 h-10 animate-spin mb-4 text-primary" />
 						<p class="font-bold text-lg capitalize">{{ status }}</p>
 						<p v-if="progress > 0" class="text-sm text-muted-foreground">
 							{{ progress }}% Complete
 						</p>
-						<div class="w-full max-w-xs h-1.5 bg-secondary rounded-full mt-4 overflow-hidden">
-							<div class="h-full bg-primary transition-all duration-300"
-								:style="{ width: progress + '%' }"></div>
+						<div
+							class="w-full max-w-xs h-1.5 bg-secondary rounded-full mt-4 overflow-hidden"
+						>
+							<div
+								class="h-full bg-primary transition-all duration-300"
+								:style="{ width: progress + '%' }"
+							></div>
 						</div>
 					</div>
 				</div>
@@ -161,7 +180,9 @@ const features = [
 			<!-- Right Side: Extracted Text -->
 			<div class="space-y-3 flex flex-col">
 				<div class="flex justify-between items-center">
-					<Label class="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+					<Label
+						class="text-xs font-bold uppercase tracking-widest text-muted-foreground"
+					>
 						Extracted Text
 					</Label>
 					<div v-if="extractedText" class="flex gap-4">
@@ -169,13 +190,21 @@ const features = [
 					</div>
 				</div>
 				<div class="grow min-h-75 lg:min-h-0 relative group">
-					<Textarea v-if="extractedText && !isProcessing" v-model="extractedText" :placeholder="isProcessing
-						? 'Analyzing image...'
-						: 'Extracted text will appear here...'
-						" class="p-6 bg-background max-h-[70vh] text-foreground font-mono text-sm resize-none focus:outline-none placeholder:text-muted-foreground"></Textarea>
+					<Textarea
+						v-if="extractedText && !isProcessing"
+						v-model="extractedText"
+						:placeholder="
+							isProcessing
+								? 'Analyzing image...'
+								: 'Extracted text will appear here...'
+						"
+						class="p-6 bg-background max-h-[70vh] text-foreground font-mono text-sm resize-none focus:outline-none placeholder:text-muted-foreground"
+					></Textarea>
 
-					<div v-if="!extractedText"
-						class="absolute inset-0 bg-background flex flex-col items-center justify-center pointer-events-none opacity-30 rounded-2xl text-foreground">
+					<div
+						v-if="!extractedText"
+						class="absolute inset-0 bg-background flex flex-col items-center justify-center pointer-events-none opacity-30 rounded-2xl text-foreground"
+					>
 						<ScanIcon class="w-12 h-12 mb-2" />
 						<p class="text-xs uppercase tracking-widest font-bold">Waiting for scan</p>
 					</div>
@@ -185,14 +214,24 @@ const features = [
 
 		<!-- Action Buttons -->
 		<div class="flex flex-col sm:flex-row sm:items-center gap-4 pt-4 border-t border-border">
-			<Button v-if="!extractedText" @click="handleOcr" :disabled="isProcessing" class="md:flex-1" size="lg">
+			<Button
+				v-if="!extractedText"
+				@click="handleOcr"
+				:disabled="isProcessing"
+				class="md:flex-1"
+				size="lg"
+			>
 				<RefreshCwIcon v-if="isProcessing" class="w-5 h-5 animate-spin" />
 				<ScanIcon v-else class="w-5 h-5" />
 				{{ isProcessing ? `Processing...` : "Extract Text from Image" }}
 			</Button>
 
-			<Button v-else @click="handleDownload" size="lg"
-				class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white">
+			<Button
+				v-else
+				@click="handleDownload"
+				size="lg"
+				class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white"
+			>
 				<DownloadIcon class="w-5 h-5" />
 				Download as .txt
 			</Button>
