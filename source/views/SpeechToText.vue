@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue"
 import {
@@ -9,6 +10,14 @@ import {
 	RefreshCwIcon,
 } from "lucide-vue-next"
 import { toast } from "vue-sonner"
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -38,7 +47,6 @@ const loadProgress = ref(0)
 const audioBlob = ref<Blob | null>(null)
 const isTranscribing = ref(false)
 
-// Non-reactive Refs (equivalent to useRef)
 const recognitionRef = ref<any>(null)
 const mediaRecorderRef = ref<MediaRecorder | null>(null)
 const audioChunksRef = ref<Blob[]>([])
@@ -58,7 +66,6 @@ const initNativeSpeech = () => {
 		recognition.continuous = true
 		recognition.interimResults = true
 		recognition.lang = selectedLang.value === "en" ? "en-US" : selectedLang.value
-
 		recognition.onresult = (event: any) => {
 			let final = ""
 			let interim = ""
@@ -249,75 +256,65 @@ const clear = () => {
 </script>
 
 <template>
-	<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-		<div class="flex items-center gap-3">
-			<div class="p-2 bg-primary/10 rounded-lg text-primary">
-				<WavesIcon class="w-6 h-6" />
-			</div>
-			<div>
-				<h2 class="text-2xl font-bold text-foreground">Speech-to-Text</h2>
-				<p class="text-sm text-muted-foreground">
-					Live streaming or high-accuracy Whisper AI
-				</p>
-			</div>
-		</div>
-
-		<div class="flex items-center gap-4">
-			<div class="flex bg-muted p-1 rounded-xl border border-border">
-				<button
-					@click="
-						() => {
-							engine = 'native'
-							clear()
-						}
-					"
-					:class="[
-						'px-4 py-2 text-xs font-bold rounded-lg transition-all',
-						engine === 'native'
-							? 'bg-background text-primary shadow-sm'
-							: 'text-muted-foreground hover:text-foreground',
-					]"
-				>
-					Native Live
-				</button>
-				<button
-					@click="
-						() => {
-							engine = 'whisper'
-							clear()
-							loadWhisper()
-						}
-					"
-					:class="[
-						'px-4 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-2',
-						engine === 'whisper'
-							? 'bg-background text-primary shadow-sm'
-							: 'text-muted-foreground hover:text-foreground',
-					]"
-				>
-					Whisper AI
-					<span
-						class="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold"
-						>WASM</span
-					>
-				</button>
-			</div>
-
-			<select
-				v-model="selectedLang"
-				class="bg-background border border-input px-3 py-1.5 rounded-lg text-sm focus:ring-2 focus:ring-ring outline-none text-foreground"
+	<div class="flex items-center gap-4 mb-10 flex-wrap">
+		<div class="flex bg-muted p-1 rounded-xl border border-border">
+			<button
+				@click="
+					() => {
+						engine = 'native'
+						clear()
+					}
+				"
+				:class="[
+					'px-4 py-2 text-xs font-bold rounded-lg transition-all',
+					engine === 'native'
+						? 'bg-background text-primary shadow-sm'
+						: 'text-muted-foreground hover:text-foreground',
+				]"
 			>
-				<option v-for="l in LANGUAGES" :key="l.code" :value="l.code">
-					{{ l.name }}
-				</option>
-			</select>
+				Native Live
+			</button>
+			<button
+				@click="
+					() => {
+						engine = 'whisper'
+						clear()
+						loadWhisper()
+					}
+				"
+				:class="[
+					'px-4 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-2',
+					engine === 'whisper'
+						? 'bg-background text-primary shadow-sm'
+						: 'text-muted-foreground hover:text-foreground',
+				]"
+			>
+				Whisper AI
+				<span
+					class="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold"
+					>WASM</span
+				>
+			</button>
 		</div>
+
+		<div class="grow"></div>
+
+		<Select v-model="selectedLang">
+			<SelectTrigger>
+				<SelectValue placeholder="Select language" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem v-for="l in LANGUAGES" :key="l.code" :value="l.code">
+					{{ l.name }}
+				</SelectItem>
+			</SelectContent>
+		</Select>
 	</div>
 
 	<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 		<!-- Main Interaction Column -->
 		<div
-			class="lg:col-span-4 flex flex-col items-center gap-8 border-r border-border pr-0 lg:pr-8"
+			class="lg:col-span-4 flex flex-col items-center gap-8 lg:border-r border-border pr-0 lg:pr-8"
 		>
 			<div class="relative flex flex-col items-center">
 				<button
@@ -381,15 +378,11 @@ const clear = () => {
 				v-if="engine === 'whisper' && audioBlob && !isListening"
 				class="w-full animate-in zoom-in duration-300"
 			>
-				<button
-					@click="runWhisperTranscription"
-					:disabled="isTranscribing"
-					class="w-full bg-primary text-primary-foreground hover:opacity-90 font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
-				>
+				<Button @click="runWhisperTranscription" :disabled="isTranscribing" size="lg">
 					<RefreshCwIcon v-if="isTranscribing" class="w-5 h-5 animate-spin" />
 					<WavesIcon v-else class="w-5 h-5" />
 					{{ isTranscribing ? "Transcribing..." : "Transcribe Recording" }}
-				</button>
+				</Button>
 				<p class="text-[10px] text-muted-foreground text-center mt-2">
 					Audio ready to process locally
 				</p>
@@ -405,7 +398,7 @@ const clear = () => {
 					<div
 						class="h-full bg-primary transition-all duration-300"
 						:style="{ width: `${loadProgress}%` }"
-					/>
+					></div>
 				</div>
 			</div>
 		</div>
@@ -469,14 +462,13 @@ const clear = () => {
 				</div>
 			</div>
 
-			<div class="flex items-start gap-4 p-4 bg-muted/50 rounded-2xl border border-border">
-				<div class="p-2 bg-background rounded-lg shadow-sm border border-border">
+			<div class="flex items-start gap-4 p-4">
+				<div class="p-2 bg-accent rounded-2xl">
 					<CheckIcon class="w-4 h-4 text-primary" />
 				</div>
 				<div
 					class="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide"
 				>
-					<span class="font-bold text-foreground">Engine Details:</span><br />
 					<b class="text-foreground">{{
 						engine === "native" ? "Web Speech API" : "Whisper-Tiny (WASM)"
 					}}</b

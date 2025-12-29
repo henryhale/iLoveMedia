@@ -7,6 +7,15 @@ import { toast } from "vue-sonner"
 import coreURL from "@ffmpeg/core?url"
 import wasmURL from "@ffmpeg/core/wasm?url"
 import classWorkerURL from "@ffmpeg/ffmpeg/worker?url"
+import FilePicker from "@/components/FilePicker.vue"
+import { Label } from "@/components/ui/label"
+import {
+	Select,
+	SelectContent,
+	SelectTrigger,
+	SelectValue,
+	SelectItem,
+} from "@/components/ui/select"
 
 const file = ref<File | null>(null)
 const targetFormat = ref("mp3")
@@ -51,10 +60,9 @@ const loadFFmpeg = async () => {
 	}
 }
 
-const handleFileChange = (e: Event) => {
-	const target = e.target as HTMLInputElement
-	if (target.files && target.files[0]) {
-		file.value = target.files[0]
+const handleFileChange = (selectedFile: File | undefined) => {
+	if (selectedFile) {
+		file.value = selectedFile
 		convertedURL.value = null
 		progress.value = 0
 	}
@@ -93,11 +101,6 @@ const convert = async () => {
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold leading-none tracking-tight mb-4 flex items-center gap-2">
-		<MusicIcon class="w-5 h-5 text-primary" />
-		Audio Converter (FFmpeg WASM)
-	</h2>
-
 	<!-- Loading State -->
 	<div
 		v-if="!isLoaded"
@@ -108,26 +111,14 @@ const convert = async () => {
 	</div>
 
 	<!-- File Upload Dropzone -->
-	<div
+	<FilePicker
 		v-if="!file"
-		class="relative border-2 border-dashed border-input rounded-xl p-10 text-center hover:bg-accent hover:text-accent-foreground transition-colors group"
-	>
-		<input
-			type="file"
-			accept="audio/*"
-			@change="handleFileChange"
-			class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-		/>
-		<div class="space-y-2">
-			<div
-				class="mx-auto w-12 h-12 bg-secondary text-secondary-foreground rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-			>
-				<MusicIcon class="w-6 h-6" />
-			</div>
-			<p class="text-lg font-medium">Upload an audio file</p>
-			<p class="text-sm text-muted-foreground">MP3, WAV, AAC, OGG, etc.</p>
-		</div>
-	</div>
+		accept="audio/*"
+		@change="handleFileChange"
+		:icon="MusicIcon"
+		title="Upload an audio file"
+		subtitle="MP3, WAV, AAC, OGG, etc."
+	/>
 
 	<!-- Conversion Interface -->
 	<div v-else class="space-y-6">
@@ -139,7 +130,7 @@ const convert = async () => {
 				<MusicIcon class="w-6 h-6" />
 			</div>
 			<div class="flex-1 min-w-0">
-				<p class="text-sm font-bold truncate">
+				<p class="text-sm font-bold truncate line-clamp-1 max-w-[220px] lg:max-w-sm">
 					{{ file.name }}
 				</p>
 				<p class="text-xs text-muted-foreground">
@@ -154,18 +145,20 @@ const convert = async () => {
 			</button>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<div>
-				<label class="block text-sm font-medium text-foreground mb-2">Target Format</label>
-				<select
-					v-model="targetFormat"
-					class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring"
-				>
-					<option value="mp3">MP3</option>
-					<option value="wav">WAV</option>
-					<option value="aac">AAC</option>
-					<option value="ogg">OGG</option>
-				</select>
+				<Label class="block text-sm font-medium text-foreground mb-2">Target Format</Label>
+				<Select v-model="targetFormat">
+					<SelectTrigger class="min-w-1/2">
+						<SelectValue placeholder="Select format" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="mp3">MP3</SelectItem>
+						<SelectItem value="wav">WAV</SelectItem>
+						<SelectItem value="aac">AAC</SelectItem>
+						<SelectItem value="ogg">OGG</SelectItem>
+					</SelectContent>
+				</Select>
 			</div>
 
 			<div class="flex flex-col justify-end">
@@ -205,7 +198,7 @@ const convert = async () => {
 			>
 				<CheckIcon class="w-5 h-5" /> Conversion Successful!
 			</p>
-			<audio controls :src="convertedURL" class="w-full mb-4 rounded-lg" />
+			<audio controls :src="convertedURL" class="w-full mb-4 rounded-lg"></audio>
 			<a
 				:href="convertedURL"
 				:download="`converted.${targetFormat}`"
@@ -217,7 +210,7 @@ const convert = async () => {
 		</div>
 	</div>
 
-	<div class="mt-8 text-center bg-muted/30 p-4 rounded-lg">
+	<div class="mt-8 text-center p-4 rounded-lg">
 		<p class="text-xs text-muted-foreground leading-relaxed">
 			Conversion is powered by FFmpeg WebAssembly. Everything stays on your device. Large
 			files may take more time depending on your hardware.
