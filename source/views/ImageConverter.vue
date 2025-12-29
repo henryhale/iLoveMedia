@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
 	}
 })
 
-const handleFileChange = (file: File | null) => {
+const handleFileChange = (file: File | null | undefined) => {
 	if (file) {
 		const currentUrl = fileState.value?.previewUrl
 		if (currentUrl) {
