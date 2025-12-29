@@ -23,6 +23,6 @@ execSync("cp -r ./public/models/package/dist/ ./public/models/imgly/")
 
 console.log("> cleaning up...")
 
-execSync("rm -rf ./public/models/package/dist/ ./public/models/pacakge.*")
+execSync("rm -rf ./public/models/package*")
 
 console.log("> done!")
