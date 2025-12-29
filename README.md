@@ -10,40 +10,26 @@
 
 iLoveMedia is a high-performance, privacy-first web application providing a suite of serverless tools. All processing occurs exclusively within the user's browser using advanced technologies like WebAssembly (WASM), ensuring that sensitive data never leaves the local device.
 
-It is designed for professionals and casual users who need powerful utilities like image conversion, audio processing, or OCR without the privacy risks associated with uploading files to remote servers.
+It is designed for anyone who needs powerful utilities like image conversion, audio processing, or OCR without the privacy risks associated with uploading files to remote servers.
 
 ## Features
 
+> Special thanks to every developer has worked (and still working) on all these amazing opensource projects.
+
 - **Image Tools**:
-    - [x] OCR: Extract text from images.
-    - [x] Background Remover: Remove backgrounds using AI.
-    - [x] QR Studio: Generate custom QR codes.
-    - [x] Emoji Art: Convert text into patterns of emojis.
+    - [x] OCR: Extract text from images using [Tesseract.js](https://github.com/naptha/tesseract.js/) by [@naptha](https://github.com/naptha/)
+    - [x] Background Remover: Remove backgrounds using [imgly/background-removal-js](https://github.com/imgly/background-removal-js) by [@imgly](https://github.com/imgly/)
+    - [x] QR Studio: Generate custom QR codes using [qrcode](http://github.com/soldair/node-qrcode) by [@soldair](http://github.com/soldair/)
+    - [x] Emoji Art: Convert text into patterns of emojis using [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 - **Audio Tools**:
     - [x] Audio Converter: Change formats (e.g., WAV to MP3) using FFmpeg.
-    - [x] Text-to-Speech: High-quality synthesis using system voices or the Kokoro AI model.
+    - [x] Text-to-Speech: High-quality synthesis using [WebSpeech API - Speech synthesis](https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis) and [@diffusionstudio/vits-web](https://github.com/diffusionstudio/vits-web) by [@diffusionstudio](https://github.com/diffusionstudio/) and [@rhasspy](https://github.com/rhasspy/piper)
     - [x] Speech-to-Text: Live transcription via browser API or Whisper AI.
 
-### Architecture
+To run these tools in the browser, the following projects have tremendously made it so easy - a big shoutout to them;
 
-The application follows a modular Vue-based architecture. It is strictly "Serverless" in the sense that it requires no backend logic to function; all heavy lifting is delegated to browser-side libraries and WASM modules.
-
-Below is a list of amazing opensource projects on top of which iLoveMedia is built;
-
-- **Frontend**: [Vue.js 3](https://vuejs.org), [Vite.js](https://vite.dev), [Shadcn-Vue](https://github.com/unovue/shadcn-vue)
-- **Styling**: [TailwindCSS](https://tailwindcss.com)
-- **AI/ML Engines**:
-    - `@imgly/background-removal`: For local image segmentation.
-    - `tesseract.js`: For Optical Character Recognition.
-    - `@xenova/transformers`: For running Whisper (Speech-to-Text) and Kokoro (TTS) models.
-- **Binary Utilities**:
-    - `@ffmpeg/ffmpeg`: Multi-format audio processing via WASM.
-
-### Performance Considerations
-
-- **Lazy Loading**: Heavy AI models (like Whisper or Kokoro) are only initialized when the user selects the corresponding tool.
-- **Memory Management**: `URL.createObjectURL` is used for handling file previews. These are revoked as needed to prevent memory leaks during long sessions.
-- **Worker Threads**: FFmpeg and Transformers.js utilize Web Workers to ensure the main UI thread remains responsive during intensive calculations.
+- Running machine learning models in the browser - [ONNX Runtime - Web](https://github.com/Microsoft/onnxruntime) by [@Microsoft](https://github.com/Microsoft)
+- Running transformers in the browser - [@xenova/transformers](https://github.com/xenova/transformers.js) by [@xenova](https://github.com/xenova/)
 
 ## Project Setup
 
