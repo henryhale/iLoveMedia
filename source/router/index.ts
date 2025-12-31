@@ -55,6 +55,16 @@ const router = createRouter({
 			component: () => import("../views/TextToSpeech.vue"),
 		},
 		{
+			path: "/video-converter",
+			meta: { title: "Video Converter" },
+			component: () => import("../views/VideoConverter.vue"),
+		},
+		{
+			path: "/video-recorder",
+			meta: { title: "Video Recorder" },
+			component: () => import("../views/VideoRecorder.vue"),
+		},
+		{
 			path: "/:pathMatch(.*)*",
 			meta: { title: "Not Found" },
 			component: () => import("../views/AppNotFound.vue"),

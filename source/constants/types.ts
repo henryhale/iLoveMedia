@@ -2,10 +2,8 @@ import type { Component } from "vue"
 
 export enum ToolCategory {
 	IMAGE = "Image",
-	TEXT = "Text",
-	DATA = "Data",
-	SECURITY = "Security",
 	AUDIO = "Audio",
+	VIDEO = "Video",
 }
 
 export interface ToolDef {

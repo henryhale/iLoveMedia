@@ -10,6 +10,8 @@ import {
 	QrCodeIcon,
 	ScissorsIcon,
 	ScanIcon,
+	VideoIcon,
+	FileVideoIcon,
 } from "lucide-vue-next"
 
 export const TOOLS: ToolDef[] = [
@@ -70,6 +72,14 @@ export const TOOLS: ToolDef[] = [
 		category: ToolCategory.AUDIO,
 	},
 	{
+		link: "/audio-converter",
+		id: "audio-converter",
+		name: "Audio Converter",
+		description: "Convert audio formats (MP3, WAV, etc.) locally.",
+		icon: markRaw(MusicIcon),
+		category: ToolCategory.AUDIO,
+	},
+	{
 		link: "/audio-recorder",
 		id: "audio-recorder",
 		name: "Audio Recorder",
@@ -78,11 +88,19 @@ export const TOOLS: ToolDef[] = [
 		category: ToolCategory.AUDIO,
 	},
 	{
-		link: "/audio-converter",
-		id: "audio-converter",
-		name: "Audio Converter",
-		description: "Convert audio formats (MP3, WAV, etc.) using FFmpeg WASM.",
-		icon: markRaw(MusicIcon),
-		category: ToolCategory.AUDIO,
+		link: "/video-converter",
+		id: "video-converter",
+		name: "Video Converter",
+		description: "Convert MP4, MKV, and more locally.",
+		icon: markRaw(FileVideoIcon),
+		category: ToolCategory.VIDEO,
+	},
+	{
+		link: "/video-recorder",
+		id: "video-recorder",
+		name: "Video Recorder",
+		description: "Record pofessional video from your webcam locally.",
+		icon: markRaw(VideoIcon),
+		category: ToolCategory.VIDEO,
 	},
 ]
