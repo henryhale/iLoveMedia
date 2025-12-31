@@ -1,0 +1,99 @@
+import { ref } from "vue"
+import { FFmpeg } from "@ffmpeg/ffmpeg"
+import { fetchFile } from "@ffmpeg/util"
+import { useObjectUrl } from "@vueuse/core"
+import coreURL from "@ffmpeg/core?url"
+import wasmURL from "@ffmpeg/core/wasm?url"
+import classWorkerURL from "@ffmpeg/ffmpeg/worker?url"
+
+export function useFFmpeg() {
+	const isLoaded = ref(false)
+	const isLoading = ref(false)
+	const isConverting = ref(false)
+	const progress = ref(0)
+	const convertedBlob = ref<Blob | null>(null)
+
+	// Automatically manages URL.createObjectURL and revokeObjectURL
+	const convertedURL = useObjectUrl(convertedBlob)
+
+	const ffmpeg = new FFmpeg()
+
+	const load = async () => {
+		if (isLoaded.value) return
+
+		isLoading.value = true
+
+		ffmpeg.on("log", ({ message }) => {
+			console.log("FFmpeg Log:", message)
+		})
+
+		ffmpeg.on("progress", ({ progress: p }) => {
+			progress.value = Math.round(p * 100)
+		})
+
+		try {
+			await ffmpeg.load({
+				coreURL,
+				wasmURL,
+				classWorkerURL,
+			})
+			isLoaded.value = true
+		} catch (err) {
+			console.error("Failed to load FFmpeg:", err)
+			throw err
+		} finally {
+			isLoading.value = false
+		}
+	}
+
+	const convert = async (file: File, targetType: "audio" | "video", targetFormat: string) => {
+		if (!isLoaded.value) {
+			await load()
+			return
+		}
+
+		isConverting.value = true
+		progress.value = 0
+		convertedBlob.value = null
+
+		const inputName = file.name
+		const outputName = `output.${targetFormat}`
+
+		try {
+			// Write file to FFmpeg Virtual File System
+			await ffmpeg.writeFile(inputName, await fetchFile(file))
+
+			// Run Command
+			await ffmpeg.exec(["-i", inputName, outputName])
+
+			// Read Result
+			const data = (await ffmpeg.readFile(outputName)) as BlobPart
+
+			// Update blob (triggers useObjectUrl to generate new URL)
+			convertedBlob.value = new Blob([data], { type: `${targetType}/${targetFormat}` })
+
+			return convertedURL.value
+		} catch (err) {
+			console.error("Conversion failed:", err)
+			throw err
+		} finally {
+			isConverting.value = false
+		}
+	}
+
+	const reset = () => {
+		convertedBlob.value = null
+		progress.value = 0
+	}
+
+	return {
+		isLoaded,
+		isLoading,
+		isConverting,
+		progress,
+		convertedURL,
+		load,
+		convert,
+		reset,
+	}
+}

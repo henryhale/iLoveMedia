@@ -2,6 +2,7 @@
 import { ref, onUnmounted } from "vue"
 import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
+import { downloadFile } from "@/lib/helpers"
 
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
@@ -69,6 +70,10 @@ const resetRecorder = () => {
 	recordingTime.value = 0
 }
 
+const handleDownload = () => {
+	downloadFile(audioURL.value, `audio-recording-${Date.now().toString(16)}.wav`)
+}
+
 onUnmounted(() => {
 	if (timerInterval) clearInterval(timerInterval)
 })
@@ -132,14 +137,10 @@ onUnmounted(() => {
 				<audio controls :src="audioURL" class="w-full"></audio>
 
 				<div class="flex gap-2">
-					<a
-						:href="audioURL"
-						download="recording.webm"
-						class="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
-					>
-						<DownloadIcon class="w-4 h-4" />
-						Download
-					</a>
+					<Button @click="handleDownload" class="w-full max-w-sm" size="lg">
+						<DownloadIcon class="w-5 h-5" />
+						Download Audio
+					</Button>
 					<button
 						@click="resetRecorder"
 						class="px-4 py-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"

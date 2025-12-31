@@ -12,3 +12,11 @@ export function downloadFile(data: Blob | string | null, filename: string) {
 
 	if (data instanceof Blob) URL.revokeObjectURL(a.href)
 }
+
+export function formatSize(bytes: number) {
+	if (bytes === 0) return "0 Bytes"
+	const k = 1024
+	const sizes = ["Bytes", "KB", "MB", "GB"]
+	const i = Math.floor(Math.log(bytes) / Math.log(k))
+	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+}
