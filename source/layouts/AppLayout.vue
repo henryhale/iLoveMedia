@@ -41,7 +41,6 @@ import { RouterLink, useRoute } from "vue-router"
 import { useColorMode } from "@vueuse/core"
 import { computed } from "vue"
 import { ToolCategory, type ToolDef } from "@/constants/types"
-import ToolLayout from "./ToolLayout.vue"
 import SearchBar from "@/components/SearchBar.vue"
 import NavLink from "@/components/NavLink.vue"
 import AppLoader from "@/components/AppLoader.vue"
@@ -230,14 +229,18 @@ const groupedTools = computed(() => {
 						</div>
 					</div>
 
-					<ToolLayout
+					<div
 						v-if="currentTool?.link == route.fullPath"
-						class="animate-in fade-in slide-in-from-bottom-4 duration-500"
+						class="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-5xl mx-auto space-y-6"
 					>
-						<slot>
-							<AppLoader />
-						</slot>
-					</ToolLayout>
+						<div
+							class="rounded-xl border bg-card text-card-foreground shadow-sm p-4 sm:p-8 transition-colors space-y-6"
+						>
+							<slot>
+								<AppLoader />
+							</slot>
+						</div>
+					</div>
 
 					<slot v-else class="animate-in fade-in slide-in-from-bottom-4 duration-500">
 						<AppLoader />

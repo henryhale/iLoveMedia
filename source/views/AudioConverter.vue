@@ -75,7 +75,7 @@ const handleDownload = () => {
 			accept="audio/*"
 			@change="handleFileChange"
 			:icon="MusicIcon"
-			title="Upload an audio file"
+			title="Select an audio file"
 			subtitle="MP3, WAV, AAC, OGG, etc."
 		/>
 

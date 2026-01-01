@@ -77,7 +77,7 @@ const handleDownload = () => {
 			accept="audio/*"
 			@change="handleFileChange"
 			:icon="VideoIcon"
-			title="Upload video file"
+			title="Select video file"
 			subtitle="MP4, MKV, AVI, MOV, WebM"
 		/>
 

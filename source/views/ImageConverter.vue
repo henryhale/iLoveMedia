@@ -105,7 +105,7 @@ const formatSize = (bytes: number) => {
 		@change="handleFileChange"
 		:icon="ImageIcon"
 		title="Drop an image here"
-		subtitle="or click to upload (PNG, JPG, WEBP)"
+		subtitle="or click to select (PNG, JPG, WEBP)"
 	/>
 
 	<!-- Preview & Controls State -->
