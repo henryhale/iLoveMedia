@@ -4,7 +4,7 @@ import { fetchFile } from "@ffmpeg/util"
 import { useObjectUrl } from "@vueuse/core"
 import coreURL from "@ffmpeg/core?url"
 import wasmURL from "@ffmpeg/core/wasm?url"
-import classWorkerURL from "@ffmpeg/ffmpeg/worker?url"
+import classWorkerURL from "@ffmpeg/ffmpeg/worker?worker&url"
 
 export function useFFmpeg() {
 	const isLoaded = ref(false)
