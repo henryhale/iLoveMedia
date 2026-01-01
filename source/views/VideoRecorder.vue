@@ -135,13 +135,7 @@ onUnmounted(() => {
 
 		<!-- Controls -->
 		<div class="flex gap-4 w-full justify-center">
-			<Button
-				v-if="!isRecording"
-				@click="startRecording"
-				:disabled="!stream"
-				size="lg"
-				class="w-full max-w-md"
-			>
+			<Button v-if="!isRecording" @click="startRecording" size="lg" class="w-full max-w-md">
 				<VideoIcon class="size-5" />
 				Start New Recording
 			</Button>

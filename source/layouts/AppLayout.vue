@@ -143,7 +143,7 @@ const groupedTools = computed(() => {
 									<a
 										class="flex-1"
 										target="_blank"
-										href="https://github.com/henryhale/iLoveMedia"
+										href="https://github.com/henryhale/iLoveMedia/blob/master/LICENSE.txt"
 										>License</a
 									>
 									<DropdownMenuShortcut>
@@ -155,7 +155,7 @@ const groupedTools = computed(() => {
 										class="flex-1"
 										target="_blank"
 										href="https://henryhale.github.io/"
-										>Author</a
+										>Author (Henry Hale)</a
 									>
 									<DropdownMenuShortcut>
 										<ArrowUpRightIcon />
@@ -204,9 +204,7 @@ const groupedTools = computed(() => {
 						v-if="currentTool"
 						class="flex items-start lg:items-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500"
 					>
-						<div
-							class="p-3 rounded-xl border shadow-sm bg-card text-primary border-border"
-						>
+						<div class="p-3 rounded-xl border bg-card text-primary border-border">
 							<component :is="currentTool.icon" class="w-6 h-6" />
 						</div>
 						<div>
@@ -234,7 +232,7 @@ const groupedTools = computed(() => {
 						class="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-5xl mx-auto space-y-6"
 					>
 						<div
-							class="rounded-xl border bg-card text-card-foreground shadow-sm p-4 sm:p-8 transition-colors space-y-6"
+							class="rounded-xl border bg-card text-card-foreground px-4 pt-6 pb-4 sm:p-8 transition-colors space-y-6"
 						>
 							<slot>
 								<AppLoader />
