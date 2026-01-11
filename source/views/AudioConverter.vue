@@ -14,7 +14,7 @@ import ProgressDisplay from "@/components/ProgressDisplay.vue"
 
 const file = ref<File | null>(null)
 const targetFormat = ref("mp3")
-const formats = ["mp3", "wav", "aac", "ogg"]
+const formats = ["mp3", "wav", "aac", "ogg", "flac", "m4a", "wma", "opus", "amr", "aiff"]
 
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
