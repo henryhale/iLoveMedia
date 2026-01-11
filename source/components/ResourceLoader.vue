@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
 	<div
-		class="bg-background py-2 px-4 rounded-lg text-sm text-muted-foreground flex items-center gap-3 border border-border"
+		class="bg-primary/20 py-3 px-4 rounded-lg text-sm text-muted-foreground flex items-center gap-3 border border-primary/20"
 	>
 		<RefreshCwIcon v-if="loading" class="w-4 h-4 animate-spin" />
 		<span v-if="loading">{{ textLoading }}</span>

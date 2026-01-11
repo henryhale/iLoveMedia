@@ -12,6 +12,7 @@ import "vue-sonner/style.css"
 			:duration="3000"
 			close-button
 			close-button-position="top-right"
+			theme="system"
 		/>
 	</AppLayout>
 </template>
