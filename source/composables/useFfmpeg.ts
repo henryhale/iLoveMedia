@@ -30,12 +30,13 @@ export function useFFmpeg() {
 
 		ffmpeg.on("progress", ({ progress: p }) => {
 			progress.value = Math.round(p * 100)
-			toast.loading(`${isLoaded.value ? "Processing" : "Loading"}...: ${progress.value}%`, {
+			toast.loading(`Processing...: ${progress.value}%`, {
 				id: "ffmpeg-progress",
 			})
 		})
 
 		try {
+			toast.loading("Loading FFmpeg components...", { id: "ffmpeg-progress" })
 			await ffmpeg.load({
 				coreURL,
 				wasmURL,
@@ -56,7 +57,7 @@ export function useFFmpeg() {
 	const convert = async (file: File, targetType: "audio" | "video", targetFormat: string) => {
 		if (!isLoaded.value) {
 			await load()
-			return
+			if (!isLoaded.value) return
 		}
 
 		isConverting.value = true
