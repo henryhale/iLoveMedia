@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { MusicIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
-import { toast } from "vue-sonner"
 import { useFFmpeg } from "@/composables/useFfmpeg"
 import FilePicker from "@/components/FilePicker.vue"
 import { Label } from "@/components/ui/label"
@@ -19,12 +18,8 @@ const formats = ["mp3", "wav", "aac", "ogg", "flac", "m4a", "wma", "opus", "amr"
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
 
-onMounted(async () => {
-	try {
-		await load()
-	} catch {
-		toast.error("Failed to load FFmpeg components. Check browser security settings.")
-	}
+onMounted(() => {
+	load()
 })
 
 const handleFileChange = (selectedFile: File | undefined) => {
@@ -34,14 +29,9 @@ const handleFileChange = (selectedFile: File | undefined) => {
 	}
 }
 
-const handleConvert = async () => {
+const handleConvert = () => {
 	if (!file.value) return
-	try {
-		await convert(file.value, "audio", targetFormat.value)
-		toast.success("Conversion complete!")
-	} catch {
-		toast.error("Conversion failed. Check browser resource limits.")
-	}
+	convert(file.value, "audio", targetFormat.value)
 }
 
 const handleReset = () => {

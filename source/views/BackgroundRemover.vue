@@ -51,15 +51,19 @@ const handleRemoveBackground = async () => {
 				const percent = Math.round((current / total) * 100)
 				progress.value = percent
 				console.log(`[${key}] ${percent}%`)
+				toast.loading(`Removing background... ${percent}%`, { id: "bg-removal-progress" })
 			},
 		})
 
 		const url = URL.createObjectURL(resultBlob)
 		resultUrl.value = url
+
+		toast.success("Background removal complete!", { id: "bg-removal-progress" })
 	} catch (err) {
 		console.error("Background removal failed:", err)
 		toast.error(
 			"Failed to process image. This tool requires a modern browser and may take a moment to initialize the AI model (~40MB).",
+			{ id: "bg-removal-progress" },
 		)
 	} finally {
 		isProcessing.value = false

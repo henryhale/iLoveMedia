@@ -3,7 +3,6 @@ import { ref, onMounted } from "vue"
 import { VideoIcon, DownloadIcon, RefreshCwIcon, CheckIcon } from "lucide-vue-next"
 import { useFFmpeg } from "@/composables/useFfmpeg"
 import ResourceLoader from "@/components/ResourceLoader.vue"
-import { toast } from "vue-sonner"
 import { downloadFile } from "@/lib/helpers"
 import FilePicker from "@/components/FilePicker.vue"
 import { Label } from "@/components/ui/label"
@@ -20,12 +19,8 @@ const formats = ["mp4", "mkv", "avi", "mov", "webm", "gif", "3gp", "flv", "wmv"]
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
 
-onMounted(async () => {
-	try {
-		await load()
-	} catch {
-		toast.error("Failed to load FFmpeg components. Check browser security settings.")
-	}
+onMounted(() => {
+	load()
 })
 
 const handleFileChange = (selectedFile: File | undefined) => {
@@ -35,14 +30,9 @@ const handleFileChange = (selectedFile: File | undefined) => {
 	}
 }
 
-const handleConvert = async () => {
+const handleConvert = () => {
 	if (!file.value) return
-	try {
-		await convert(file.value, "video", targetFormat.value)
-		toast.success("Conversion complete!")
-	} catch {
-		toast.error("Conversion failed. Check browser resource limits.")
-	}
+	convert(file.value, "video", targetFormat.value)
 }
 
 const handleReset = () => {

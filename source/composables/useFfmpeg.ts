@@ -5,6 +5,7 @@ import { useObjectUrl } from "@vueuse/core"
 import coreURL from "@ffmpeg/core?url"
 import wasmURL from "@ffmpeg/core/wasm?url"
 import classWorkerURL from "@ffmpeg/ffmpeg/worker?worker&url"
+import { toast } from "vue-sonner"
 
 export function useFFmpeg() {
 	const isLoaded = ref(false)
@@ -29,6 +30,9 @@ export function useFFmpeg() {
 
 		ffmpeg.on("progress", ({ progress: p }) => {
 			progress.value = Math.round(p * 100)
+			toast.loading(`${isLoaded.value ? "Processing" : "Loading"}...: ${progress.value}%`, {
+				id: "ffmpeg-progress",
+			})
 		})
 
 		try {
@@ -38,9 +42,12 @@ export function useFFmpeg() {
 				classWorkerURL,
 			})
 			isLoaded.value = true
+			toast.success("FFmpeg loaded successfully!", { id: "ffmpeg-progress" })
 		} catch (err) {
 			console.error("Failed to load FFmpeg:", err)
-			throw err
+			toast.error("Failed to load FFmpeg components. Check browser security settings.", {
+				id: "ffmpeg-progress",
+			})
 		} finally {
 			isLoading.value = false
 		}
@@ -72,10 +79,13 @@ export function useFFmpeg() {
 			// Update blob (triggers useObjectUrl to generate new URL)
 			convertedBlob.value = new Blob([data], { type: `${targetType}/${targetFormat}` })
 
-			return convertedURL.value
+			// Notify user of completion
+			toast.success("Conversion complete!", { id: "ffmpeg-progress" })
 		} catch (err) {
 			console.error("Conversion failed:", err)
-			throw err
+			toast.error("Conversion failed. Check browser resource limits.", {
+				id: "ffmpeg-progress",
+			})
 		} finally {
 			isConverting.value = false
 		}
