@@ -35,6 +35,7 @@ Try it yourself today: [Go to i💙Media website](https://henryhale.github.io/iL
 - **Video Tools**:
     - [x] Video Converter: Change video formats (e.g, MP4 to MKV) using [@ffmpeg/ffmpeg - wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) by [@ffmpegwasm](https://github.com/ffmpegwasm/)
     - [x] Video Recorder: Record videos from your webcam using [WebStream Recording API - Media Recorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder)
+    - [x] Screen Recorder: Record your screen using [WebStream Recording API - Media Recorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder)
 
 To run these tools in the browser, the following projects have tremendously made it so easy - a big shoutout to them;
 

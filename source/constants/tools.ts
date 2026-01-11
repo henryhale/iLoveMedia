@@ -12,6 +12,7 @@ import {
 	ScanIcon,
 	VideoIcon,
 	FileVideoIcon,
+	MonitorDotIcon,
 } from "lucide-vue-next"
 
 export const TOOLS: ToolDef[] = [
@@ -101,6 +102,14 @@ export const TOOLS: ToolDef[] = [
 		name: "Video Recorder",
 		description: "Record pofessional video from your webcam locally.",
 		icon: markRaw(VideoIcon),
+		category: ToolCategory.VIDEO,
+	},
+	{
+		link: "/screen-recorder",
+		id: "screen-recorder",
+		name: "Screen Recorder",
+		description: "Record your screen and download the recording locally.",
+		icon: markRaw(MonitorDotIcon),
 		category: ToolCategory.VIDEO,
 	},
 ]

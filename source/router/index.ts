@@ -65,6 +65,11 @@ const router = createRouter({
 			component: () => import("../views/VideoRecorder.vue"),
 		},
 		{
+			path: "/screen-recorder",
+			meta: { title: "Screen Recorder" },
+			component: () => import("../views/ScreenRecorder.vue"),
+		},
+		{
 			path: "/:pathMatch(.*)*",
 			meta: { title: "Not Found" },
 			component: () => import("../views/AppNotFound.vue"),

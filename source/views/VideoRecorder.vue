@@ -3,7 +3,7 @@ import { ref, watchEffect, onUnmounted } from "vue"
 import { useUserMedia, useIntervalFn, useObjectUrl } from "@vueuse/core"
 import { VideoIcon, StopCircleIcon, DownloadIcon, CameraIcon } from "lucide-vue-next"
 import { Button } from "@/components/ui/button"
-import { downloadFile } from "@/lib/helpers"
+import { downloadFile, formatTime } from "@/lib/helpers"
 import { toast } from "vue-sonner"
 
 const videoRef = ref<HTMLVideoElement | null>(null)
@@ -83,12 +83,6 @@ const reset = () => {
 	recordingTime.value = 0
 }
 
-const formatTime = (seconds: number) => {
-	const mins = Math.floor(seconds / 60)
-	const secs = seconds % 60
-	return `${mins}:${secs.toString().padStart(2, "0")}`
-}
-
 const handleDownload = () => {
 	if (!videoURL.value) return
 	downloadFile(videoURL.value, `video-recording-${Date.now().toString(16)}.webm`)
@@ -96,12 +90,13 @@ const handleDownload = () => {
 
 // Cleanup: Stop all tracks when component unmounts
 onUnmounted(() => {
+	pause()
 	stream.value?.getTracks().forEach((track) => track.stop())
 })
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold mb-6 flex items-center justify-center gap-2 text-foreground">
+	<h2 class="text-xl font-semibold flex items-center justify-center gap-2 text-foreground">
 		<CameraIcon class="size-5 text-primary" />
 		Video Recorder
 	</h2>
