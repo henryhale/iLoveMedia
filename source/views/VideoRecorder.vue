@@ -4,6 +4,7 @@ import { useUserMedia, useIntervalFn, useObjectUrl } from "@vueuse/core"
 import { VideoIcon, StopCircleIcon, DownloadIcon, CameraIcon } from "lucide-vue-next"
 import { Button } from "@/components/ui/button"
 import { downloadFile } from "@/lib/helpers"
+import { toast } from "vue-sonner"
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const isRecording = ref(false)
@@ -12,7 +13,12 @@ const videoBlob = ref<Blob | null>(null)
 
 const videoURL = useObjectUrl(videoBlob)
 
-const { stream, isSupported } = useUserMedia({
+const {
+	start: startStream,
+	stop: stopStream,
+	stream,
+	isSupported,
+} = useUserMedia({
 	constraints: { video: true, audio: true },
 })
 
@@ -35,7 +41,13 @@ const { pause, resume } = useIntervalFn(
 	{ immediate: false },
 )
 
-const startRecording = () => {
+const startRecording = async () => {
+	try {
+		await startStream()
+	} catch {
+		toast.error("Could not access camera/microphone. Please check permissions.")
+	}
+
 	if (!stream.value) return
 
 	chunks = []
@@ -62,6 +74,8 @@ const stopRecording = () => {
 		isRecording.value = false
 		pause()
 	}
+
+	stopStream()
 }
 
 const reset = () => {
@@ -122,7 +136,7 @@ onUnmounted(() => {
 
 			<!-- Permission Loading Overlay -->
 			<div
-				v-if="!stream"
+				v-if="!stream && !videoURL"
 				class="absolute inset-0 font-bold flex items-center justify-center p-8 text-center text-muted-foreground"
 			>
 				<p v-if="isSupported">Waiting for camera permission...</p>
@@ -153,12 +167,7 @@ onUnmounted(() => {
 					<DownloadIcon class="w-5 h-5" />
 					Download Video
 				</Button>
-				<button
-					@click="reset"
-					class="px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 font-bold transition-colors"
-				>
-					Discard
-				</button>
+				<Button @click="reset" variant="outline" size="lg"> Discard </Button>
 			</div>
 		</div>
 	</div>
