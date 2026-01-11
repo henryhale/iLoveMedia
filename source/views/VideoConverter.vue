@@ -15,7 +15,7 @@ import ProgressDisplay from "@/components/ProgressDisplay.vue"
 const file = ref<File | null>(null)
 const targetFormat = ref("mp4")
 
-const formats = ["mp4", "mkv", "avi", "mov"]
+const formats = ["mp4", "mkv", "avi", "mov", "webm", "gif", "3gp", "flv", "wmv"]
 
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
