@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted, useTemplateRef, watchEffect } from "vue"
+import { ref, onUnmounted, useTemplateRef, watchEffect, shallowRef } from "vue"
 import { useDisplayMedia, useIntervalFn, useObjectUrl } from "@vueuse/core"
 import { MonitorIcon, DownloadIcon, PlayIcon, StopCircleIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 const videoRef = useTemplateRef("video")
 const isRecording = ref(false)
 const recordingTime = ref(0)
-const videoBlob = ref<Blob | null>(null)
+const videoBlob = shallowRef<Blob | null>(null)
 
 const videoURL = useObjectUrl(videoBlob)
 
@@ -97,11 +97,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<h2 class="text-xl font-bold flex items-center justify-center gap-2">
-		<MonitorIcon class="size-5 text-primary" />
-		Screen Recorder
-	</h2>
-
 	<div class="flex flex-col items-center space-y-6">
 		<div
 			class="relative w-full aspect-video bg-background rounded-2xl overflow-hidden border border-border shadow-inner group"
@@ -152,7 +147,7 @@ onUnmounted(() => {
 				{{ enabled ? "Start Recording" : "Select Screen & Start" }}
 			</Button>
 
-			<Button v-else @click="stopStream" variant="outline">
+			<Button v-else @click="stopRecording" variant="outline">
 				<StopCircleIcon class="w-5 h-5" />
 				Finish Recording
 			</Button>
