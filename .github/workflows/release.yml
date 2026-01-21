@@ -1,0 +1,50 @@
+name: Release NPM package
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - source/
+            - public/
+
+    workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: git config
+              run: |
+                  git config user.name "${GITHUB_ACTOR}"
+                  git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts
+
+            - uses: pnpm/action-setup@v4
+              name: Install pnpm
+              id: pnpm-install
+              with:
+                  version: 10
+                  cache: true
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build project
+              run: pnpm build
+
+            - name: Release
+              run: pnpx release-it --ci
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
