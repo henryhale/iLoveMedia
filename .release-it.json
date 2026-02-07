@@ -7,7 +7,7 @@
     "changelogFile": "CHANGELOG.md",
     "github": {
         "release": true,
-        "releaseName": "iLoveMedida v${version}",
+        "releaseName": "iLoveMedia v${version}",
         "autoGenerate": true,
         "comments": true,
         "assets": ["dist/**"]
