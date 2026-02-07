@@ -3,7 +3,6 @@ import { ref, onMounted, watch } from "vue"
 import QRCode from "qrcode"
 import { DownloadIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
-import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import {
 	Select,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { downloadFile } from "@/lib/helpers"
+import InputLabel from "@/components/InputLabel.vue"
 
 const PRESET_COLORS = ["#000000", "#4F46E5", "#EF4444", "#10B981", "#F59E0B", "#3B82F6", "#8B5CF6"]
 
@@ -86,25 +86,17 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 		<!-- Controls -->
 		<div class="order-2 lg:order-1 lg:col-span-5 space-y-6">
 			<div>
-				<Label
-					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-				>
-					Content (URL or Text)
-				</Label>
+				<InputLabel> Content (URL or Text) </InputLabel>
 				<Textarea
 					v-model="text"
 					placeholder="https://example.com"
-					class="w-full h-24 p-4 resize-none text-base !bg-background"
+					class="w-full h-24 p-4 resize-none text-base bg-background!"
 				></Textarea>
 			</div>
 
-			<div class="grid grid-cols-2 gap-4">
+			<div class="grid lg:grid-cols-2 gap-4">
 				<div>
-					<Label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-					>
-						Error Correction
-					</Label>
+					<InputLabel> Error Correction </InputLabel>
 					<Select v-model="errorLevel">
 						<SelectTrigger>
 							<SelectValue placeholder="Select error level" />
@@ -118,11 +110,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 					</Select>
 				</div>
 				<div>
-					<Label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-					>
-						Margin ({{ margin }}px)
-					</Label>
+					<InputLabel> Margin ({{ margin }}px) </InputLabel>
 					<input
 						type="range"
 						min="0"
@@ -136,11 +124,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 
 			<div class="space-y-4">
 				<div>
-					<Label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
-					>
-						Foreground Color
-					</Label>
+					<InputLabel> Foreground Color </InputLabel>
 					<div class="flex flex-wrap gap-2 mb-3">
 						<button
 							v-for="c in PRESET_COLORS"
@@ -161,11 +145,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 				</div>
 
 				<div>
-					<Label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
-					>
-						Background Color
-					</Label>
+					<InputLabel> Background Color </InputLabel>
 					<div class="flex flex-wrap gap-2">
 						<button
 							@click="bgColor = '#ffffff'"
@@ -197,11 +177,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 			</div>
 
 			<div class="pt-6 border-t border-border space-y-3">
-				<Label
-					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground"
-				>
-					Download formats
-				</Label>
+				<InputLabel> Download formats </InputLabel>
 				<div class="grid grid-cols-3 gap-2">
 					<Button size="lg" @click="handleDownload('png')">
 						<DownloadIcon class="w-4 h-4" /> PNG

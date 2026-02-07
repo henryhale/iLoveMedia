@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import EmojiPicker from "@/components/EmojiPicker.vue"
 import { useWindowSize } from "@vueuse/core"
 import { toast } from "vue-sonner"
+import InputLabel from "@/components/InputLabel.vue"
 
 const emoji = ref()
 const bgColor = ref("#4F46E5")
@@ -89,11 +90,7 @@ const handleDownload = () => {
 			<!-- Shape & Rotation -->
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<div>
-					<label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-					>
-						Background Shape
-					</label>
+					<InputLabel> Background Shape </InputLabel>
 					<div class="flex bg-muted p-1 rounded-lg">
 						<button
 							@click="shape = 'circle'"
@@ -120,11 +117,7 @@ const handleDownload = () => {
 					</div>
 				</div>
 				<div>
-					<label
-						class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-					>
-						Rotation ({{ rotation }}°)
-					</label>
+					<InputLabel> Rotation ({{ rotation }}°) </InputLabel>
 					<input
 						type="range"
 						min="-180"
@@ -137,11 +130,7 @@ const handleDownload = () => {
 
 			<!-- Background Color -->
 			<div>
-				<label
-					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
-				>
-					Background Color
-				</label>
+				<InputLabel> Background Color </InputLabel>
 				<div class="flex flex-wrap gap-3 mb-3">
 					<button
 						v-for="color in PRESET_COLORS"
@@ -175,11 +164,7 @@ const handleDownload = () => {
 			/>
 
 			<div>
-				<label
-					class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-				>
-					Emoji Size ({{ emojiSize }}px)
-				</label>
+				<InputLabel> Emoji Size ({{ emojiSize }}px) </InputLabel>
 				<input
 					type="range"
 					min="40"

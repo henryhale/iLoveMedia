@@ -14,6 +14,7 @@ import { toast } from "vue-sonner"
 import { downloadFile } from "@/lib/helpers"
 import Worker from "@/constants/vits-web-worker?worker"
 import * as tts from "@diffusionstudio/vits-web"
+import InputLabel from "./InputLabel.vue"
 
 const text = ref("Welcome to iLoveMedia. Your privacy-first workspace.")
 const selectedVoice = ref("en_US-hfc_female-medium")
@@ -118,11 +119,7 @@ function downloadAudio() {
 	<!-- Left Column: Input and Controls -->
 	<div class="lg:col-span-7 space-y-6">
 		<div class="relative">
-			<label
-				class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-			>
-				Input Text
-			</label>
+			<InputLabel>Input Text </InputLabel>
 			<Textarea
 				v-model="text"
 				placeholder="Type something to hear it..."
@@ -150,11 +147,7 @@ function downloadAudio() {
 	<div class="lg:col-span-5 space-y-8">
 		<!-- Voice Selection -->
 		<div>
-			<label
-				class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
-			>
-				AI Voices
-			</label>
+			<InputLabel> AI Voices </InputLabel>
 
 			<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 				<Select v-if="voices.length > 0" v-model="selectedVoice" :disabled="!!isGenerating">

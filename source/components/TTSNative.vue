@@ -12,6 +12,7 @@ import {
 import { useSpeechSynthesis } from "@vueuse/core"
 import { Button } from "./ui/button"
 import { toast } from "vue-sonner"
+import InputLabel from "./InputLabel.vue"
 
 const text = ref("Welcome to iLoveMedia. Your privacy-first workspace.")
 const pitch = ref(1)
@@ -66,11 +67,7 @@ const toggle = () => {
 	<!-- Left Column: Input and Controls -->
 	<div class="lg:col-span-7 space-y-6">
 		<div class="relative">
-			<label
-				class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-			>
-				Input Text
-			</label>
+			<InputLabel> Input Text </InputLabel>
 			<Textarea
 				v-model="text"
 				placeholder="Type something to hear it..."
@@ -107,9 +104,7 @@ const toggle = () => {
 			<div class="space-y-5">
 				<div>
 					<div class="flex justify-between mb-2">
-						<label class="text-xs lg:text-sm font-semibold text-foreground"
-							>Rate (Speed)</label
-						>
+						<InputLabel>Rate (Speed)</InputLabel>
 						<span class="text-xs font-mono text-primary">{{ rate }}x</span>
 					</div>
 					<input
@@ -124,9 +119,7 @@ const toggle = () => {
 
 				<div>
 					<div class="flex justify-between mb-2">
-						<label class="text-xs lg:text-sm font-semibold text-foreground"
-							>Pitch</label
-						>
+						<InputLabel>Pitch</InputLabel>
 						<span class="text-xs font-mono text-primary">{{ pitch }}</span>
 					</div>
 					<input
@@ -141,9 +134,7 @@ const toggle = () => {
 
 				<div>
 					<div class="flex justify-between mb-2">
-						<label class="text-xs lg:text-sm font-semibold text-foreground"
-							>Volume</label
-						>
+						<InputLabel>Volume</InputLabel>
 						<span class="text-xs font-mono text-primary"
 							>{{ Math.round(volume * 100) }}%</span
 						>
@@ -162,11 +153,7 @@ const toggle = () => {
 
 		<!-- Voice Selection -->
 		<div>
-			<label
-				class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3"
-			>
-				System Voices
-			</label>
+			<InputLabel> System Voices </InputLabel>
 
 			<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 				<Select
