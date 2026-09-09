@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue"
+import { ref } from "vue"
+import { useObjectUrl } from "@vueuse/core"
 import { ScanIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import Tesseract from "tesseract.js"
 import { toast } from "vue-sonner"
@@ -28,22 +29,16 @@ const OCR_LANGUAGES = [
 ]
 
 const imageFile = ref<File | null>(null)
-const imageUrl = ref<string | null>(null)
+const imageUrl = useObjectUrl(imageFile)
 const extractedText = ref("")
 const isProcessing = ref(false)
 const progress = ref(0)
 const status = ref("")
 const lang = ref("eng")
 
-onBeforeUnmount(() => {
-	if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
-})
-
 const handleFileChange = (file: File | undefined) => {
 	if (file) {
 		imageFile.value = file
-		if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
-		imageUrl.value = URL.createObjectURL(file)
 		extractedText.value = ""
 		progress.value = 0
 		status.value = ""
@@ -87,7 +82,6 @@ const handleDownload = () => {
 
 const reset = () => {
 	imageFile.value = null
-	imageUrl.value = null
 	extractedText.value = ""
 	isProcessing.value = false
 	progress.value = 0

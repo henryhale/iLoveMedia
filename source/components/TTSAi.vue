@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from "vue"
+import { ref, onMounted } from "vue"
+import { useObjectUrl } from "@vueuse/core"
 import { PlayIcon, RefreshCwIcon, TrashIcon, DownloadIcon } from "lucide-vue-next"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -27,19 +28,7 @@ const progress = ref<tts.Progress>({
 	loaded: 10,
 })
 const audioBlob = ref<Blob>()
-const audio = new Audio()
-
-watchEffect((onCleanup) => {
-	const blob = audioBlob.value
-	if (!(blob instanceof Blob)) return
-	if (audio.src) {
-		URL.revokeObjectURL(audio.src)
-	}
-	const link = URL.createObjectURL(blob)
-	audio.src = link
-	audio.play()
-	onCleanup(() => URL.revokeObjectURL(link))
-})
+const audioUrl = useObjectUrl(audioBlob)
 
 let worker: Worker | null = null
 onMounted(() => {
@@ -174,7 +163,7 @@ function downloadAudio() {
 
 		<!-- Download & Cleanup  -->
 		<div class="flex flex-col lg:flex-row lg:flex-wrap gap-4">
-			<audio v-if="audioBlob" :src="audio.src" controls class="w-full"></audio>
+			<audio v-if="audioUrl" :src="audioUrl" autoplay controls class="w-full"></audio>
 			<Button
 				v-if="audioBlob"
 				@click="downloadAudio"

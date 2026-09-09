@@ -14,10 +14,3 @@ export interface ToolDef {
 	icon: Component
 	category: ToolCategory
 }
-
-export type FileState = {
-	file: File
-	previewUrl: string
-	type: string
-	size: number
-} | null

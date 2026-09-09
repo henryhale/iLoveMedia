@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue"
+import { ref } from "vue"
 import { DownloadIcon, RefreshCwIcon, ImageIcon, CheckIcon } from "lucide-vue-next"
-import { type FileState } from "../constants/types"
+import { useObjectUrl } from "@vueuse/core"
 import FilePicker from "@/components/FilePicker.vue"
 import {
 	Select,
@@ -14,43 +14,27 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { downloadFile } from "@/lib/helpers"
 
-const fileState = ref<FileState>(null)
+const file = ref<File | null>(null)
+const previewUrl = useObjectUrl(file)
 const targetFormat = ref<string>("image/jpeg")
 const quality = ref<number>(0.9)
 const isProcessing = ref(false)
 const showSuccess = ref(false)
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-onBeforeUnmount(() => {
-	if (fileState.value?.previewUrl) {
-		URL.revokeObjectURL(fileState.value.previewUrl)
-	}
-})
-
-const handleFileChange = (file: File | null | undefined) => {
-	if (file) {
-		const currentUrl = fileState.value?.previewUrl
-		if (currentUrl) {
-			URL.revokeObjectURL(currentUrl)
-		}
-		const previewUrl = URL.createObjectURL(file)
-		fileState.value = {
-			file,
-			previewUrl,
-			type: file.type,
-			size: file.size,
-		}
-		showSuccess.value = false
-	}
+const handleFileChange = (selectedFile: File | null | undefined) => {
+	if (!selectedFile) return
+	file.value = selectedFile
+	showSuccess.value = false
 }
 
 const handleConvert = () => {
-	if (!fileState.value || !fileState.value?.previewUrl || !canvasRef.value) return
+	if (!file.value || !previewUrl.value || !canvasRef.value) return
 	isProcessing.value = true
 	showSuccess.value = false
 
 	const img = new Image()
-	img.src = fileState.value.previewUrl
+	img.src = previewUrl.value
 	img.onload = () => {
 		const canvas = canvasRef.value
 		if (!canvas) return
@@ -85,7 +69,7 @@ const handleConvert = () => {
 }
 
 const reset = () => {
-	fileState.value = null
+	file.value = null
 	showSuccess.value = false
 }
 
@@ -100,7 +84,7 @@ const formatSize = (bytes: number) => {
 
 <template>
 	<FilePicker
-		v-if="!fileState"
+		v-if="!file"
 		accept="image/*"
 		@change="handleFileChange"
 		:icon="ImageIcon"
@@ -115,7 +99,7 @@ const formatSize = (bytes: number) => {
 				class="w-full lg:w-1/2 bg-muted rounded-lg p-4 flex items-center justify-center min-h-50"
 			>
 				<img
-					:src="fileState.previewUrl"
+					:src="previewUrl"
 					alt="Preview"
 					class="max-w-full max-h-64 object-contain shadow-sm rounded-md border border-border"
 				/>
@@ -124,10 +108,10 @@ const formatSize = (bytes: number) => {
 			<div class="w-full lg:w-1/2 space-y-4">
 				<div>
 					<h3 class="font-medium text-foreground truncate">
-						{{ fileState.file.name }}
+						{{ file.name }}
 					</h3>
 					<p class="text-sm text-muted-foreground">
-						{{ formatSize(fileState.size) }} • {{ fileState.type }}
+						{{ formatSize(file.size) }} • {{ file.type }}
 					</p>
 				</div>
 

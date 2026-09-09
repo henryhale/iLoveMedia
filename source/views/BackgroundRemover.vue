@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue"
+import { ref } from "vue"
+import { useObjectUrl } from "@vueuse/core"
 import { ScissorsIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import { removeBackground } from "@imgly/background-removal"
 import { toast } from "vue-sonner"
@@ -10,24 +11,17 @@ import FilePicker from "@/components/FilePicker.vue"
 import { downloadFile } from "@/lib/helpers"
 
 const originalFile = ref<File | null>(null)
-const originalUrl = ref<string | null>(null)
-const resultUrl = ref<string | null>(null)
+const originalUrl = useObjectUrl(originalFile)
+const resultBlob = ref<Blob | null>(null)
+const resultUrl = useObjectUrl(resultBlob)
 const isProcessing = ref(false)
 const progress = ref(0)
-
-onBeforeUnmount(() => {
-	if (originalUrl.value) URL.revokeObjectURL(originalUrl.value)
-	if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
-})
 
 // Methods
 const handleFileChange = (file: File | undefined) => {
 	if (file) {
-		if (originalUrl.value) URL.revokeObjectURL(originalUrl.value)
-		if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
 		originalFile.value = file
-		originalUrl.value = URL.createObjectURL(file)
-		resultUrl.value = null
+		resultBlob.value = null
 		progress.value = 0
 	}
 }
@@ -45,7 +39,7 @@ const handleRemoveBackground = async () => {
 	progress.value = 0
 
 	try {
-		const resultBlob = await removeBackground(originalUrl.value, {
+		const result = await removeBackground(originalUrl.value, {
 			publicPath: window.location.origin + window.location.pathname + "/models/imgly/",
 			progress: (key, current, total) => {
 				const percent = Math.round((current / total) * 100)
@@ -55,8 +49,7 @@ const handleRemoveBackground = async () => {
 			},
 		})
 
-		const url = URL.createObjectURL(resultBlob)
-		resultUrl.value = url
+		resultBlob.value = result
 
 		toast.success("Background removal complete!", { id: "bg-removal-progress" })
 	} catch (err) {
@@ -75,11 +68,8 @@ const handleDownload = () => {
 }
 
 const reset = () => {
-	if (originalUrl.value) URL.revokeObjectURL(originalUrl.value)
-	if (resultUrl.value) URL.revokeObjectURL(resultUrl.value)
 	originalFile.value = null
-	originalUrl.value = null
-	resultUrl.value = null
+	resultBlob.value = null
 	isProcessing.value = false
 	progress.value = 0
 }
