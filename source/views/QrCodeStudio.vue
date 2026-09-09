@@ -22,7 +22,6 @@ const fgColor = ref("#000000")
 const bgColor = ref("#ffffff")
 const errorLevel = ref<"L" | "M" | "Q" | "H">("M")
 const margin = ref(4)
-const isDownloading = ref(false)
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
@@ -48,7 +47,6 @@ watch([text, fgColor, bgColor, errorLevel, margin], generateQr)
 onMounted(generateQr)
 
 const handleDownload = async (format: "png" | "jpeg" | "svg") => {
-	isDownloading.value = true
 	const canvas = canvasRef.value
 	if (!canvas) return
 
@@ -70,8 +68,6 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 		const url = canvas.toDataURL(mimeType, 1.0)
 		downloadFile(url, `qrcode-${Date.now().toString(16)}.${format}`)
 	}
-
-	setTimeout(() => (isDownloading.value = false), 800)
 }
 </script>
 
