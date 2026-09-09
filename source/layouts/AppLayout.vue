@@ -40,7 +40,6 @@ import { TOOLS } from "../constants/tools"
 import { RouterLink, useRoute } from "vue-router"
 import { useColorMode } from "@vueuse/core"
 import { computed } from "vue"
-import { ToolCategory, type ToolDef } from "@/constants/types"
 import SearchBar from "@/components/SearchBar.vue"
 import NavLink from "@/components/NavLink.vue"
 import AppLoader from "@/components/AppLoader.vue"
@@ -52,19 +51,7 @@ const currentTool = computed(() => {
 	return TOOLS.find((tool) => tool.link === route.path)
 })
 
-const groupedTools = computed(() => {
-	const groups: Record<string, ToolDef[]> = {}
-	const categories = Object.values(ToolCategory)
-
-	categories.forEach((cat) => {
-		const categoryTools = TOOLS.filter((t) => t.category === cat)
-		if (categoryTools.length > 0) {
-			groups[cat] = categoryTools
-		}
-	})
-
-	return groups
-})
+const groupedTools = Object.groupBy(TOOLS, ({ category }) => category)
 </script>
 
 <template>
