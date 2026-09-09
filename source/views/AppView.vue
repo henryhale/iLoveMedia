@@ -32,7 +32,7 @@ import { TOOLS } from "../constants/tools"
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				<RouterLink
 					v-for="tool in TOOLS"
-					:key="tool.id"
+					:key="tool.link"
 					:to="tool.link"
 					class="z-10 group flex flex-col h-full rounded-xl border border-border bg-card p-6 text-card-foreground transition-all hover:border-primary/50 hover:shadow-md hover:bg-transparent hover:backdrop-filter hover:backdrop-blur-sm"
 				>

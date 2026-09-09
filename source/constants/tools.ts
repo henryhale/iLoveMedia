@@ -18,7 +18,6 @@ import {
 export const TOOLS: ToolDef[] = [
 	{
 		link: "/image-to-text-ocr",
-		id: "image-to-text-ocr",
 		name: "Image to Text (OCR)",
 		description: "Convert scanned documents and images into editable text using AI.",
 		icon: markRaw(ScanIcon),
@@ -26,7 +25,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/background-remover",
-		id: "background-remover",
 		name: "Background Remover",
 		description: "AI-powered background removal directly in your browser.",
 		icon: markRaw(ScissorsIcon),
@@ -34,7 +32,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/image-converter",
-		id: "image-converter",
 		name: "Image Converter",
 		description: "Convert images to PNG, JPEG, or WEBP instantly in your browser.",
 		icon: markRaw(ImageIcon),
@@ -42,7 +39,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/qr-code-studio",
-		id: "qr-code-studio",
 		name: "QR Code Studio",
 		description: "Create high-resolution QR codes with custom colors and formats.",
 		icon: markRaw(QrCodeIcon),
@@ -50,7 +46,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/profile-picture-creator",
-		id: "/profile-picture-creator",
 		name: "Profile Pic Creator",
 		description: "Create unique emoji avatars with custom backgrounds and shapes.",
 		icon: markRaw(UserIcon),
@@ -58,7 +53,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/text-to-speech",
-		id: "text-to-speech",
 		name: "Text to Speech",
 		description: "Convert written text into natural human speech using local AI.",
 		icon: markRaw(Volume2Icon),
@@ -66,7 +60,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/speech-to-text",
-		id: "/speech-to-text",
 		name: "Speech to Text",
 		description: "Transcribe your voice recordings into text accurately in real-time.",
 		icon: markRaw(WavesIcon),
@@ -74,7 +67,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/audio-converter",
-		id: "audio-converter",
 		name: "Audio Converter",
 		description: "Convert audio formats (MP3, WAV, etc.) locally.",
 		icon: markRaw(MusicIcon),
@@ -82,7 +74,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/audio-recorder",
-		id: "audio-recorder",
 		name: "Audio Recorder",
 		description: "Record audio from your microphone and download locally.",
 		icon: markRaw(MicIcon),
@@ -90,7 +81,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/video-converter",
-		id: "video-converter",
 		name: "Video Converter",
 		description: "Convert MP4, MKV, and more locally.",
 		icon: markRaw(FileVideoIcon),
@@ -98,7 +88,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/video-recorder",
-		id: "video-recorder",
 		name: "Video Recorder",
 		description: "Record pofessional video from your webcam locally.",
 		icon: markRaw(VideoIcon),
@@ -106,7 +95,6 @@ export const TOOLS: ToolDef[] = [
 	},
 	{
 		link: "/screen-recorder",
-		id: "screen-recorder",
 		name: "Screen Recorder",
 		description: "Record your screen and download the recording locally.",
 		icon: markRaw(MonitorDotIcon),

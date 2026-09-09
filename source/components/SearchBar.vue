@@ -50,7 +50,7 @@ const filteredTools = computed(() => {
 		</PopoverTrigger>
 		<PopoverContent class="mt-2">
 			<ItemGroup v-if="searchQuery.length && filteredTools.length">
-				<template v-for="(tool, index) in filteredTools" :key="tool.id">
+				<template v-for="(tool, index) in filteredTools" :key="tool.link">
 					<Item class="hover:text-primary" @click="searchQuery = ''">
 						<RouterLink :to="tool.link">
 							<ItemContent class="gap-1">

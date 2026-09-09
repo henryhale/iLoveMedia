@@ -92,7 +92,7 @@ const groupedTools = Object.groupBy(TOOLS, ({ category }) => category)
 					<SidebarGroupLabel>{{ group }}</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							<NavLink v-for="tool in tools" :key="tool.id" :tool="tool"> </NavLink>
+							<NavLink v-for="tool in tools" :key="tool.link" :tool="tool"> </NavLink>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
