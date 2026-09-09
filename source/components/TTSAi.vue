@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { useObjectUrl } from "@vueuse/core"
 import { PlayIcon, RefreshCwIcon, TrashIcon, DownloadIcon } from "lucide-vue-next"
 import { Textarea } from "@/components/ui/textarea"
@@ -30,67 +30,48 @@ const progress = ref<tts.Progress>({
 const audioBlob = ref<Blob>()
 const audioUrl = useObjectUrl(audioBlob)
 
-let worker: Worker | null = null
-onMounted(() => {
-	worker = new Worker()
+type WorkerMessage =
+	| { type: "voices"; voices: { key: string }[] }
+	| { type: "flushed" }
+	| { type: "error"; message: string }
+	| { type: "progress"; progress: tts.Progress }
+	| { type: "result"; audio: Blob }
 
-	// voices
-	worker.postMessage({ type: "voices" })
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "voices"; voices: { key: string }[] }>) => {
-			if (event.data.type !== "voices") return
-			voices.value = event.data.voices
-		},
-	)
-
-	// clear cache
-	worker.addEventListener("message", (event: MessageEvent<{ type: "flushed" }>) => {
-		if (event.data.type !== "flushed") return
-		isFlushing.value = false
-	})
-
-	// error
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "error"; message: string }>) => {
-			if (event.data.type !== "error") return
+const worker = new Worker()
+worker.postMessage({ type: "voices" })
+worker.onmessage = ({ data }: MessageEvent<WorkerMessage>) => {
+	switch (data.type) {
+		case "voices":
+			voices.value = data.voices
+			break
+		case "flushed":
+			isFlushing.value = false
+			break
+		case "error":
 			isGenerating.value = false
-			toast.error(event.data.message)
-			console.error(event.data.message)
-		},
-	)
+			toast.error(data.message)
+			console.error(data.message)
+			break
+		case "progress":
+			progress.value = data.progress
+			break
+		case "result":
+			audioBlob.value = data.audio
+			isGenerating.value = false
+	}
+}
 
-	// progress
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "progress"; progress: tts.Progress }>) => {
-			if (event.data.type !== "progress") return
-			progress.value = event.data.progress
-		},
-	)
-
-	// result
-	worker.addEventListener("message", (event: MessageEvent<{ type: "result"; audio: Blob }>) => {
-		if (event.data.type != "result") return
-		audioBlob.value = event.data.audio
-		isGenerating.value = false
-	})
-})
-
-async function flushStorage() {
+function flushStorage() {
 	if (isFlushing.value) return
-	const mainWorker = worker ?? new Worker()
-	mainWorker.postMessage({ type: "flush" })
+	worker.postMessage({ type: "flush" })
 	isFlushing.value = true
 	setTimeout(() => {
 		window.location.reload()
 	}, 2000)
 }
 
-async function generate() {
-	const mainWorker = worker ?? new Worker()
-	mainWorker.postMessage({
+function generate() {
+	worker.postMessage({
 		type: "init",
 		text: text.value,
 		voiceId: selectedVoice.value || "en_US-hfc_female-medium",
