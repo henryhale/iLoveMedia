@@ -2,7 +2,7 @@
 import { ref, onUnmounted } from "vue"
 import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
-import { downloadFile } from "@/lib/helpers"
+import { downloadFile, formatTime } from "@/lib/helpers"
 
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
@@ -11,13 +11,6 @@ const recordingTime = ref(0)
 const mediaRecorderRef = ref<MediaRecorder | null>(null)
 const chunksRef = ref<Blob[]>([])
 let timerInterval: number | null = null
-
-// Helper: Format Time
-const formatTime = (seconds: number) => {
-	const mins = Math.floor(seconds / 60)
-	const secs = seconds % 60
-	return `${mins}:${secs.toString().padStart(2, "0")}`
-}
 
 // Methods
 const startRecording = async () => {

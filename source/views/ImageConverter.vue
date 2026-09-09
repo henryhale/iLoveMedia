@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { downloadFile } from "@/lib/helpers"
+import { downloadFile, formatSize } from "@/lib/helpers"
 
 const file = ref<File | null>(null)
 const previewUrl = useObjectUrl(file)
@@ -73,13 +73,6 @@ const reset = () => {
 	showSuccess.value = false
 }
 
-const formatSize = (bytes: number) => {
-	if (bytes === 0) return "0 Bytes"
-	const k = 1024
-	const sizes = ["Bytes", "KB", "MB", "GB"]
-	const i = Math.floor(Math.log(bytes) / Math.log(k))
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-}
 </script>
 
 <template>
