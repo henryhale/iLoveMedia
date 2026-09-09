@@ -42,7 +42,6 @@ import { useColorMode } from "@vueuse/core"
 import { computed } from "vue"
 import SearchBar from "@/components/SearchBar.vue"
 import NavLink from "@/components/NavLink.vue"
-import AppLoader from "@/components/AppLoader.vue"
 
 const mode = useColorMode()
 const route = useRoute()
@@ -221,15 +220,11 @@ const groupedTools = Object.groupBy(TOOLS, ({ category }) => category)
 						<div
 							class="rounded-xl border bg-card text-card-foreground px-4 pt-6 pb-4 sm:p-8 transition-colors space-y-6"
 						>
-							<slot>
-								<AppLoader />
-							</slot>
+							<slot />
 						</div>
 					</div>
 
-					<slot v-else class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-						<AppLoader />
-					</slot>
+					<slot v-else class="animate-in fade-in slide-in-from-bottom-4 duration-500" />
 				</div>
 
 				<div
