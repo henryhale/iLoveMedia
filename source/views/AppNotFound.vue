@@ -1,5 +1,3 @@
-<script lang="ts"></script>
-
 <template>
 	<div
 		class="flex flex-col items-center justify-center h-full space-y-4 p-4 text-center min-h-[50vh]"

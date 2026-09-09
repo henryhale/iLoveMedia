@@ -53,9 +53,6 @@ const filteredTools = computed(() => {
 				<template v-for="(tool, index) in filteredTools" :key="tool.id">
 					<Item class="hover:text-primary" @click="searchQuery = ''">
 						<RouterLink :to="tool.link">
-							<!-- <ItemMedia>
-                            <component :is="tool.icon"></component>
-                        </ItemMedia> -->
 							<ItemContent class="gap-1">
 								<ItemTitle>{{ tool.name }}</ItemTitle>
 								<ItemDescription>{{ tool.description }}</ItemDescription>
