@@ -11,15 +11,8 @@ const sidebar = useSidebar()
 
 <template>
 	<SidebarMenuItem>
-		<SidebarMenuButton as-child>
-			<RouterLink
-				:to="tool.link"
-				@click="sidebar.isMobile && sidebar.setOpenMobile(false)"
-				:class="{
-					'text-primary dark:text-current dark:bg-background':
-						tool.link == route.fullPath,
-				}"
-			>
+		<SidebarMenuButton as-child :is-active="tool.link === route.fullPath">
+			<RouterLink :to="tool.link" @click="sidebar.isMobile && sidebar.setOpenMobile(false)">
 				<component :is="tool.icon"></component>
 				<span>{{ tool.name }}</span>
 			</RouterLink>
