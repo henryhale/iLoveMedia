@@ -37,9 +37,7 @@ const loadNativeVoices = () => {
 	window.speechSynthesis.onvoiceschanged = loadNativeVoices
 }
 
-onMounted(() => {
-	loadNativeVoices()
-})
+onMounted(loadNativeVoices)
 
 onUnmounted(() => {
 	if (tts.isSupported) {

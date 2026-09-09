@@ -44,14 +44,8 @@ const generateQr = async () => {
 	}
 }
 
-watch([text, fgColor, bgColor, errorLevel, margin], () => {
-	generateQr()
-})
-
-// Initial draw
-onMounted(() => {
-	generateQr()
-})
+watch([text, fgColor, bgColor, errorLevel, margin], generateQr)
+onMounted(generateQr)
 
 const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 	isDownloading.value = true

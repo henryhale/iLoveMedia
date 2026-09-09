@@ -18,9 +18,7 @@ const formats = ["mp3", "wav", "aac", "ogg", "flac", "m4a", "wma", "opus", "amr"
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
 
-onMounted(() => {
-	load()
-})
+onMounted(load)
 
 const handleFileChange = (selectedFile: File | undefined) => {
 	if (selectedFile) {

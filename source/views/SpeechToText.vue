@@ -1,6 +1,6 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from "vue"
+import { ref, onUnmounted, watch } from "vue"
 import {
 	WavesIcon,
 	MicIcon,
@@ -95,14 +95,7 @@ const initNativeSpeech = () => {
 	}
 }
 
-// Watch for engine/lang changes to re-init native recognition
-watch([selectedLang, engine], () => {
-	initNativeSpeech()
-})
-
-onMounted(() => {
-	initNativeSpeech()
-})
+watch([selectedLang, engine], initNativeSpeech, { immediate: true })
 
 onUnmounted(() => {
 	if (recognitionRef.value) recognitionRef.value.stop()

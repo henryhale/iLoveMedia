@@ -19,9 +19,7 @@ const formats = ["mp4", "mkv", "avi", "mov", "webm", "gif", "3gp", "flv", "wmv"]
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
 
-onMounted(() => {
-	load()
-})
+onMounted(load)
 
 const handleFileChange = (selectedFile: File | undefined) => {
 	if (selectedFile) {

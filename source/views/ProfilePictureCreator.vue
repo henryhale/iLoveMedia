@@ -55,13 +55,8 @@ const drawAvatar = () => {
 	ctx.restore()
 }
 
-onMounted(() => {
-	drawAvatar()
-})
-
-watch([emoji, bgColor, shape, emojiSize, rotation], () => {
-	drawAvatar()
-})
+onMounted(drawAvatar)
+watch([emoji, bgColor, shape, emojiSize, rotation], drawAvatar)
 
 const handleDownload = () => {
 	const canvas = canvasRef.value
