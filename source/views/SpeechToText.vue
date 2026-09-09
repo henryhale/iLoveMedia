@@ -5,7 +5,6 @@ import {
 	WavesIcon,
 	MicIcon,
 	CircleStopIcon,
-	CopyIcon,
 	CheckIcon,
 	RefreshCwIcon,
 } from "lucide-vue-next"
@@ -18,6 +17,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
+import CopyButton from "@/components/CopyButton.vue"
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -39,7 +39,6 @@ const isListening = ref(false)
 const transcription = ref("")
 const interimResult = ref("")
 const selectedLang = ref("en")
-const copied = ref(false)
 
 // Whisper Specific State
 const isModelLoading = ref(false)
@@ -235,12 +234,6 @@ const handleToggleListening = () => {
 	}
 }
 
-const handleCopy = () => {
-	navigator.clipboard.writeText(transcription.value)
-	copied.value = true
-	setTimeout(() => (copied.value = false), 2000)
-}
-
 const clear = () => {
 	transcription.value = ""
 	interimResult.value = ""
@@ -403,15 +396,7 @@ const clear = () => {
 					Result Console
 				</label>
 				<div class="flex gap-4">
-					<button
-						v-if="transcription"
-						@click="handleCopy"
-						class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
-					>
-						<CheckIcon v-if="copied" class="w-3 h-3" />
-						<CopyIcon v-else class="w-3 h-3" />
-						{{ copied ? "Copied" : "Copy" }}
-					</button>
+					<CopyButton v-if="transcription" :source="transcription" />
 					<button
 						@click="clear"
 						class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-destructive"
