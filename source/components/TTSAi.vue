@@ -17,7 +17,7 @@ import Worker from "@/constants/vits-web-worker?worker"
 import * as tts from "@diffusionstudio/vits-web"
 import InputLabel from "./InputLabel.vue"
 
-const text = ref("Welcome to iLoveMedia. Your privacy-first workspace.")
+const text = ref("Welcome to iLoveMedia. What would you like me to read?")
 const selectedVoice = ref("en_US-hfc_female-medium")
 const voices = ref<{ key: string }[]>([])
 const isFlushing = ref(false)
@@ -117,7 +117,7 @@ function downloadAudio() {
 	<div class="lg:col-span-5 space-y-8">
 		<!-- Voice Selection -->
 		<div>
-			<InputLabel> AI Voices </InputLabel>
+			<InputLabel> Choose a voice </InputLabel>
 
 			<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 				<Select v-if="voices.length > 0" v-model="selectedVoice" :disabled="!!isGenerating">
@@ -137,7 +137,7 @@ function downloadAudio() {
 					</SelectContent>
 				</Select>
 				<p v-else class="text-xs lg:text-sm text-muted-foreground italic p-4 text-center">
-					No AI voices found.
+					Voices are still loading.
 				</p>
 			</div>
 		</div>
@@ -163,7 +163,7 @@ function downloadAudio() {
 				size="lg"
 			>
 				<TrashIcon class="w-5 h-5" />
-				{{ isFlushing ? "Deleting cached data..." : "Flush cached data" }}
+				{{ isFlushing ? "Clearing voices..." : "Clear downloaded voices" }}
 			</Button>
 		</div>
 	</div>

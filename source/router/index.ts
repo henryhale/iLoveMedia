@@ -11,7 +11,7 @@ const router = createRouter({
 		},
 		{
 			path: "/audio-recorder",
-			meta: { title: "Audio Recoder" },
+			meta: { title: "Audio Recorder" },
 			component: () => import("../views/AudioRecorder.vue"),
 		},
 		{
@@ -31,17 +31,17 @@ const router = createRouter({
 		},
 		{
 			path: "/image-to-text-ocr",
-			meta: { title: "Image to Text (OCR)" },
+			meta: { title: "Image to Text" },
 			component: () => import("../views/ImageToText.vue"),
 		},
 		{
 			path: "/profile-picture-creator",
-			meta: { title: "Profile Pic Creator" },
+			meta: { title: "Profile Picture Maker" },
 			component: () => import("../views/ProfilePictureCreator.vue"),
 		},
 		{
 			path: "/qr-code-studio",
-			meta: { title: "QR Code Studio" },
+			meta: { title: "QR Code Maker" },
 			component: () => import("../views/QrCodeStudio.vue"),
 		},
 		{

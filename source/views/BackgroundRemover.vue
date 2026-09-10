@@ -30,8 +30,8 @@ const handleRemoveBackground = async () => {
 	if (!originalUrl.value) {
 		isProcessing.value = false
 		progress.value = 0
-		console.error("Failed to generate image path")
-		toast.error("Failed to generate image path")
+		console.error("No image selected")
+		toast.error("Choose an image first.")
 		return
 	}
 
@@ -54,10 +54,9 @@ const handleRemoveBackground = async () => {
 		toast.success("Background removal complete!", { id: "bg-removal-progress" })
 	} catch (err) {
 		console.error("Background removal failed:", err)
-		toast.error(
-			"Failed to process image. This tool requires a modern browser and may take a moment to initialize the AI model (~40MB).",
-			{ id: "bg-removal-progress" },
-		)
+		toast.error("We couldn't process this image. Try a smaller image or another browser.", {
+			id: "bg-removal-progress",
+		})
 	} finally {
 		isProcessing.value = false
 	}
@@ -98,7 +97,7 @@ const features = [
 		:icon="ImageIcon"
 		accept="image/*"
 		title="Drop your image here"
-		subtitle="or click to browse local files"
+		subtitle="Choose an image or drag it here"
 		footer="Supports PNG, JPG, WEBP"
 	/>
 
@@ -124,8 +123,8 @@ const features = [
 						class="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center text-foreground"
 					>
 						<RefreshCwIcon class="w-10 h-10 animate-spin mb-4 text-primary" />
-						<p class="font-bold">Analyzing pixels...</p>
-						<p class="text-xs text-muted-foreground">{{ progress }}% Complete</p>
+						<p class="font-bold">Removing background...</p>
+						<p class="text-xs text-muted-foreground">{{ progress }}% complete</p>
 						<div class="w-48 h-1.5 bg-secondary rounded-full mt-4 overflow-hidden">
 							<div
 								class="h-full bg-primary transition-all duration-300"
@@ -139,7 +138,7 @@ const features = [
 			<!-- Right Side: Result -->
 			<div class="space-y-3">
 				<label class="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-					Result (Transparent)
+					Background removed
 				</label>
 				<div
 					class="aspect-square pattern-checkered bg-muted/50 rounded-2xl border border-border overflow-hidden flex items-center justify-center"
@@ -152,7 +151,9 @@ const features = [
 					/>
 					<div v-else class="text-center p-8">
 						<ScissorsIcon class="w-12 h-12 text-muted/50 mx-auto mb-4" />
-						<p class="text-sm text-muted-foreground font-medium">Ready to process</p>
+						<p class="text-sm text-muted-foreground font-medium">
+							Your result will appear here
+						</p>
 					</div>
 				</div>
 			</div>
@@ -179,7 +180,7 @@ const features = [
 				class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
 			>
 				<DownloadIcon class="w-5 h-5" />
-				Download Transparent PNG
+				Download image
 			</Button>
 
 			<Button @click="reset" :disabled="isProcessing" variant="secondary">

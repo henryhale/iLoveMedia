@@ -110,8 +110,8 @@ const reset = () => {
 
 				<div class="space-y-3">
 					<div>
-						<Label class="block text-sm font-medium text-foreground mb-1.5"
-							>Target Format</Label
+					<Label class="block text-sm font-medium text-foreground mb-1.5"
+							>Save as</Label
 						>
 						<Select v-model="targetFormat">
 							<SelectTrigger>

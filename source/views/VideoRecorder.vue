@@ -134,10 +134,9 @@ onUnmounted(() => {
 				v-if="!stream && !videoURL"
 				class="absolute inset-0 font-bold flex items-center justify-center p-8 text-center text-muted-foreground"
 			>
-				<p v-if="isSupported">Waiting for camera permission...</p>
+				<p v-if="isSupported">Allow camera and microphone access to begin.</p>
 				<p v-else>
-					Video recording not supported. <br />
-					Check permissions or try another browser.
+					Video recording isn't available in this browser.
 				</p>
 			</div>
 		</div>
@@ -146,12 +145,12 @@ onUnmounted(() => {
 		<div class="flex gap-4 w-full justify-center">
 			<Button v-if="!isRecording" @click="startRecording" size="lg" class="w-full max-w-md">
 				<VideoIcon class="size-5" />
-				Start New Recording
+				Start recording
 			</Button>
 
 			<Button v-else @click="stopRecording" variant="secondary">
 				<StopCircleIcon class="size-5" />
-				Stop & Save
+				Stop recording
 			</Button>
 		</div>
 

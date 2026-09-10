@@ -50,7 +50,7 @@ const handleOcr = async () => {
 
 	isProcessing.value = true
 	progress.value = 0
-	status.value = "Initializing Tesseract..."
+	status.value = "Getting ready..."
 
 	try {
 		const {
@@ -130,7 +130,7 @@ const features = [
 		:icon="ImageIcon"
 		title="Drop image with text here"
 		subtitle="or click to browse documents, photos, or screenshots"
-		footer="Fast Local OCR"
+		footer="Clear images work best"
 	/>
 
 	<!-- Preview & Result -->
@@ -200,7 +200,7 @@ const features = [
 						class="absolute inset-0 bg-background flex flex-col items-center justify-center pointer-events-none opacity-30 rounded-2xl text-foreground"
 					>
 						<ScanIcon class="w-12 h-12 mb-2" />
-						<p class="text-xs uppercase tracking-widest font-bold">Waiting for scan</p>
+						<p class="text-xs font-bold">Your text will appear here</p>
 					</div>
 				</div>
 			</div>

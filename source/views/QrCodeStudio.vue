@@ -76,7 +76,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 		<!-- Controls -->
 		<div class="order-2 lg:order-1 lg:col-span-5 space-y-6">
 			<div>
-				<InputLabel> Content (URL or Text) </InputLabel>
+				<InputLabel> Text or link </InputLabel>
 				<Textarea
 					v-model="text"
 					placeholder="https://example.com"
@@ -86,21 +86,21 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 
 			<div class="grid lg:grid-cols-2 gap-4">
 				<div>
-					<InputLabel> Error Correction </InputLabel>
+					<InputLabel> Scan reliability </InputLabel>
 					<Select v-model="errorLevel">
 						<SelectTrigger>
 							<SelectValue placeholder="Select error level" />
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="L">Low (7%)</SelectItem>
-							<SelectItem value="M">Medium (15%)</SelectItem>
-							<SelectItem value="Q">Quartile (25%)</SelectItem>
-							<SelectItem value="H">High (30%)</SelectItem>
+							<SelectItem value="L">Low</SelectItem>
+							<SelectItem value="M">Balanced</SelectItem>
+							<SelectItem value="Q">Strong</SelectItem>
+							<SelectItem value="H">Maximum</SelectItem>
 						</SelectContent>
 					</Select>
 				</div>
 				<div>
-					<InputLabel> Margin ({{ margin }}px) </InputLabel>
+					<InputLabel> White space ({{ margin }}px) </InputLabel>
 					<input
 						type="range"
 						min="0"
@@ -167,7 +167,7 @@ const handleDownload = async (format: "png" | "jpeg" | "svg") => {
 			</div>
 
 			<div class="pt-6 border-t border-border space-y-3">
-				<InputLabel> Download formats </InputLabel>
+				<InputLabel> Download as </InputLabel>
 				<div class="grid grid-cols-3 gap-2">
 					<Button size="lg" @click="handleDownload('png')">
 						<DownloadIcon class="w-4 h-4" /> PNG

@@ -14,7 +14,7 @@ import { Button } from "./ui/button"
 import { toast } from "vue-sonner"
 import InputLabel from "./InputLabel.vue"
 
-const text = ref("Welcome to iLoveMedia. Your privacy-first workspace.")
+const text = ref("Welcome to iLoveMedia. What would you like me to read?")
 const pitch = ref(1)
 const rate = ref(1)
 const volume = ref(1)
@@ -51,11 +51,11 @@ const toggle = () => {
 		tts.stop()
 	} else {
 		if (!tts.isSupported.value) {
-			toast.error("Oh no! Your browser does not support speech synthesis.")
+			toast.error("Speech playback isn't available in this browser.")
 		} else if (nativeVoices.value.length > 0) {
 			if (text.value) tts.speak()
 		} else {
-			toast.error("Sorry, no system voices detected.")
+			toast.error("No voices are available on this device.")
 		}
 	}
 }
@@ -96,13 +96,13 @@ const toggle = () => {
 			<h3
 				class="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2"
 			>
-				Parameters
+				Voice settings
 			</h3>
 
 			<div class="space-y-5">
 				<div>
 					<div class="flex justify-between mb-2">
-						<InputLabel>Rate (Speed)</InputLabel>
+						<InputLabel>Speed</InputLabel>
 						<span class="text-xs font-mono text-primary">{{ rate }}x</span>
 					</div>
 					<input
@@ -151,7 +151,7 @@ const toggle = () => {
 
 		<!-- Voice Selection -->
 		<div>
-			<InputLabel> System Voices </InputLabel>
+			<InputLabel> Choose a voice </InputLabel>
 
 			<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 				<Select
@@ -166,12 +166,11 @@ const toggle = () => {
 						<SelectItem disabled value="-">Select a voice</SelectItem>
 						<SelectItem v-for="(v, i) in nativeVoices" :key="i" :value="v.voiceURI">
 							{{ v.name }} ({{ v.lang }})
-							{{ v.localService ? `- offline` : "" }}
 						</SelectItem>
 					</SelectContent>
 				</Select>
 				<p v-else class="text-sm text-muted-foreground italic p-4 text-center">
-					No system voices detected.
+					No voices are available on this device.
 				</p>
 			</div>
 		</div>

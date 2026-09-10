@@ -11,7 +11,7 @@ const emit = defineEmits(["change"])
 </script>
 <template>
 	<div class="space-y-2.5">
-		<Label class="text-muted-foreground uppercase tracking-wider">Target Format</Label>
+		<Label class="text-muted-foreground uppercase tracking-wider">Save as</Label>
 		<div class="flex flex-wrap gap-4">
 			<Button
 				v-for="opt in options"

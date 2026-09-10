@@ -36,7 +36,7 @@ const filteredTools = computed(() => {
 				<Input
 					class="px-10 text-sm"
 					type="text"
-					placeholder="Search tools..."
+					placeholder="Find a tool..."
 					v-model="searchQuery"
 				/>
 				<span

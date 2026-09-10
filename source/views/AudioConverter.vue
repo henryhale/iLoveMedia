@@ -50,8 +50,8 @@ const handleDownload = () => {
 		v-if="!isLoaded"
 		:loading="isLoading"
 		:load="load"
-		text-loading="Initializing FFmpeg secure environment(~33MB)..."
-		text-loaded="Failed create secure environment."
+		text-loading="Getting the converter ready..."
+		text-loaded="The converter couldn't start. Try again."
 	/>
 
 	<div class="space-y-2">
@@ -63,7 +63,7 @@ const handleDownload = () => {
 			accept="audio/*"
 			@change="handleFileChange"
 			:icon="MusicIcon"
-			title="Select an audio file"
+			title="Choose an audio file"
 			subtitle="MP3, WAV, AAC, OGG, etc."
 		/>
 
@@ -95,7 +95,7 @@ const handleDownload = () => {
 		>
 			<RefreshCwIcon v-if="isConverting" class="w-4 h-4 mr-2 animate-spin" />
 			<CheckIcon v-else class="w-4 h-4 mr-2" />
-			{{ isConverting ? `Converting (${progress}%)` : "Start Conversion" }}
+			{{ isConverting ? `Converting (${progress}%)` : "Convert file" }}
 		</Button>
 	</div>
 
@@ -105,7 +105,7 @@ const handleDownload = () => {
 		class="bg-emerald-500/10 p-6 rounded-xl border border-emerald-500/20 animate-in fade-in duration-300"
 	>
 		<p class="text-emerald-600 dark:text-emerald-400 font-bold mb-3 flex items-center gap-2">
-			<CheckIcon class="w-5 h-5" /> Conversion Successful!
+			<CheckIcon class="w-5 h-5" /> Ready to download
 		</p>
 		<audio controls :src="convertedURL" class="w-full mb-4 rounded-lg"></audio>
 		<Button @click="handleDownload" class="w-full max-w-sm" size="lg">

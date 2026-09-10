@@ -36,10 +36,10 @@ const handleFileChange = (e: Event) => {
 			</div>
 			<div>
 				<p class="text-xl font-bold text-foreground">
-					{{ title || "Drop your file here" }}
+					{{ title || "Choose a file or drag it here" }}
 				</p>
 				<p class="text-muted-foreground">
-					{{ subtitle || "or click to browse local files" }}
+					{{ subtitle || "Click to browse files" }}
 				</p>
 			</div>
 			<div class="pt-2" v-if="footer">

@@ -125,7 +125,7 @@ onUnmounted(() => {
 			<div
 				class="bg-card text-card-foreground p-6 rounded-xl border border-border space-y-4 shadow-sm"
 			>
-				<p class="text-sm font-medium text-muted-foreground">Recording Finished</p>
+				<p class="text-sm font-medium text-muted-foreground">Recording ready</p>
 
 				<audio controls :src="audioURL" class="w-full"></audio>
 
@@ -136,6 +136,7 @@ onUnmounted(() => {
 					</Button>
 					<button
 						@click="resetRecorder"
+						aria-label="Discard recording"
 						class="px-4 py-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
 					>
 						<RefreshCwIcon class="w-4 h-4 text-muted-foreground" />

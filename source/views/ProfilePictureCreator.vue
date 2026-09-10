@@ -202,7 +202,7 @@ const handleDownload = () => {
 					<span
 						class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground"
 					>
-						{{ canvasSize }} x {{ canvasSize }} Canvas
+						{{ canvasSize }} × {{ canvasSize }} image
 					</span>
 				</div>
 			</div>
