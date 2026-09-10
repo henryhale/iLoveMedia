@@ -206,13 +206,6 @@ const handleDownload = () => {
 					</span>
 				</div>
 			</div>
-
-			<div class="mt-8 p-4 max-w-lg text-center">
-				<p class="text-sm text-muted-foreground font-medium">
-					Perfect for Slack, Discord, or GitHub! Customize your background and character
-					without any complex software.
-				</p>
-			</div>
 		</div>
 	</div>
 </template>

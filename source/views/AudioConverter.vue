@@ -113,11 +113,4 @@ const handleDownload = () => {
 			Download Audio
 		</Button>
 	</div>
-
-	<div class="mt-8 text-center p-4 rounded-lg">
-		<p class="text-xs text-muted-foreground leading-relaxed">
-			Conversion is powered by FFmpeg WebAssembly. Everything stays on your device. Large
-			files may take more time depending on your hardware.
-		</p>
-	</div>
 </template>

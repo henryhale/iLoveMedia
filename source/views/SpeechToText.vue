@@ -435,25 +435,6 @@ const clear = () => {
 					</p>
 				</div>
 			</div>
-
-			<div class="flex items-start gap-4 p-4">
-				<div class="p-2 bg-accent rounded-2xl">
-					<CheckIcon class="w-4 h-4 text-primary" />
-				</div>
-				<div
-					class="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide"
-				>
-					<b class="text-foreground">{{
-						engine === "native" ? "Web Speech API" : "Whisper-Tiny (WASM)"
-					}}</b
-					>.
-					{{
-						engine === "native"
-							? " Fastest response, requires browser support, cloud-dependent for some OS."
-							: " Highest accuracy, 100% offline private processing, requires ~40MB model download."
-					}}
-				</div>
-			</div>
 		</div>
 	</div>
 </template>

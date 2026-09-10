@@ -115,12 +115,4 @@ const handleDownload = () => {
 			Download Video
 		</Button>
 	</div>
-
-	<div class="mt-8 text-center rounded-lg">
-		<p class="text-xs text-muted-foreground leading-relaxed">
-			Uses browser-based FFmpeg via WebAssembly. <br />
-			No cloud servers are used. Large high-definition videos may take significant time or
-			memory.
-		</p>
-	</div>
 </template>

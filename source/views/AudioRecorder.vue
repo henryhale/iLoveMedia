@@ -73,11 +73,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold mb-6 flex items-center justify-center gap-2 text-foreground">
-		<MicIcon class="w-5 h-5 text-primary" />
-		Audio Recorder
-	</h2>
-
 	<div class="flex flex-col items-center space-y-8">
 		<!-- Visualizer / Timer Circle -->
 		<div
@@ -145,8 +140,4 @@ onUnmounted(() => {
 			</div>
 		</div>
 	</div>
-
-	<p class="mt-8 text-xs text-muted-foreground text-center">
-		Recording is processed locally in your browser and never uploaded to any server.
-	</p>
 </template>

@@ -15,7 +15,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import CopyButton from "@/components/CopyButton.vue"
-import FeatureCards from "@/components/FeatureCards.vue"
 import FilePicker from "@/components/FilePicker.vue"
 import { downloadFile } from "@/lib/helpers"
 
@@ -88,23 +87,6 @@ const reset = () => {
 	status.value = ""
 }
 
-const features = [
-	{
-		title: "Zero Uploads",
-		subtitle:
-			"OCR engine runs entirely via WebAssembly. Your documents stay safe and private on your device.",
-	},
-	{
-		title: "Multi-Language",
-		subtitle:
-			"Supports various languages including English, Spanish, French, and Japanese for diverse document types.",
-	},
-	{
-		title: "Smart Extraction",
-		subtitle:
-			"Uses Tesseract AI to recognize text layout and characters with high accuracy for clear image sources.",
-	},
-]
 </script>
 
 <template>
@@ -235,7 +217,4 @@ const features = [
 			</Button>
 		</div>
 	</div>
-
-	<!-- Feature Badges -->
-	<FeatureCards :features="features" />
 </template>

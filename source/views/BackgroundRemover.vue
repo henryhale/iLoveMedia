@@ -4,7 +4,6 @@ import { useObjectUrl } from "@vueuse/core"
 import { ScissorsIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import { removeBackground } from "@imgly/background-removal"
 import { toast } from "vue-sonner"
-import FeatureCards from "@/components/FeatureCards.vue"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import FilePicker from "@/components/FilePicker.vue"
@@ -73,20 +72,6 @@ const reset = () => {
 	progress.value = 0
 }
 
-const features = [
-	{
-		title: "100% Client-Side",
-		subtitle: "Processing happens in your browser's RAM. No image data is ever uploaded.",
-	},
-	{
-		title: "Edge AI Model",
-		subtitle: "Uses a dedicated WASM-powered background removal model for precision masking.",
-	},
-	{
-		title: "High Resolution",
-		subtitle: "Exports your processed image as a full-resolution 32-bit PNG.",
-	},
-]
 </script>
 
 <template>
@@ -188,7 +173,4 @@ const features = [
 			</Button>
 		</div>
 	</div>
-
-	<!-- Feature Cards -->
-	<FeatureCards :features="features" />
 </template>

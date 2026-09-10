@@ -164,8 +164,4 @@ onUnmounted(() => {
 			</div>
 		</div>
 	</div>
-
-	<p class="mt-8 text-xs text-muted-foreground text-center">
-		Recording is processed locally in your browser and never uploaded to any server.
-	</p>
 </template>
