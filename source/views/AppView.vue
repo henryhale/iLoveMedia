@@ -10,7 +10,7 @@ const groupedTools = Object.groupBy(TOOLS, ({ category }) => category)
 	<div class="flex flex-col gap-10 animate-in fade-in duration-500">
 		<section class="bg-primary text-primary-foreground rounded-3xl p-8 md:p-12">
 			<div class="max-w-2xl">
-				<h1 class="text-3xl md:text-5xl font-bold mb-4">Simple tools for your media</h1>
+				<h1 class="text-3xl md:text-5xl font-bold mb-4">Edit, Convert, and Create</h1>
 				<p class="text-lg md:text-xl leading-relaxed">
 					Convert files, record audio or video, extract text from images, and create
 					shareable graphics in one place.
