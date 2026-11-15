@@ -1,11 +1,10 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from "vue"
+import { ref, onUnmounted, watch } from "vue"
 import {
 	WavesIcon,
 	MicIcon,
 	CircleStopIcon,
-	CopyIcon,
 	CheckIcon,
 	RefreshCwIcon,
 } from "lucide-vue-next"
@@ -18,6 +17,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
+import CopyButton from "@/components/CopyButton.vue"
 
 // Dynamically imported for high-accuracy local transcription
 let env: any = null
@@ -39,7 +39,6 @@ const isListening = ref(false)
 const transcription = ref("")
 const interimResult = ref("")
 const selectedLang = ref("en")
-const copied = ref(false)
 
 // Whisper Specific State
 const isModelLoading = ref(false)
@@ -95,14 +94,7 @@ const initNativeSpeech = () => {
 	}
 }
 
-// Watch for engine/lang changes to re-init native recognition
-watch([selectedLang, engine], () => {
-	initNativeSpeech()
-})
-
-onMounted(() => {
-	initNativeSpeech()
-})
+watch([selectedLang, engine], initNativeSpeech, { immediate: true })
 
 onUnmounted(() => {
 	if (recognitionRef.value) recognitionRef.value.stop()
@@ -139,7 +131,7 @@ const loadWhisper = async () => {
 		return transcriber
 	} catch (err) {
 		console.error("Whisper Load Error:", err)
-		toast.error("Failed to load Whisper AI.")
+		toast.error("Recorded transcription is unavailable. Try live dictation instead.")
 		engine.value = "native"
 		return null
 	} finally {
@@ -242,12 +234,6 @@ const handleToggleListening = () => {
 	}
 }
 
-const handleCopy = () => {
-	navigator.clipboard.writeText(transcription.value)
-	copied.value = true
-	setTimeout(() => (copied.value = false), 2000)
-}
-
 const clear = () => {
 	transcription.value = ""
 	interimResult.value = ""
@@ -272,7 +258,7 @@ const clear = () => {
 						: 'text-muted-foreground hover:text-foreground',
 				]"
 			>
-				Native Live
+				Live dictation
 			</button>
 			<button
 				@click="
@@ -289,11 +275,7 @@ const clear = () => {
 						: 'text-muted-foreground hover:text-foreground',
 				]"
 			>
-				Whisper AI
-				<span
-					class="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded uppercase font-bold"
-					>WASM</span
-				>
+				Record, then transcribe
 			</button>
 		</div>
 
@@ -358,7 +340,7 @@ const clear = () => {
 								? engine === "native"
 									? "Listening..."
 									: "Recording..."
-								: "Start Mic"
+								: "Start"
 						}}
 					</p>
 					<p
@@ -366,8 +348,8 @@ const clear = () => {
 					>
 						{{
 							engine === "native"
-								? "Streaming Transcription"
-								: "Segment Transcription"
+								? "Words appear as you speak"
+								: "Record first, then transcribe"
 						}}
 					</p>
 				</div>
@@ -381,17 +363,17 @@ const clear = () => {
 				<Button @click="runWhisperTranscription" :disabled="isTranscribing" size="lg">
 					<RefreshCwIcon v-if="isTranscribing" class="w-5 h-5 animate-spin" />
 					<WavesIcon v-else class="w-5 h-5" />
-					{{ isTranscribing ? "Transcribing..." : "Transcribe Recording" }}
+					{{ isTranscribing ? "Transcribing..." : "Turn recording into text" }}
 				</Button>
 				<p class="text-[10px] text-muted-foreground text-center mt-2">
-					Audio ready to process locally
+					Recording ready
 				</p>
 			</div>
 
 			<!-- Loading State -->
 			<div v-if="isModelLoading" class="w-full space-y-2">
 				<div class="flex justify-between text-[10px] font-bold text-primary uppercase">
-					<span>Loading Tiny-Whisper</span>
+					<span>Preparing transcription</span>
 					<span>{{ loadProgress }}%</span>
 				</div>
 				<div class="w-full bg-secondary h-1.5 rounded-full overflow-hidden">
@@ -407,18 +389,10 @@ const clear = () => {
 		<div class="lg:col-span-8 space-y-4">
 			<div class="flex justify-between items-center px-1">
 				<label class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-					Result Console
+					Transcript
 				</label>
 				<div class="flex gap-4">
-					<button
-						v-if="transcription"
-						@click="handleCopy"
-						class="flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
-					>
-						<CheckIcon v-if="copied" class="w-3 h-3" />
-						<CopyIcon v-else class="w-3 h-3" />
-						{{ copied ? "Copied" : "Copy" }}
-					</button>
+					<CopyButton v-if="transcription" :source="transcription" />
 					<button
 						@click="clear"
 						class="flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-destructive"
@@ -455,29 +429,10 @@ const clear = () => {
 					<p class="font-medium italic text-center px-8">
 						{{
 							engine === "native"
-								? "Speak to see live text output..."
-								: "Record a clip, then use Whisper for high accuracy..."
+								? "Start speaking to see your words here."
+								: "Record a clip, then turn it into text."
 						}}
 					</p>
-				</div>
-			</div>
-
-			<div class="flex items-start gap-4 p-4">
-				<div class="p-2 bg-accent rounded-2xl">
-					<CheckIcon class="w-4 h-4 text-primary" />
-				</div>
-				<div
-					class="text-[10px] text-muted-foreground leading-relaxed uppercase tracking-wide"
-				>
-					<b class="text-foreground">{{
-						engine === "native" ? "Web Speech API" : "Whisper-Tiny (WASM)"
-					}}</b
-					>.
-					{{
-						engine === "native"
-							? " Fastest response, requires browser support, cloud-dependent for some OS."
-							: " Highest accuracy, 100% offline private processing, requires ~40MB model download."
-					}}
 				</div>
 			</div>
 		</div>

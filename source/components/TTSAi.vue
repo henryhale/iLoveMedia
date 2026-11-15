@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from "vue"
+import { ref } from "vue"
+import { useObjectUrl } from "@vueuse/core"
 import { PlayIcon, RefreshCwIcon, TrashIcon, DownloadIcon } from "lucide-vue-next"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -16,7 +17,7 @@ import Worker from "@/constants/vits-web-worker?worker"
 import * as tts from "@diffusionstudio/vits-web"
 import InputLabel from "./InputLabel.vue"
 
-const text = ref("Welcome to iLoveMedia. Your privacy-first workspace.")
+const text = ref("Welcome to iLoveMedia. What would you like me to read?")
 const selectedVoice = ref("en_US-hfc_female-medium")
 const voices = ref<{ key: string }[]>([])
 const isFlushing = ref(false)
@@ -27,81 +28,50 @@ const progress = ref<tts.Progress>({
 	loaded: 10,
 })
 const audioBlob = ref<Blob>()
-const audio = new Audio()
+const audioUrl = useObjectUrl(audioBlob)
 
-watchEffect((onCleanup) => {
-	const blob = audioBlob.value
-	if (!(blob instanceof Blob)) return
-	if (audio.src) {
-		URL.revokeObjectURL(audio.src)
-	}
-	const link = URL.createObjectURL(blob)
-	audio.src = link
-	audio.play()
-	onCleanup(() => URL.revokeObjectURL(link))
-})
+type WorkerMessage =
+	| { type: "voices"; voices: { key: string }[] }
+	| { type: "flushed" }
+	| { type: "error"; message: string }
+	| { type: "progress"; progress: tts.Progress }
+	| { type: "result"; audio: Blob }
 
-let worker: Worker | null = null
-onMounted(() => {
-	worker = new Worker()
-
-	// voices
-	worker.postMessage({ type: "voices" })
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "voices"; voices: { key: string }[] }>) => {
-			if (event.data.type !== "voices") return
-			voices.value = event.data.voices
-		},
-	)
-
-	// clear cache
-	worker.addEventListener("message", (event: MessageEvent<{ type: "flushed" }>) => {
-		if (event.data.type !== "flushed") return
-		isFlushing.value = false
-	})
-
-	// error
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "error"; message: string }>) => {
-			if (event.data.type !== "error") return
+const worker = new Worker()
+worker.postMessage({ type: "voices" })
+worker.onmessage = ({ data }: MessageEvent<WorkerMessage>) => {
+	switch (data.type) {
+		case "voices":
+			voices.value = data.voices
+			break
+		case "flushed":
+			isFlushing.value = false
+			break
+		case "error":
 			isGenerating.value = false
-			toast.error(event.data.message)
-			console.error(event.data.message)
-		},
-	)
+			toast.error(data.message)
+			console.error(data.message)
+			break
+		case "progress":
+			progress.value = data.progress
+			break
+		case "result":
+			audioBlob.value = data.audio
+			isGenerating.value = false
+	}
+}
 
-	// progress
-	worker.addEventListener(
-		"message",
-		(event: MessageEvent<{ type: "progress"; progress: tts.Progress }>) => {
-			if (event.data.type !== "progress") return
-			progress.value = event.data.progress
-		},
-	)
-
-	// result
-	worker.addEventListener("message", (event: MessageEvent<{ type: "result"; audio: Blob }>) => {
-		if (event.data.type != "result") return
-		audioBlob.value = event.data.audio
-		isGenerating.value = false
-	})
-})
-
-async function flushStorage() {
+function flushStorage() {
 	if (isFlushing.value) return
-	const mainWorker = worker ?? new Worker()
-	mainWorker.postMessage({ type: "flush" })
+	worker.postMessage({ type: "flush" })
 	isFlushing.value = true
 	setTimeout(() => {
 		window.location.reload()
 	}, 2000)
 }
 
-async function generate() {
-	const mainWorker = worker ?? new Worker()
-	mainWorker.postMessage({
+function generate() {
+	worker.postMessage({
 		type: "init",
 		text: text.value,
 		voiceId: selectedVoice.value || "en_US-hfc_female-medium",
@@ -147,7 +117,7 @@ function downloadAudio() {
 	<div class="lg:col-span-5 space-y-8">
 		<!-- Voice Selection -->
 		<div>
-			<InputLabel> AI Voices </InputLabel>
+			<InputLabel> Choose a voice </InputLabel>
 
 			<div class="max-h-75 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
 				<Select v-if="voices.length > 0" v-model="selectedVoice" :disabled="!!isGenerating">
@@ -167,14 +137,14 @@ function downloadAudio() {
 					</SelectContent>
 				</Select>
 				<p v-else class="text-xs lg:text-sm text-muted-foreground italic p-4 text-center">
-					No AI voices found.
+					Voices are still loading.
 				</p>
 			</div>
 		</div>
 
 		<!-- Download & Cleanup  -->
 		<div class="flex flex-col lg:flex-row lg:flex-wrap gap-4">
-			<audio v-if="audioBlob" :src="audio.src" controls class="w-full"></audio>
+			<audio v-if="audioUrl" :src="audioUrl" autoplay controls class="w-full"></audio>
 			<Button
 				v-if="audioBlob"
 				@click="downloadAudio"
@@ -193,7 +163,7 @@ function downloadAudio() {
 				size="lg"
 			>
 				<TrashIcon class="w-5 h-5" />
-				{{ isFlushing ? "Deleting cached data..." : "Flush cached data" }}
+				{{ isFlushing ? "Clearing voices..." : "Clear downloaded voices" }}
 			</Button>
 		</div>
 	</div>

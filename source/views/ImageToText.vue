@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue"
+import { ref } from "vue"
+import { useObjectUrl } from "@vueuse/core"
 import { ScanIcon, DownloadIcon, RefreshCwIcon, ImageIcon } from "lucide-vue-next"
 import Tesseract from "tesseract.js"
 import { toast } from "vue-sonner"
@@ -14,7 +15,6 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import CopyButton from "@/components/CopyButton.vue"
-import FeatureCards from "@/components/FeatureCards.vue"
 import FilePicker from "@/components/FilePicker.vue"
 import { downloadFile } from "@/lib/helpers"
 
@@ -28,22 +28,16 @@ const OCR_LANGUAGES = [
 ]
 
 const imageFile = ref<File | null>(null)
-const imageUrl = ref<string | null>(null)
+const imageUrl = useObjectUrl(imageFile)
 const extractedText = ref("")
 const isProcessing = ref(false)
 const progress = ref(0)
 const status = ref("")
 const lang = ref("eng")
 
-onBeforeUnmount(() => {
-	if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
-})
-
 const handleFileChange = (file: File | undefined) => {
 	if (file) {
 		imageFile.value = file
-		if (imageUrl.value) URL.revokeObjectURL(imageUrl.value)
-		imageUrl.value = URL.createObjectURL(file)
 		extractedText.value = ""
 		progress.value = 0
 		status.value = ""
@@ -55,7 +49,7 @@ const handleOcr = async () => {
 
 	isProcessing.value = true
 	progress.value = 0
-	status.value = "Initializing Tesseract..."
+	status.value = "Getting ready..."
 
 	try {
 		const {
@@ -87,30 +81,12 @@ const handleDownload = () => {
 
 const reset = () => {
 	imageFile.value = null
-	imageUrl.value = null
 	extractedText.value = ""
 	isProcessing.value = false
 	progress.value = 0
 	status.value = ""
 }
 
-const features = [
-	{
-		title: "Zero Uploads",
-		subtitle:
-			"OCR engine runs entirely via WebAssembly. Your documents stay safe and private on your device.",
-	},
-	{
-		title: "Multi-Language",
-		subtitle:
-			"Supports various languages including English, Spanish, French, and Japanese for diverse document types.",
-	},
-	{
-		title: "Smart Extraction",
-		subtitle:
-			"Uses Tesseract AI to recognize text layout and characters with high accuracy for clear image sources.",
-	},
-]
 </script>
 
 <template>
@@ -136,7 +112,7 @@ const features = [
 		:icon="ImageIcon"
 		title="Drop image with text here"
 		subtitle="or click to browse documents, photos, or screenshots"
-		footer="Fast Local OCR"
+		footer="Clear images work best"
 	/>
 
 	<!-- Preview & Result -->
@@ -206,7 +182,7 @@ const features = [
 						class="absolute inset-0 bg-background flex flex-col items-center justify-center pointer-events-none opacity-30 rounded-2xl text-foreground"
 					>
 						<ScanIcon class="w-12 h-12 mb-2" />
-						<p class="text-xs uppercase tracking-widest font-bold">Waiting for scan</p>
+						<p class="text-xs font-bold">Your text will appear here</p>
 					</div>
 				</div>
 			</div>
@@ -241,7 +217,4 @@ const features = [
 			</Button>
 		</div>
 	</div>
-
-	<!-- Feature Badges -->
-	<FeatureCards :features="features" />
 </template>

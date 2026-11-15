@@ -28,7 +28,7 @@ const filteredTools = computed(() => {
 
 <template>
 	<Popover>
-		<PopoverTrigger>
+		<PopoverTrigger as-child>
 			<div class="relative group max-w-xl w-full">
 				<SearchIcon
 					class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
@@ -36,26 +36,26 @@ const filteredTools = computed(() => {
 				<Input
 					class="px-10 text-sm"
 					type="text"
-					placeholder="Search tools..."
+					aria-label="Find a tool"
+					placeholder="Find a tool..."
 					v-model="searchQuery"
 				/>
-				<span
+				<button
 					v-if="searchQuery"
+					type="button"
+					aria-label="Clear search"
 					@click="searchQuery = ''"
 					class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground"
 				>
 					<XIcon class="w-4 h-4" />
-				</span>
+				</button>
 			</div>
 		</PopoverTrigger>
-		<PopoverContent class="mt-2">
+		<PopoverContent v-if="searchQuery" class="mt-2">
 			<ItemGroup v-if="searchQuery.length && filteredTools.length">
-				<template v-for="(tool, index) in filteredTools" :key="tool.id">
-					<Item class="hover:text-primary" @click="searchQuery = ''">
-						<RouterLink :to="tool.link">
-							<!-- <ItemMedia>
-                            <component :is="tool.icon"></component>
-                        </ItemMedia> -->
+				<template v-for="(tool, index) in filteredTools" :key="tool.link">
+					<Item as-child class="hover:text-primary">
+						<RouterLink :to="tool.link" @click="searchQuery = ''">
 							<ItemContent class="gap-1">
 								<ItemTitle>{{ tool.name }}</ItemTitle>
 								<ItemDescription>{{ tool.description }}</ItemDescription>

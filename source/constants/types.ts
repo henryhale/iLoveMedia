@@ -8,16 +8,8 @@ export enum ToolCategory {
 
 export interface ToolDef {
 	link: string
-	id: string
 	name: string
 	description: string
 	icon: Component
 	category: ToolCategory
 }
-
-export type FileState = {
-	file: File
-	previewUrl: string
-	type: string
-	size: number
-} | null

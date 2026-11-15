@@ -45,7 +45,7 @@ const startRecording = async () => {
 		await startStream()
 	} catch (err) {
 		console.log(err)
-		toast.error("Failed to access screen recording interface. Please check permissions.")
+		toast.error("Screen access was not granted. Try again and choose a screen or window.")
 	}
 
 	if (!stream.value) return
@@ -134,7 +134,7 @@ onUnmounted(() => {
 					{{
 						isSupported
 							? "Select a window or screen to begin sharing"
-							: "Screen recording is disabled or not supported. Please check browser settings."
+							: "Screen recording isn't available in this browser."
 					}}
 				</p>
 			</div>
@@ -144,12 +144,12 @@ onUnmounted(() => {
 		<div class="flex gap-4">
 			<Button v-if="!isRecording" @click="startRecording">
 				<PlayIcon class="w-5 h-5" />
-				{{ enabled ? "Start Recording" : "Select Screen & Start" }}
+				{{ enabled ? "Start recording" : "Choose a screen to record" }}
 			</Button>
 
 			<Button v-else @click="stopRecording" variant="outline">
 				<StopCircleIcon class="w-5 h-5" />
-				Finish Recording
+				Stop recording
 			</Button>
 		</div>
 
@@ -164,8 +164,4 @@ onUnmounted(() => {
 			</div>
 		</div>
 	</div>
-
-	<p class="mt-8 text-xs text-muted-foreground text-center">
-		Recording is processed locally in your browser and never uploaded to any server.
-	</p>
 </template>

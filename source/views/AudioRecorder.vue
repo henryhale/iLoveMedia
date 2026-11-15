@@ -2,7 +2,7 @@
 import { ref, onUnmounted } from "vue"
 import { MicIcon, CircleStopIcon, DownloadIcon, RefreshCwIcon } from "lucide-vue-next"
 import { toast } from "vue-sonner"
-import { downloadFile } from "@/lib/helpers"
+import { downloadFile, formatTime } from "@/lib/helpers"
 
 const isRecording = ref(false)
 const audioURL = ref<string | null>(null)
@@ -11,13 +11,6 @@ const recordingTime = ref(0)
 const mediaRecorderRef = ref<MediaRecorder | null>(null)
 const chunksRef = ref<Blob[]>([])
 let timerInterval: number | null = null
-
-// Helper: Format Time
-const formatTime = (seconds: number) => {
-	const mins = Math.floor(seconds / 60)
-	const secs = seconds % 60
-	return `${mins}:${secs.toString().padStart(2, "0")}`
-}
 
 // Methods
 const startRecording = async () => {
@@ -80,11 +73,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold mb-6 flex items-center justify-center gap-2 text-foreground">
-		<MicIcon class="w-5 h-5 text-primary" />
-		Audio Recorder
-	</h2>
-
 	<div class="flex flex-col items-center space-y-8">
 		<!-- Visualizer / Timer Circle -->
 		<div
@@ -132,7 +120,7 @@ onUnmounted(() => {
 			<div
 				class="bg-card text-card-foreground p-6 rounded-xl border border-border space-y-4 shadow-sm"
 			>
-				<p class="text-sm font-medium text-muted-foreground">Recording Finished</p>
+				<p class="text-sm font-medium text-muted-foreground">Recording ready</p>
 
 				<audio controls :src="audioURL" class="w-full"></audio>
 
@@ -143,6 +131,7 @@ onUnmounted(() => {
 					</Button>
 					<button
 						@click="resetRecorder"
+						aria-label="Discard recording"
 						class="px-4 py-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
 					>
 						<RefreshCwIcon class="w-4 h-4 text-muted-foreground" />
@@ -151,8 +140,4 @@ onUnmounted(() => {
 			</div>
 		</div>
 	</div>
-
-	<p class="mt-8 text-xs text-muted-foreground text-center">
-		Recording is processed locally in your browser and never uploaded to any server.
-	</p>
 </template>

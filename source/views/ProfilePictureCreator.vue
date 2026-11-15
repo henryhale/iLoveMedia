@@ -55,13 +55,8 @@ const drawAvatar = () => {
 	ctx.restore()
 }
 
-onMounted(() => {
-	drawAvatar()
-})
-
-watch([emoji, bgColor, shape, emojiSize, rotation], () => {
-	drawAvatar()
-})
+onMounted(drawAvatar)
+watch([emoji, bgColor, shape, emojiSize, rotation], drawAvatar)
 
 const handleDownload = () => {
 	const canvas = canvasRef.value
@@ -207,28 +202,10 @@ const handleDownload = () => {
 					<span
 						class="text-[10px] font-bold uppercase tracking-widest text-muted-foreground"
 					>
-						{{ canvasSize }} x {{ canvasSize }} Canvas
+						{{ canvasSize }} × {{ canvasSize }} image
 					</span>
 				</div>
-			</div>
-
-			<div class="mt-8 p-4 max-w-lg text-center">
-				<p class="text-sm text-muted-foreground font-medium">
-					Perfect for Slack, Discord, or GitHub! Customize your background and character
-					without any complex software.
-				</p>
 			</div>
 		</div>
 	</div>
 </template>
-
-<style scoped>
-.no-scrollbar::-webkit-scrollbar {
-	display: none;
-}
-
-.no-scrollbar {
-	-ms-overflow-style: none;
-	scrollbar-width: none;
-}
-</style>

@@ -19,9 +19,7 @@ const formats = ["mp4", "mkv", "avi", "mov", "webm", "gif", "3gp", "flv", "wmv"]
 const { isLoaded, isLoading, isConverting, progress, convertedURL, load, convert, reset } =
 	useFFmpeg()
 
-onMounted(() => {
-	load()
-})
+onMounted(load)
 
 const handleFileChange = (selectedFile: File | undefined) => {
 	if (selectedFile) {
@@ -53,8 +51,8 @@ const handleDownload = () => {
 		v-if="!isLoaded"
 		:loading="isLoading"
 		:load="load"
-		text-loading="Initializing FFmpeg secure environment(~33MB)..."
-		text-loaded="Failed create secure environment."
+		text-loading="Getting the converter ready..."
+		text-loaded="The converter couldn't start. Try again."
 	/>
 
 	<!-- File Upload Dropzone -->
@@ -64,10 +62,10 @@ const handleDownload = () => {
 		<!-- File Upload Dropzone -->
 		<FilePicker
 			v-if="!file"
-			accept="audio/*"
+			accept="video/*"
 			@change="handleFileChange"
 			:icon="VideoIcon"
-			title="Select video file"
+			title="Choose a video file"
 			subtitle="MP4, MKV, AVI, MOV, WebM"
 		/>
 
@@ -88,7 +86,7 @@ const handleDownload = () => {
 		@change="(val) => (targetFormat = val)"
 	/>
 
-	<ProgressDisplay v-if="isConverting" title="Re-encoding stream..." :progress="progress" />
+	<ProgressDisplay v-if="isConverting" title="Converting video..." :progress="progress" />
 
 	<div>
 		<Button
@@ -99,7 +97,7 @@ const handleDownload = () => {
 		>
 			<RefreshCwIcon v-if="isConverting" class="w-6 h-6 animate-spin" />
 			<CheckIcon v-else class="w-6 h-6" />
-			{{ isConverting ? `Processing (${progress}%)` : "Start Conversion" }}
+			{{ isConverting ? `Converting (${progress}%)` : "Convert file" }}
 		</Button>
 	</div>
 
@@ -109,20 +107,12 @@ const handleDownload = () => {
 		class="bg-emerald-500/10 p-6 rounded-xl border border-emerald-500/20 animate-in fade-in duration-300"
 	>
 		<p class="text-emerald-600 dark:text-emerald-400 font-bold mb-3 flex items-center gap-2">
-			<CheckIcon class="w-5 h-5" /> Conversion Successful!
+			<CheckIcon class="w-5 h-5" /> Ready to download
 		</p>
 		<video controls :src="convertedURL" class="w-full mb-4 rounded-lg"></video>
 		<Button @click="handleDownload" class="w-full max-w-sm" size="lg">
 			<DownloadIcon class="w-5 h-5" />
 			Download Video
 		</Button>
-	</div>
-
-	<div class="mt-8 text-center rounded-lg">
-		<p class="text-xs text-muted-foreground leading-relaxed">
-			Uses browser-based FFmpeg via WebAssembly. <br />
-			No cloud servers are used. Large high-definition videos may take significant time or
-			memory.
-		</p>
 	</div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, onUnmounted } from "vue"
 import { useUserMedia, useIntervalFn, useObjectUrl } from "@vueuse/core"
-import { VideoIcon, StopCircleIcon, DownloadIcon, CameraIcon } from "lucide-vue-next"
+import { VideoIcon, StopCircleIcon, DownloadIcon } from "lucide-vue-next"
 import { Button } from "@/components/ui/button"
 import { downloadFile, formatTime } from "@/lib/helpers"
 import { toast } from "vue-sonner"
@@ -96,11 +96,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-	<h2 class="text-xl font-semibold flex items-center justify-center gap-2 text-foreground">
-		<CameraIcon class="size-5 text-primary" />
-		Video Recorder
-	</h2>
-
 	<div class="flex flex-col items-center space-y-6">
 		<!-- Preview/Playback Window -->
 		<div
@@ -134,10 +129,9 @@ onUnmounted(() => {
 				v-if="!stream && !videoURL"
 				class="absolute inset-0 font-bold flex items-center justify-center p-8 text-center text-muted-foreground"
 			>
-				<p v-if="isSupported">Waiting for camera permission...</p>
+				<p v-if="isSupported">Allow camera and microphone access to begin.</p>
 				<p v-else>
-					Video recording not supported. <br />
-					Check permissions or try another browser.
+					Video recording isn't available in this browser.
 				</p>
 			</div>
 		</div>
@@ -146,12 +140,12 @@ onUnmounted(() => {
 		<div class="flex gap-4 w-full justify-center">
 			<Button v-if="!isRecording" @click="startRecording" size="lg" class="w-full max-w-md">
 				<VideoIcon class="size-5" />
-				Start New Recording
+				Start recording
 			</Button>
 
 			<Button v-else @click="stopRecording" variant="secondary">
 				<StopCircleIcon class="size-5" />
-				Stop & Save
+				Stop recording
 			</Button>
 		</div>
 
@@ -166,8 +160,4 @@ onUnmounted(() => {
 			</div>
 		</div>
 	</div>
-
-	<p class="mt-8 text-xs text-muted-foreground text-center">
-		Recording is processed locally in your browser and never uploaded to any server.
-	</p>
 </template>

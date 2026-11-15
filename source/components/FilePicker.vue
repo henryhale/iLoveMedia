@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect, type Component } from "vue"
+import type { Component } from "vue"
 import { FileIcon } from "lucide-vue-next"
 
 defineProps<{
@@ -12,19 +12,9 @@ defineProps<{
 
 const emit = defineEmits<{ change: [File | undefined] }>()
 
-const selectedFile = ref<File>()
-
 const handleFileChange = (e: Event) => {
-	const target = e.target as HTMLInputElement
-	if (target.files && target.files[0]) {
-		const file = target.files[0]
-		selectedFile.value = file
-	}
+	emit("change", (e.target as HTMLInputElement).files?.[0])
 }
-
-watchEffect(() => {
-	emit("change", selectedFile.value)
-})
 </script>
 
 <template>
@@ -46,10 +36,10 @@ watchEffect(() => {
 			</div>
 			<div>
 				<p class="text-xl font-bold text-foreground">
-					{{ title || "Drop your file here" }}
+					{{ title || "Choose a file or drag it here" }}
 				</p>
 				<p class="text-muted-foreground">
-					{{ subtitle || "or click to browse local files" }}
+					{{ subtitle || "Click to browse files" }}
 				</p>
 			</div>
 			<div class="pt-2" v-if="footer">

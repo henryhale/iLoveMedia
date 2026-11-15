@@ -30,23 +30,23 @@ export function useFFmpeg() {
 
 		ffmpeg.on("progress", ({ progress: p }) => {
 			progress.value = Math.round(p * 100)
-			toast.loading(`Processing...: ${progress.value}%`, {
+			toast.loading(`Converting... ${progress.value}%`, {
 				id: "ffmpeg-progress",
 			})
 		})
 
 		try {
-			toast.loading("Loading FFmpeg components...", { id: "ffmpeg-progress" })
+			toast.loading("Getting the converter ready...", { id: "ffmpeg-progress" })
 			await ffmpeg.load({
 				coreURL,
 				wasmURL,
 				classWorkerURL,
 			})
 			isLoaded.value = true
-			toast.success("FFmpeg loaded successfully!", { id: "ffmpeg-progress" })
+			toast.success("Converter ready", { id: "ffmpeg-progress" })
 		} catch (err) {
 			console.error("Failed to load FFmpeg:", err)
-			toast.error("Failed to load FFmpeg components. Check browser security settings.", {
+			toast.error("The converter couldn't start. Try another browser.", {
 				id: "ffmpeg-progress",
 			})
 		} finally {
@@ -84,7 +84,7 @@ export function useFFmpeg() {
 			toast.success("Conversion complete!", { id: "ffmpeg-progress" })
 		} catch (err) {
 			console.error("Conversion failed:", err)
-			toast.error("Conversion failed. Check browser resource limits.", {
+			toast.error("Conversion failed. Try a smaller file or another format.", {
 				id: "ffmpeg-progress",
 			})
 		} finally {

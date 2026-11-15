@@ -11,7 +11,7 @@ const engine = ref<"native" | "ai">("native")
 		<label
 			class="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5"
 		>
-			Speech Engine
+			Voice type
 		</label>
 		<div class="flex bg-muted p-1 rounded-xl max-w-max">
 			<button
@@ -23,7 +23,7 @@ const engine = ref<"native" | "ai">("native")
 						: 'text-muted-foreground hover:text-foreground',
 				]"
 			>
-				System Native
+				Device voices
 			</button>
 			<button
 				@click="engine = 'ai'"
@@ -34,11 +34,7 @@ const engine = ref<"native" | "ai">("native")
 						: 'text-muted-foreground hover:text-foreground',
 				]"
 			>
-				VITS Web
-				<span
-					class="text-xs lg:text-sm bg-primary text-primary-foreground px-1.5 py-0.5 rounded uppercase font-bold"
-					>AI</span
-				>
+				Natural voices
 			</button>
 		</div>
 	</div>
